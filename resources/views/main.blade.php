@@ -15,10 +15,10 @@
                 <div class="content content-full">
                     <div class="py-4 text-center">
                         <div class="display-1 fw-bold text-default">
-                            <i class="fa fa-school opacity-50 me-1"></i> DigitalSchool
+                            <i class="fa fa-school opacity-50 me-1"></i> SchoolPro
                         </div>
                          <h1 class="fw-bold mt-5 mb-2">Welcome Admin ..</h1>
-                        <h2 class="fs-4 fw-medium text-muted mb-5">We are sorry but the page you are looking for only admins..</h2>
+                        <h2 class="fs-4 fw-medium text-muted mb-5">The page you are looking for only admins..</h2>
                         <!-- <a class="btn btn-lg btn-alt-secondary" href="{{ route('main') }}">
                             <i class="fa fa-arrow-left opacity-50 me-1"></i> Back to Home
                         </a> -->

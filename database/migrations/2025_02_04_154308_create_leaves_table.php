@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('leaves', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('school_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('student_id')->nullable()->constrained()->onUpdate('SET NULL')->onDelete('SET NULL');
+            $table->foreignId('teacher_id')->nullable()->constrained()->onUpdate('SET NULL')->onDelete('SET NULL');
+            $table->enum('user_type', ['student', 'teacher']);
+            $table->date('leavedate');
+            $table->text('reason');
             $table->timestamps();
         });
     }

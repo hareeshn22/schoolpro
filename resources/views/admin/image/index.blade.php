@@ -12,128 +12,141 @@
 
 @section('content')
 
-<h2 class="content-heading">Images</h2>
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-6">
+                <h3>Images</h3>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div class="row items-push">
-    @foreach ($images  as $image )
-        <div class="col-md-3 animated fadeIn">
-            <div class="options-container">
-                <img class="img-fluid options-item" src="{{ asset('uploads/large/' . $image->name) }}" alt="">
-                <div class="options-overlay bg-black-75">
-                    <div class="options-overlay-content">
-                        <h3 class="h4 text-white mb-1">{{$image->name}}</h3>
-                        <h4 class="h6 text-white-75 mb-3">More Details</h4>
-                        <!-- <a class="btn btn-sm btn-alt-primary" href="javascript:void(0)">
-                            <i class="fa fa-pencil-alt opacity-50 me-1"></i> Edit
-                        </a> -->
-                        <a class="btn btn-sm btn-alt-danger" href="{{ route('admin.images.delete', [ 'id' => $image->id ]) }}">
-                            <i class="fa fa-times opacity-50 me-1"></i> Delete
-                        </a>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <div id="data-wrapper" class="row items-push">
+                        @include('admin.image.data')
+                    </div>
+
+                    <div class="text-center">
+
+                        <button class="btn btn-success load-more-data"><i class="fa fa-refresh"></i> Load More
+                            Data...</button>
+
+                    </div>
+
+
+
+                    <!-- Data Loader -->
+
+                    <div class="auto-load text-center" style="display: none;">
+
+                        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" height="60" viewBox="0 0 100 100"
+                            enable-background="new 0 0 0 0" xml:space="preserve">
+
+                            <path fill="#000"
+                                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+
+                                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+
+                            </path>
+
+                        </svg>
+
                     </div>
                 </div>
             </div>
         </div>
-    @endforeach
+    </div>
 </div>
+
+
 
 @endsection
 
 
 
-@section ('content')
 
-<div class="page-content">
-    <div class="container-fluid">
-
-        <!-- start page title -->
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-flex align-items-center justify-content-between">
-                    <h4 class="mb-0">Images</h4>
-
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
-                            <li class="breadcrumb-item active">Images</li>
-                        </ol>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- end page title -->
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body ">
-
-                        <div class="table-responsive">
-                            <table class="table table-centered datatable dt-responsive nowrap "
-                                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th style="width: 20px;">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="ordercheck">
-                                                <label class="custom-control-label" for="ordercheck">&nbsp;</label>
-                                            </div>
-                                        </th>
-                                        <th>Name</th>
-                                        <th>Image</th>
-                                        <th style="width: 120px;">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    @foreach ($images as $image)
-                                    <tr>
-                                        <td>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="ordercheck1">
-                                                <label class="custom-control-label" for="ordercheck1">&nbsp;</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {{ $image->name }}
-                                        </td>
-
-                                        <td>
-
-                                            <img src="{{ asset('uploads/thumb/' . $image->name) }}" alt="" height="120">
-                                        </td>
-
-
-                                        <td>
-                                            <!-- <a href="{{ route('admin.images.edit', [ 'id' => $image->id ]) }}" class="mr-3 text-dark"
-                                                data-toggle="tooltip" data-placement="top" title=""
-                                                data-original-title="Edit"><i
-                                                    class="ri-edit-box-line font-size-18"></i></a> -->
-                                            <a href="{{ route('admin.images.delete', [ 'id' => $image->id ]) }}"
-                                                class="text-danger" data-toggle="tooltip" data-placement="top" title=""
-                                                data-original-title="Delete"><i
-                                                    class="ri-delete-bin-line font-size-18"></i></a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- end row -->
-
-    </div> <!-- container-fluid -->
-</div>
-
-@endsection
 
 
 @section('scripts')
 
+<script>
 
+    var ENDPOINT = "{{ route('admin.images') }}";
+
+    var page = 1;
+
+  
+
+    $(".load-more-data").click(function(){
+
+        page++;
+
+        infinteLoadMore(page);
+
+    });
+
+  
+
+    /*------------------------------------------
+
+    --------------------------------------------
+
+    call infinteLoadMore()
+
+    --------------------------------------------
+
+    --------------------------------------------*/
+
+    function infinteLoadMore(page) {
+
+        $.ajax({
+
+                url: ENDPOINT + "?page=" + page,
+
+                datatype: "html",
+
+                type: "get",
+
+                beforeSend: function () {
+
+                    $('.auto-load').show();
+
+                }
+
+            })
+
+            .done(function (response) {
+
+                if (response.html == '') {
+
+                    $('.auto-load').html("We don't have more data to display :(");
+
+                    return;
+
+                }
+
+                $('.auto-load').hide();
+
+                $("#data-wrapper").append(response.html);
+
+            })
+
+            .fail(function (jqXHR, ajaxOptions, thrownError) {
+
+                console.log('Server error occured');
+
+            });
+
+    }
+
+</script>
 
 @endsection

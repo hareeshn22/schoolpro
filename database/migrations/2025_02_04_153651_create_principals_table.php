@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('principals', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('school_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('phone')->unique();
+            $table->string('username')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }

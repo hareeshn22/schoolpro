@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('guardians', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('school_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('name');
+            $table->string('phone')->unique();
+            $table->string('username')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }

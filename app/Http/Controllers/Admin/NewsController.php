@@ -1,7 +1,7 @@
 <?php
+namespace App\Http\Controllers\Admin;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -13,6 +13,49 @@ class NewsController extends Controller
     public function index()
     {
         //
+        if (request()->ajax()) {
+            return datatables()->of(News::orderByDesc('id')->select('*'))
+                ->addColumn('action', 'admin.helper.action')
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        return view('admin.news.index');
+
+    }
+
+    public function filter(Request $request)
+    {
+        //
+        if (request()->ajax()) {
+            return datatables()->of(News::orderByDesc('id')->select('*'))
+
+                ->filter(function ($query) use ($request) {
+
+                    // if ($request->get('startDate') && $request->get('endDate')) {
+                    //     $startDate = $request->get('startDate');
+                    //     $endDate = $request->get('endDate');
+                    //     if ($startDate && $endDate) {
+                    //         $query->whereDate('appointdate', '>=', \Carbon\Carbon::parse($startDate)->format('Y-m-d'))
+                    //             ->whereDate('appointdate', '<=', \Carbon\Carbon::parse($endDate)->format('Y-m-d'));
+                    //     }
+                    // }
+
+                    if ($request->get('schoolId')) {
+                        $schoolId = $request->get('schoolId');
+                        if ($schoolId) {
+                            $query->where('school_id', '=', $schoolId);
+                        }
+                    }
+
+                })
+                ->addColumn('action', 'admin.helper.action')
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
     }
 
     /**

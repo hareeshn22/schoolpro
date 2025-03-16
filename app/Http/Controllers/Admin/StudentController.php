@@ -1,7 +1,8 @@
 <?php
+namespace App\Http\Controllers\Admin;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
+use App\Models\School;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,52 @@ class StudentController extends Controller
     public function index()
     {
         //
+        $schools = School::all();
+        return view('admin.student.index', compact('schools'));
+    }
+
+    public function filter(Request $request)
+    {
+        //
+        if (request()->ajax()) {
+            return datatables()->of(Student::orderByDesc('id')->select('*'))
+
+                ->filter(function ($query) use ($request) {
+
+                    // if ($request->get('startDate') && $request->get('endDate')) {
+                    //     $startDate = $request->get('startDate');
+                    //     $endDate = $request->get('endDate');
+                    //     if ($startDate && $endDate) {
+                    //         $query->whereDate('appointdate', '>=', \Carbon\Carbon::parse($startDate)->format('Y-m-d'))
+                    //             ->whereDate('appointdate', '<=', \Carbon\Carbon::parse($endDate)->format('Y-m-d'));
+                    //     }
+                    // }
+
+                    if ($request->get('schoolId')) {
+                        $schoolId = $request->get('schoolId');
+                        if ($schoolId) {
+                            $query->where('school_id', '=', $schoolId);
+                        }
+                    }
+
+                })
+                ->addColumn('coursename', function ($query) {
+                    $name = $query->course->name;
+                    // $html =  $name ;
+                    return $name;
+                })
+                ->addColumn('name', function ($query) {
+                    $fname = $query->first_name;
+                    $lname = $query->last_name;
+                    // $html =  $name ;
+                    return $fname . ' ' . $lname;
+                })
+                ->addColumn('action', 'admin.helper.viewaction')
+                ->rawColumns(['action', 'coursename', 'name'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
     }
 
     /**

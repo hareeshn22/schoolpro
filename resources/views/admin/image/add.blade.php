@@ -183,7 +183,6 @@
 
 @section ('scripts')
 
-<script src="{{ asset('backend/js/vendors.js') }}"></script>
 <!-- bs custom file input plugin -->
 <script src="{{ asset ('backend/js/plugins.js') }}"></script>
 <!-- functions plugin -->

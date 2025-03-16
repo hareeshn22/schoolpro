@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'defaults' => [
-        'guard' => 'web',
+    'defaults'         => [
+        'guard'     => 'web',
         'passwords' => 'users',
     ],
 
@@ -35,10 +35,22 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
+    'guards'           => [
+        'web'     => [
+            'driver'   => 'session',
             'provider' => 'users',
+        ],
+        'principal' => [
+            'driver' => 'session',
+            'provider'  => 'principal',
+        ],
+        'guardian' => [
+            'driver' => 'session',
+            'provider'  => 'guardian',
+        ],
+        'teacher' => [
+            'driver' => 'session',
+            'provider'  => 'teacher',
         ],
     ],
 
@@ -59,10 +71,23 @@ return [
     |
     */
 
-    'providers' => [
+    'providers'        => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model'  => App\Models\User::class,
+        ],
+
+        'principal' => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\Principal::class,
+        ],
+        'guardian' => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\Guardian::class,
+        ],
+        'teacher' => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\Teacher::class,
         ],
 
         // 'users' => [
@@ -90,11 +115,11 @@ return [
     |
     */
 
-    'passwords' => [
+    'passwords'        => [
         'users' => [
             'provider' => 'users',
-            'table' => 'password_reset_tokens',
-            'expire' => 60,
+            'table'    => 'password_reset_tokens',
+            'expire'   => 60,
             'throttle' => 60,
         ],
     ],

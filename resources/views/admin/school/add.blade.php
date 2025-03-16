@@ -1,10 +1,14 @@
 @extends('layouts.admin')
 
-@section ('title') Add Slide @endsection
+@section ('title') Add School @endsection
 
 @section ('css')
 
-
+<style>
+.ck-editor__editable_inline {
+    min-height: 200px;
+}
+</style>
 @endsection
 
 
@@ -39,7 +43,7 @@
 
 <div class="my-3 text-center">
     <h2 class="fw-bold mb-2">
-        Add Slide
+        Add School
     </h2>
     <!-- <h3 class="fs-base fw-medium text-muted mb-0">
             This is the 7th property you are adding to your portfolio.
@@ -49,10 +53,10 @@
 
 <div class="block block-rounded">
     <div class="block-header block-header-default">
-        <h3 class="block-title">Slide <small>Fill Required fields</small></h3>
+        <h3 class="block-title">School <small>Fill Required fields</small></h3>
     </div>
     <div class="block-content">
-        <form action="{{ route('admin.slides.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.schools.store') }}" method="POST" enctype="multipart/form-data">
 
             @csrf
             <div class="row items-push">
@@ -66,19 +70,51 @@
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-8">
-                            <label class="form-label" for="img">Image</label>
-                            <select class="form-select" id="img" name="image" required="">
-                                <option selected="" disabled>Select Image</option>
+                            {{--<label class="form-label" for="img">Logo</label>
+                            <select class="form-select" id="img" name="logo" required="">
+                                <option selected="" disabled>Select Logo</option>
                                 @foreach ($images as $image)
-                                <option value="{{ $image->id }}">{{ $image->name }}</option>
+                                <option value="{{ $image->id }}" {{ old('logo') == $image->id ? 'Selected' : '' }}>
+                                    {{ $image->name }}
+                                </option>
                                 @endforeach
-
-                            </select>
+                            </select> --}}
+                             <input id="select-logo" type="hidden" name="logo" value="">
+                            <a class="btn btn-primary mt-2 mt-xl-0" onClick="add()" href="javascript:void(0)"> <i
+                                    class="mdi mdi-plus text-white"></i> Select Image </a>
                         </div>
                     </div>
-                     <div class="row mb-4">
+                    <div id="show-image" class="mb-4">
+
+                    </div>
+                    <div class="row mb-4" >
+                        <div class="col-md-12">
+                            <label class="form-label" for="content"> Description </label>
+                            <textarea id="js-ckeditor" name="content" class="postcontent" rows="10"
+                                cols="80"> {{ old('content') }}</textarea>
+                            <!-- <textarea id="content" name="content" class="summernote" > {{ old('content') }}</textarea> -->
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
                         <div class="col-md-8">
-                            <label class="form-label" for="linktype">Slide Link Type</label>
+                            <label class="form-label" for="phone"> Phone </label>
+                            <input type="text" class="form-control form-control-lg" id="phone" name="phone"
+                                value="{{ old('phone') }}">
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-10">
+                            <label class="form-label" for="excerpt"> Address </label>
+                            <textarea id="exceprt" name="address" class="form-control" rows="4"
+                                cols="30"> {{ old('address')  }}</textarea>
+
+                        </div>
+                    </div>
+
+                    <!-- <div class="row mb-4">
+                        <div class="col-md-8">
+                            <label class="form-label" for="linktype">school Link Type</label>
                             <select class="form-select" id="linktype" name="type" required="">
                                 <option selected="" disabled>Select Type</option>
                                 <option value="post"> Post </option>
@@ -86,31 +122,8 @@
 
                             </select>
                         </div>
-                    </div>
-                    <div id="post" class="row mb-4"  style="display:none; ">
-                        <div class="col-md-8">
-                            <label class="form-label" for="posts">Post</label>
-                            <select class="form-select" id="posts" name="post">
-                                <option selected="" disabled>Select Post</option>
-                                @foreach ($posts as $post)
-                                    <option value="{{ $post->id }}"> {{ $post->title }} </option>
-                                @endforeach
+                    </div> -->
 
-                            </select>
-                        </div>
-                    </div>
-                    <div id="problem" class="row mb-4"  style="display:none; ">
-                        <div class="col-md-8">
-                            <label class="form-label" for="problems">Problem</label>
-                            <select class="form-select" id="problems" name="problem">
-                                <option selected="" disabled>Select Problem</option>
-                                @foreach ($problems as $post)
-                                    <option value="{{ $post->id }}"> {{ $post->name }} </option>
-                                @endforeach
-
-                            </select>
-                        </div>
-                    </div>
                 </div>
 
             </div>
@@ -131,6 +144,89 @@
     </div>
 </div>
 
+
+
+<!-- School modal -->
+<div class="modal fade" id="school-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="block block-rounded shadow-none mb-0">
+                <div class="block-header block-header-default">
+                    <h3 class="block-title">Select Image</h3>
+                    <div class="block-options">
+                        <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="block-content fs-sm">
+                    <div id="data-wrapper" class="row items-push">
+                        @include('admin.helper.data')
+                    </div>
+
+                    <div class="text-center">
+
+                        <button class="btn btn-success load-more-data"><i class="fa fa-refresh"></i> Load More
+                            Data...</button>
+
+                    </div>
+
+
+
+                    <!-- Data Loader -->
+
+                    <div class="auto-load text-center" style="display: none;">
+
+                        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" height="60" viewBox="0 0 100 100"
+                            enable-background="new 0 0 0 0" xml:space="preserve">
+
+                            <path fill="#000"
+                                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+
+                                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+
+                            </path>
+
+                        </svg>
+
+                    </div>
+                    {{--<div id="imgs" class="row items-push">
+                        @foreach ($images as $image )
+                        <div class="col-md-3 animated fadeIn">
+                            <div class="options-container">
+                                <img class="img-fluid options-item" src="{{ asset('uploads/large/' . $image->name) }}"
+                                    alt="">
+                                <div class="options-overlay bg-black-75">
+                                    <div class="options-overlay-content">
+                                        <h3 class="h4 text-white mb-1">{{$image->name}}</h3>
+                                        <a class="btn btn-sm btn-primary"
+                                            onClick="selectImage('{{ $image->id }}', '{{ $image->name }}' )">
+                                            Select
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>--}}
+                </div>
+                <div class="block-content block-content-full block-content-sm text-end border-top">
+                    <button type="button" class="btn btn-alt-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-alt-primary" data-bs-dismiss="modal">
+                        Done
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- End School model -->
+
 @endsection
 
 
@@ -139,30 +235,164 @@
 
 @section ('scripts')
 
-    <script src="{{ asset('backend/js/vendors.js') }}"></script>
+<!-- functions plugin -->
+<script src="{{ asset ('backend/js/functions.min.js') }}"></script>
 
-    <script>
-    // on change of type
-
-    $('#linktype').on('change', function(e) {
-        // console.log(e.target.value);
-        $('#post').hide();
-        $('#problem').hide();
-
-        if (e.target.value == 'post') {
-            $('#post').show();
-            $('#problem').hide();
-            $('#posts').prop("required", true);
-            $('#problem').prop("required", false);
-        } else if (e.target.value == 'problem') {
-            $('#post').hide();
-            $('#problem').show();
-            $('#problems').prop("required", true);
-            $('#posts').prop("required", false);
-        }
+<script>
+ClassicEditor
+    .create(document.querySelector('#js-ckeditor'), {
+        // removePlugins: ['Image', 'MediaEmbed'],
+        toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
+    })
+    .catch(error => {
+        console.error(error);
     });
-    </script>
+//     import { BlockToolbar } from 'ckeditor5';
+// const { BlockToolbar} = CKEDITOR;
+// ClassicEditor
+//     .create(document.querySelector('#js-ckeditor'), {
+//         //  plugins: [ /* ... */ , AutoImage ]
+//         // plugins: [ BlockToolbar,],
+//         removePlugins: ['Image', 'MediaEmbed'],
+
+//         ClassicEditor
+//             .create(document.querySelector('#editor'), {
+//                 removePlugins: ['Image', 'MediaEmbed'],
+//                 toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
+//         // blockToolbar: [
+//         //     'uploadImage'
+//         // ],
+
+//     })
+//     .then(editor => {
+//         window.editor = editor;
+//     })
+//     .catch(error => {
+//         console.error(error);
+//     });
+
+// $('#js-ckeditor').ckeditor(function(){}, {toolbar: 'Basic'});
 
 
+
+
+function add() {
+    $('#PatientForm').trigger("reset");
+    $('#SchoolModal').html("Select Image");
+    $('#school-modal').modal('show');
+    $('#id').val('');
+}
+
+function selectImage(id, name) {
+    var url = '{{ route('main') }}';
+    event.preventDefault();
+    // var selectedFriend = $(this).attr("id");
+    console.log(id);
+    $('#show-image').empty();
+    $("#show-image").prepend($('<img>', {
+        id: id,
+        src: url+'/uploads/small/'+name,
+    }));
+    $('#select-logo').val(id);
+    $('#school-modal').modal('hide');
+}
+
+$('imgs').on('click', 'img', function(event) {
+    event.preventDefault();
+    var selectedFriend = $(this).attr("id");
+    console.log(selectedFriend);
+});
+
+$(document).ready(function() {
+    //select2
+    $('.js-select2').select2();
+    // summernote init
+    // $('.postcontent').summernote({
+    //     placeholder: 'Fill Description',
+    //     tabsize: 2,
+    //     height: 300,
+    //     toolbar: [
+    //         ['style', ['style']],
+    //         ['font', ['bold', 'italic', 'underline', 'clear', 'strikethrough']],
+    //         ['color', ['color']],
+    //         ['para', ['ul', 'ol', 'paragraph']],
+    //         ['table', ['table']],
+    //         ['insert', ['link', ]],
+    //         ['view', ['fullscreen', 'codeview']]
+    //     ]
+    // });
+
+});
+</script>
+
+<script>
+
+    var ENDPOINT = "{{ route('admin.images.select') }}";
+    var page = 1;
+  
+
+    $(".load-more-data").click(function(){
+
+        page++;
+
+        infinteLoadMore(page);
+
+    });
+
+  
+
+    /*------------------------------------------
+
+    --------------------------------------------
+
+    call infinteLoadMore()
+
+    --------------------------------------------
+
+    --------------------------------------------*/
+
+    function infinteLoadMore(page) {
+
+        $.ajax({
+
+                url: ENDPOINT + "?page=" + page,
+
+                datatype: "html",
+
+                type: "get",
+
+                beforeSend: function () {
+
+                    $('.auto-load').show();
+
+                }
+
+            })
+
+            .done(function (response) {
+
+                if (response.html == '') {
+
+                    $('.auto-load').html("We don't have more data to display :(");
+
+                    return;
+
+                }
+
+                $('.auto-load').hide();
+
+                $("#data-wrapper").append(response.html);
+
+            })
+
+            .fail(function (jqXHR, ajaxOptions, thrownError) {
+
+                console.log('Server error occured');
+
+            });
+
+    }
+
+</script>
 
 @endsection

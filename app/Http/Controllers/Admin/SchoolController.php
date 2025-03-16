@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\School;
+use App\Models\Image;
 use Illuminate\Http\Request;
 
 class SchoolController extends Controller
@@ -14,6 +14,20 @@ class SchoolController extends Controller
     public function index()
     {
         //
+
+        if (request()->ajax()) {
+            return datatables()->of(School::orderByDesc('id')->select('*'))
+                ->addColumn('action', 'admin.helper.action')
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        // $langs    = Language::all();
+        $schools = School::all();
+        return view('admin.school.index', ['schools' => $schools]);
+
+        //  return view('admin.school.index');
     }
 
     /**
@@ -21,7 +35,9 @@ class SchoolController extends Controller
      */
     public function create()
     {
-        //
+        $images = Image::paginate(9);
+        return view('admin.school.add', compact('images'));
+
     }
 
     /**
@@ -30,6 +46,23 @@ class SchoolController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'name'  => 'required',
+            'logo'  => 'required',
+            'content' => 'required',
+            'phone' => 'required',
+        ]);
+
+        School::create([
+            'name'    => $request->name,
+            'logo'    => $request->logo,
+            'descr'   => $request->content,
+            'phone'   => $request->phone,
+            'address' => $request->address,
+        ]);
+
+        return back()->with('success', 'You have successfully created the school.');
+
     }
 
     /**
@@ -43,24 +76,46 @@ class SchoolController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(School $school)
+    public function edit($id)
     {
         //
+        $images = Image::paginate(9);
+        $school = School::find($id);
+        return view('admin.school.edit', ['school' => $school, 'images' => $images]);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, School $school)
+    public function update(Request $request)
     {
         //
+        $school = School::find($request->id);
+
+        // $school->school_id = $request->schoolid;
+        $school->name    = $request->name;
+        $school->logo    = $request->logo;
+        $school->descr   = $request->content;
+        $school->phone   = $request->phone;
+        $school->address = $request->address;
+
+        $school->save();
+
+        return redirect()->back()->with('success', 'You have successfully updated the school.');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(School $school)
+    public function delete($id)
     {
         //
+        $school = School::find($id);
+        $school->delete();
+
+        return redirect()->back()->with('success', 'You have successfully deleted the school.');
+
     }
 }

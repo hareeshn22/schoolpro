@@ -19,6 +19,9 @@ class School extends Model
         'name',
         'logo',
         'descr',
+        'phone',
+        'address'
+
     ];
 
 }

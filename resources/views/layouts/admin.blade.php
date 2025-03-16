@@ -6,9 +6,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> @yield('title') - HealthyRec Blog</title>
-    <meta name="description" content="Healthy App ">
-    <meta name="keywords" content="Healthy, Blog, App">
+    <title> @yield('title') - SchoolPro</title>
+    <meta name="description" content="School Management App ">
+    <meta name="keywords" content="School, Teacher, Parent App">
     <meta name="author" content="Hareesh">
     <!-- App favicon -->
     <link rel="shortcut icon" href="backend/images/favicon.png">
@@ -47,10 +47,10 @@
                         </span>
                         <a class="link-fx fw-bold tracking-wide mx-auto" href="">
                             <span class="smini-hidden">
-                                
+
                             </span>
                             <div>
-                                <i class="fa fa-school opacity-50 me-1"></i> DigitalSchool
+                                <i class="fa fa-school opacity-50 me-1"></i> SchoolPro
                             </div>
                         </a>
                     </div>
@@ -97,46 +97,42 @@
                                 </ul>
                             </li>
 
-                            <li class="nav-main-item {{ str_contains(url()->current(), '/problems') ? 'open' : ''}}">
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/principals') ? 'open' : ''}}">
                                 <a class="nav-main-link nav-main-link-submenu  {{ str_contains(url()->current(), '/problems') ? 'active' : ''}}" data-toggle="submenu"
                                     aria-haspopup="true" aria-expanded="false" href="#">
                                     <i class="nav-main-link-icon fa fa-shield-virus"></i>
-                                    <span class="nav-main-link-name">Problems</span>
+                                    <span class="nav-main-link-name">Principals</span>
                                 </a>
                                 <ul class="nav-main-submenu">
                                     <li class="nav-main-item">
-                                        <a class="nav-main-link" href="{{ route('admin.problems') }}">
-                                            <span class="nav-main-link-name">View Problems</span>
+                                        <a class="nav-main-link" href="{{ route('admin.principals') }}">
+                                            <span class="nav-main-link-name">View Principals</span>
                                         </a>
                                     </li>
                                     <li class="nav-main-item">
-                                        <a class="nav-main-link" href="{{ route('admin.problems.add') }}">
-                                            <span class="nav-main-link-name">Add Problem</span>
+                                        <a class="nav-main-link" href="{{ route('admin.principals.add') }}">
+                                            <span class="nav-main-link-name">Add Principal</span>
                                         </a>
                                     </li>
-                                    <li class="nav-main-item">
-                                        <a class="nav-main-link" href="{{ route('admin.problems.addsub') }}">
-                                            <span class="nav-main-link-name">Add Sub Problem</span>
-                                        </a>
-                                    </li>
+
                                 </ul>
                             </li>
 
-                            <li class="nav-main-item {{ str_contains(url()->current(), '/posts') ? 'open' : ''}}">
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/curriculum') ? 'open' : ''}}">
                                 <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/posts') ? 'active' : ''}}" data-toggle="submenu"
                                     aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa fa-award"></i>
-                                    <span class="nav-main-link-name">Posts</span>
+                                    <span class="nav-main-link-name">Curriculum</span>
                                 </a>
                                 <ul class="nav-main-submenu">
                                     <li class="nav-main-item">
-                                        <a class="nav-main-link" href="{{ route('admin.posts') }}">
-                                            <span class="nav-main-link-name">View Posts</span>
+                                        <a class="nav-main-link" href="{{ route('admin.syllabus') }}">
+                                            <span class="nav-main-link-name">View Curriculums</span>
                                         </a>
                                     </li>
                                     <li class="nav-main-item">
-                                        <a class="nav-main-link" href="{{ route('admin.posts.add') }}">
-                                            <span class="nav-main-link-name">Add Post</span>
+                                        <a class="nav-main-link" href="{{ route('admin.syllabus.add') }}">
+                                            <span class="nav-main-link-name">Add Curriculum</span>
                                         </a>
                                     </li>
 
@@ -164,31 +160,142 @@
                                 </ul>
                             </li>
 
-                            <li class="nav-main-item {{ str_contains(url()->current(), '/categories') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/categories') ? 'active' : ''}}" data-toggle="submenu"
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/pages') ? 'open' : ''}}">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/pages') ? 'active' : ''}}" data-toggle="submenu"
                                     aria-haspopup="true" aria-expanded="true" href="#">
-                                    <i class="nav-main-link-icon fa fa-award"></i>
-                                    <span class="nav-main-link-name">Categories</span>
+                                    <i class="nav-main-link-icon fa-regular fa-file-lines"></i>
+                                    <span class="nav-main-link-name">Pages</span>
                                 </a>
                                 <ul class="nav-main-submenu">
                                     <li class="nav-main-item">
-                                        <a class="nav-main-link" href="{{ route('admin.categories') }}">
-                                            <span class="nav-main-link-name">View Categories</span>
+                                        <a class="nav-main-link" href="{{ route('admin.pages') }}">
+                                            <span class="nav-main-link-name">View Pages</span>
                                         </a>
                                     </li>
                                     <li class="nav-main-item">
-                                        <a class="nav-main-link" href="{{ route('admin.categories.add') }}">
-                                            <span class="nav-main-link-name">Add Category</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-main-item">
-                                        <a class="nav-main-link" href="{{ route('admin.categories.addsub') }}">
-                                            <span class="nav-main-link-name">Add Sub Category</span>
+                                        <a class="nav-main-link" href="{{ route('admin.pages.add') }}">
+                                            <span class="nav-main-link-name">Add Page</span>
                                         </a>
                                     </li>
 
+
                                 </ul>
                             </li>
+
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/guardian') ? 'open' : ''}}">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/guardian') ? 'active' : ''}}" data-toggle="submenu"
+                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa-solid fa-user"></i>
+                                    <span class="nav-main-link-name">Parents</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.guardian') }}">
+                                            <span class="nav-main-link-name">View Parents</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.guardian.add') }}">
+                                            <span class="nav-main-link-name">Add Parent</span>
+                                        </a>
+                                    </li> -->
+
+
+                                </ul>
+                            </li>
+
+
+
+                             <li class="nav-main-item {{ str_contains(url()->current(), '/teachers') ? 'open' : ''}}">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/teachers') ? 'active' : ''}}" data-toggle="submenu"
+                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa-solid fa-chalkboard-user"></i>
+                                    <span class="nav-main-link-name">Teachers</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.teachers') }}">
+                                            <span class="nav-main-link-name">View Teachers</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.teachers.add') }}">
+                                            <span class="nav-main-link-name">Add teachers</span>
+                                        </a>
+                                    </li> -->
+
+
+                                </ul>
+                            </li>
+
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/students') ? 'open' : ''}}">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/students') ? 'active' : ''}}" data-toggle="submenu"
+                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa-solid  fa-user-tie"></i>
+                                    <span class="nav-main-link-name">Students</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.students') }}">
+                                            <span class="nav-main-link-name">View Students</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.students.add') }}">
+                                            <span class="nav-main-link-name">Add Students</span>
+                                        </a>
+                                    </li> -->
+
+
+                                </ul>
+                            </li>
+
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/news') ? 'open' : ''}}">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/news') ? 'active' : ''}}" data-toggle="submenu"
+                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa-regular fa-newspaper"></i>
+                                    <span class="nav-main-link-name">News</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.news') }}">
+                                            <span class="nav-main-link-name">View News</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.news.add') }}">
+                                            <span class="nav-main-link-name">Add News</span>
+                                        </a>
+                                    </li> -->
+
+
+                                </ul>
+                            </li>
+
+
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/setting') ? 'open' : ''}}">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/setting') ? 'active' : ''}}" data-toggle="submenu"
+                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa-solid fa-gears"></i>
+                                    <span class="nav-main-link-name">Setting</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.setting') }}">
+                                            <span class="nav-main-link-name">View Setting</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.setting.add') }}">
+                                            <span class="nav-main-link-name">Add Setting</span>
+                                        </a>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+
+
 
 
 
@@ -216,7 +323,7 @@
                     </button>
                     <!-- END Toggle Sidebar -->
 
-                    
+
                 </div>
                 <!-- END Left Section -->
 
@@ -243,7 +350,7 @@
                                     <span>Profile</span>
                                     <i class="fa fa-fw fa-user opacity-25"></i>
                                 </a>
-                                
+
 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item d-flex align-items-center justify-content-between space-x-1"
@@ -260,13 +367,13 @@
                     </div>
                     <!-- END User Dropdown -->
 
-                    
+
                 </div>
                 <!-- END Right Section -->
             </div>
             <!-- END Header Content -->
 
-           
+
 
             <!-- Header Loader -->
             <!-- Please check out the Activity page under Elements category to see examples of showing/hiding it -->
@@ -300,7 +407,7 @@
         </main>
 
         <!-- end main content-->
-        
+
 
         <!-- Footer -->
         <footer id="page-footer">
@@ -313,12 +420,12 @@
                     <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
                         <script>
                         document.write(new Date().getFullYear())
-                        </script> © DigitalSchool
+                        </script> © SchoolPro
                     </div>
                 </div>
             </div>
         </footer>
-        
+
         <!-- END Footer -->
 
     </div>
@@ -327,8 +434,8 @@
 
 
     <!-- JavaScript -->
-    <!-- <script src="{{ asset('backend/js/vendors.js') }}"></script> -->
-    <!-- <script src="{{ asset('backend/js/plugins.js') }}"></script> -->
+    <script src="{{ asset('backend/js/vendors.js') }}"></script>
+    <!-- <script src="{{ asset('backend/js/plugins.js') }}"></script>-->
     @yield('scripts')
 
     <script src="{{ asset('backend/js/app.js') }}"></script>

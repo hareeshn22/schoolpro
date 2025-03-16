@@ -3,6 +3,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,10 +21,23 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
-            // RoleSeeder::class,
-            // LanguageSeeder::class,
-            // CountrySeeder::class,
-            // ChannelSeeder::class,
+            SchoolSeeder::class,
+            CourseSeeder::class,
+            SubjectSeeder::class,
+            DaySeeder::class,
+            SlotSeeder::class,
+            StudentSeeder::class,
+            GuardianSeeder::class,
+            PrincipalSeeder::class,
+            TeacherSeeder::class,
+            AttendanceSeeder::class,
+            LeaveSeeder::class,
+            HomeworkSeeder::class,
+            ExamSeeder::class,
+            PageSeeder::class,
+            PeriodSeeder::class,
+            ScheduleSeeder::class,
+            FeedbackSeeder::class,
         ]);
 
     }

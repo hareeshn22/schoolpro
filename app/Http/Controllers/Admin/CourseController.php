@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Course;
@@ -12,7 +11,16 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+        if (request()->ajax()) {
+            return datatables()->of(Course::orderByDesc('id')->select('*'))
+                ->addColumn('action', 'admin.helper.action')
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        return view('admin.course.index');
+
     }
 
     /**
