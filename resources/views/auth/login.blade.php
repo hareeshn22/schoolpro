@@ -15,7 +15,7 @@
                         <div class="py-4 text-center">
                             <!-- <a class="link-fx fw-bold" href="#"> -->
                                 
-                                <h4 class="fs-4 text-body-color text-default"> <i class="fa-solid fa-school-flag"></i> DigitalSchool</h4>
+                                <h4 class="fs-4 text-body-color text-default"> <i class="fa-solid fa-school-flag"></i> SchoolPro</h4>
                             <!-- </a> -->
                             <h5 class="h5 fw-bold mt-4 mb-2">Welcome to Your Dashboard</h5>
                             <h6 class="h6 fw-medium text-muted mb-0">It’s a great day today!</h6>
@@ -83,7 +83,7 @@
 
                                     <div>
 
-                                        <p>© 2025 DigitalSchool.
+                                        <p>© 2025 SchoolPro.
                                     </div>
                                 </div>
                             </div>
