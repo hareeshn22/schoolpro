@@ -4,7 +4,7 @@
 
 @section ('css')
 
-
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.css">
 @endsection
 
 
@@ -52,31 +52,45 @@
         <h3 class="block-title">Setting <small>Fill Required fields</small></h3>
     </div>
     <div class="block-content">
-        <form action="{{ route('admin.settings.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.setting.store') }}" method="POST" enctype="multipart/form-data">
 
             @csrf
             <div class="row items-push">
 
                 <div class="col-12">
+
+                <div class="row mb-4">
+                        <div class="col-md-8">
+                        <label for="school"> School </label>
+                        <select id="school" name="schoolid" class="select2 custom-select form-control" required>
+                            <option value="" disabled selected> Select School</option>
+                            @foreach ($schools as $school)
+                            <option value="{{ $school->id }}" {{ old('schoolid') == $school->id ? 'Selected' : '' }}>
+                                {{ $school->name }}
+                            </option>
+                            @endforeach
+
+                        </select>
+                        </div>
+                    </div>
                     <div class="row mb-4">
                         <div class="col-md-8">
-                            <label class="form-label" for="appname">App Name</label>
-                            <input type="text" class="form-control form-control-lg" id="appname" name="appname">
+                            <label class="form-label" for="color1">Color 1</label>
+                            <input id="color-picker" value='blue' name="color1" />
                         </div>
                     </div>
 
                     <div class="row mb-4">
                         <div class="col-md-8">
-                            <label class="form-label" for="name">Name</label>
-                            <input type="text" class="form-control form-control-lg" id="name" name="name">
+                            <label class="form-label" for="color2">Color 2</label>
+                            <input id="color-picker1" value="#0505f9" name="color2" />
                         </div>
                     </div>
 
                      <div class="row mb-4">
-                        <div class="col-md-12">
-                            <label class="form-label" for="content"> Content</label>
-                            <textarea id="js-ckeditor" name="content" class="postcontent" rows="40"
-                                cols="80"> {{ old('content') }}</textarea>
+                        <div class="col-md-8">
+                            <label class="form-label" for="video">Video Link</label>
+                            <input type="text" class="form-control form-control-lg" id="video" name="video_link">
                         </div>
                     </div>
 
@@ -110,7 +124,7 @@
 
 @section ('scripts')
 
-
+<script src="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.js"> </script>
 <!-- functions plugin -->
 <script src="{{ asset ('backend/js/functions.min.js') }}"></script>
 
@@ -173,6 +187,16 @@ $(document).ready(function() {
     // });
 
 });
+
+$('#color-picker').spectrum({
+  type: "component"
+});
+
+$('#color-picker1').spectrum({
+  type: "component"
+});
+
+
 </script>
 
 

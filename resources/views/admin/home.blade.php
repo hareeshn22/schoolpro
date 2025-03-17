@@ -15,11 +15,11 @@
         <a class="block block-rounded block-link-shadow text-end" href="javascript:void(0)">
             <div class="block-content block-content-full d-sm-flex justify-content-between align-items-center">
                 <div class="d-none d-sm-block">
-                    <i class="fa fa-shopping-bag fa-2x opacity-25"></i>
+                    <i class="fa-regular fa-id-badge fa-2x opacity-25"></i>
                 </div>
                 <div>
-                    <div class="fs-3 fw-semibold">1500</div>
-                    <div class="fs-sm fw-semibold text-uppercase text-muted">Sales</div>
+                    <div class="fs-3 fw-semibold">{{ $stcount }}</div>
+                    <div class="fs-sm fw-semibold text-uppercase text-muted">Students</div>
                 </div>
             </div>
         </a>
@@ -28,11 +28,11 @@
         <a class="block block-rounded block-link-shadow text-end" href="javascript:void(0)">
             <div class="block-content block-content-full d-sm-flex justify-content-between align-items-center">
                 <div class="d-none d-sm-block">
-                    <i class="fa fa-wallet fa-2x opacity-25"></i>
+                    <i class="fa-regular fa-address-card fa-2x opacity-25"></i>
                 </div>
                 <div>
-                    <div class="fs-3 fw-semibold">$780</div>
-                    <div class="fs-sm fw-semibold text-uppercase text-muted">Earnings</div>
+                    <div class="fs-3 fw-semibold">{{ $prcount }}</div>
+                    <div class="fs-sm fw-semibold text-uppercase text-muted">Principals</div>
                 </div>
             </div>
         </a>
@@ -41,11 +41,11 @@
         <a class="block block-rounded block-link-shadow text-end" href="javascript:void(0)">
             <div class="block-content block-content-full d-sm-flex justify-content-between align-items-center">
                 <div class="d-none d-sm-block">
-                    <i class="fa fa-envelope-open fa-2x opacity-25"></i>
+                    <i class="fa-regular fa-file-lines fa-2x opacity-25"></i>
                 </div>
                 <div>
-                    <div class="fs-3 fw-semibold">15</div>
-                    <div class="fs-sm fw-semibold text-uppercase text-muted">Messages</div>
+                    <div class="fs-3 fw-semibold">{{ $pacount }}</div>
+                    <div class="fs-sm fw-semibold text-uppercase text-muted">Pages</div>
                 </div>
             </div>
         </a>
@@ -54,11 +54,11 @@
         <a class="block block-rounded block-link-shadow text-end" href="javascript:void(0)">
             <div class="block-content block-content-full d-sm-flex justify-content-between align-items-center">
                 <div class="d-none d-sm-block">
-                    <i class="fa fa-users fa-2x opacity-25"></i>
+                    <i class="fa fa-circle-info fa-2x opacity-25"></i>
                 </div>
                 <div>
-                    <div class="fs-3 fw-semibold">4252</div>
-                    <div class="fs-sm fw-semibold text-uppercase text-muted">Online</div>
+                    <div class="fs-3 fw-semibold">{{ $sycount }}</div>
+                    <div class="fs-sm fw-semibold text-uppercase text-muted">Curriculum</div>
                 </div>
             </div>
         </a>
@@ -73,13 +73,13 @@
             <div class="block-content block-content-full">
                 <div class="py-3 text-center">
                     <div class="mb-3">
-                        <i class="fa fa-envelope-open fa-4x text-primary"></i>
+                        <i class="fa fa-school-flag fa-4x text-primary"></i>
                     </div>
-                    <div class="fs-4 fw-semibold">9.25k Subscribers</div>
-                    <div class="text-muted">Your main list is growing!</div>
+                    <div class="fs-4 fw-semibold">{{ $scount }} Schools</div>
+                    <div class="text-muted">Your schools list is growing!</div>
                     <div class="pt-3">
-                        <a class="btn btn-alt-primary" href="javascript:void(0)">
-                            <i class="fa fa-cog opacity-50 me-1"></i> Manage list
+                        <a class="btn btn-alt-primary" href="{{ route('admin.schools.add') }}">
+                            <i class="fa fa-cog opacity-50 me-1"></i> Add School
                         </a>
                     </div>
                 </div>
@@ -91,12 +91,12 @@
             <div class="block-content block-content-full">
                 <div class="py-3 text-center">
                     <div class="mb-3">
-                        <i class="fa fab fa-twitter fa-4x text-info"></i>
+                        <i class="fa fa-solid fa-chalkboard-user fa-4x text-info"></i>
                     </div>
-                    <div class="fs-4 fw-semibold">+36 followers</div>
+                    <div class="fs-4 fw-semibold">{{ $tecount }} Teachers</div>
                     <div class="text-muted">You are doing great!</div>
                     <div class="pt-3">
-                        <a class="btn btn-alt-info" href="javascript:void(0)">
+                        <a class="btn btn-alt-info" href="{{ route('admin.teachers') }}">
                             <i class="fa fa-users opacity-50 me-1"></i> Check them out
                         </a>
                     </div>
@@ -109,13 +109,13 @@
             <div class="block-content block-content-full">
                 <div class="py-3 text-center">
                     <div class="mb-3">
-                        <i class="fa fa-check fa-4x text-success"></i>
+                        <i class="fa fa-user fa-4x text-success"></i>
                     </div>
-                    <div class="fs-4 fw-semibold">Business Plan</div>
-                    <div class="text-muted">This is your current active plan</div>
+                    <div class="fs-4 fw-semibold">{{ $gucount }} Parents</div>
+                    <div class="text-muted">You are doing great!</div>
                     <div class="pt-3">
-                        <a class="btn btn-alt-success" href="javascript:void(0)">
-                            <i class="fa fa-arrow-up opacity-50 me-1"></i> Upgrade to VIP
+                        <a class="btn btn-alt-primary" href="{{ route('admin.guardian') }}">
+                            <i class="fa fa-user opacity-50 me-1"></i> Check the List
                         </a>
                     </div>
                 </div>
@@ -130,18 +130,18 @@
     <div class="col-md-6">
         <a class="block block-rounded block-link-shadow overflow-hidden" href="javascript:void(0)">
             <div class="block-content block-content-full">
-                <i class="si si-briefcase fa-2x opacity-25"></i>
+                <i class="si si-users fa-2x opacity-25"></i>
                 <div class="row g-5 py-3">
                     <div class="col-6 text-end border-end">
                         <div>
-                            <div class="fs-3 fw-semibold">16</div>
-                            <div class="fs-sm fw-semibold text-uppercase text-muted">Projects</div>
+                            <div class="fs-3 fw-semibold">{{ $scount}}</div>
+                            <div class="fs-sm fw-semibold text-uppercase text-muted">Schools</div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div>
-                            <div class="fs-3 fw-semibold">2</div>
-                            <div class="fs-sm fw-semibold text-uppercase text-muted">Active</div>
+                            <div class="fs-3 fw-semibold">{{ $stcount}}</div>
+                            <div class="fs-sm fw-semibold text-uppercase text-muted">Students</div>
                         </div>
                     </div>
                 </div>
@@ -157,14 +157,14 @@
                 <div class="row g-5 py-3">
                     <div class="col-6 text-end border-end">
                         <div>
-                            <div class="fs-3 fw-semibold text-info">63250</div>
-                            <div class="fs-sm fw-semibold text-uppercase text-muted">Accounts</div>
+                            <div class="fs-3 fw-semibold">{{ $scount}}</div>
+                            <div class="fs-sm fw-semibold text-uppercase text-muted">Schools</div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div>
-                            <div class="fs-3 fw-semibold text-success">97%</div>
-                            <div class="fs-sm fw-semibold text-uppercase text-muted">Active</div>
+                            <div class="fs-3 fw-semibold">{{ $stcount}}</div>
+                            <div class="fs-sm fw-semibold text-uppercase text-muted">Students</div>
                         </div>
                     </div>
                 </div>
@@ -174,7 +174,7 @@
     <!-- END Row #4 -->
 </div>
 
-<div class="row">
+{{--<div class="row">
     <!-- Row #5 -->
     <div class="col-6 col-md-4 col-xl-2">
         <a class="block block-rounded block-link-shadow text-center" href="be_pages_generic_inbox.html">
@@ -239,5 +239,5 @@
         </a>
     </div>
     <!-- END Row #5 -->
-</div>
+</div> --}}
 @endsection

@@ -100,7 +100,7 @@
                             <li class="nav-main-item {{ str_contains(url()->current(), '/principals') ? 'open' : ''}}">
                                 <a class="nav-main-link nav-main-link-submenu  {{ str_contains(url()->current(), '/problems') ? 'active' : ''}}" data-toggle="submenu"
                                     aria-haspopup="true" aria-expanded="false" href="#">
-                                    <i class="nav-main-link-icon fa fa-shield-virus"></i>
+                                    <i class="nav-main-link-icon fa-regular fa-address-card"></i>
                                     <span class="nav-main-link-name">Principals</span>
                                 </a>
                                 <ul class="nav-main-submenu">
@@ -121,7 +121,7 @@
                             <li class="nav-main-item {{ str_contains(url()->current(), '/curriculum') ? 'open' : ''}}">
                                 <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/posts') ? 'active' : ''}}" data-toggle="submenu"
                                     aria-haspopup="true" aria-expanded="true" href="#">
-                                    <i class="nav-main-link-icon fa fa-award"></i>
+                                    <i class="nav-main-link-icon fa fa-location-dot"></i>
                                     <span class="nav-main-link-name">Curriculum</span>
                                 </a>
                                 <ul class="nav-main-submenu">
