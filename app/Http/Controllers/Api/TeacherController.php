@@ -1,12 +1,13 @@
 <?php
-
 namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+
+use App\Http\Controllers\Api\BaseController as BaseController;
+
 use App\Http\Resources\TeacherResource;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 
-class TeacherController extends Controller
+class TeacherController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -32,6 +33,35 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         //
+        $pattern    = " ";
+        $firstPart  = strstr(strtolower(    $request->firstName), $pattern, true);
+        $secondPart = substr(strstr(strtolower($request->lastName), $pattern, false), 0, 3);
+        $thirdPart  = strstr(strtolower($request->address), $pattern, true);
+        $nrRand     = rand(0, 100);
+
+        $username = trim($firstPart) . trim($secondPart) . trim($nrRand);
+
+        $teacher = Teacher::create([
+            'school_id'   => $request->schoolId,
+            'first_name'  => $request->firstName,
+            'last_name'   => $request->lastName,
+            'birthdate'   => $request->birthdate,
+            'subject_id'  => $request->subjectId,
+            'qualify'     => $request->qualify,
+            'gender'      => $request->gender,
+            'address'     => $request->address,
+            'phone'       => $request->phone,
+            'email'       => $request->firstName . '@gmail.com',
+            'username'    => $username,
+            'password'    => $username,
+        ]);
+
+        if ($teacher) {
+            return $this->sendResponse('Success', 'Student created successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
     }
 
     /**
@@ -65,4 +95,16 @@ class TeacherController extends Controller
     {
         //
     }
+
+    function random_username($string)
+    {
+        $pattern    = " ";
+        $firstPart  = strstr(strtolower($string), $pattern, true);
+        $secondPart = substr(strstr(strtolower($string), $pattern, false), 0, 3);
+        $nrRand     = rand(0, 100);
+
+        $username = trim($firstPart) . trim($secondPart) . trim($nrRand);
+        return $username;
+    }
+
 }

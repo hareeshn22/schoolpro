@@ -31,7 +31,7 @@ class GuardianController extends Controller
     {
         //
         if (request()->ajax()) {
-            return datatables()->of(Guardian::orderByDesc('id')->select('*'))
+            return datatables()->of(Guardian::orderByDesc('id')->with('student')->select('*'))
 
                 ->filter(function ($query) use ($request) {
 

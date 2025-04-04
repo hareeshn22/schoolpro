@@ -1,8 +1,9 @@
 <?php
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use Carbon\Carbon;
+use DB;
+use Illuminate\Database\Seeder;
 
 class HomeworkSeeder extends Seeder
 {
@@ -51,7 +52,27 @@ class HomeworkSeeder extends Seeder
             \App\Models\Homework::create($work);
 
         }
-        
+
+        DB::table('homework_data')->insert([
+            [
+                'school_id'   => 1,
+                'homework_id' => 1,
+                'student_id'  => 1,
+                'status'      => 'done',
+            ],
+            [
+                'school_id'   => 1,
+                'homework_id' => 1,
+                'student_id'  => 2,
+                'status'      => 'not done',
+            ],
+            [
+                'school_id'   => 1,
+                'homework_id' => 1,
+                'student_id'  => 3,
+                'status'      => 'done',
+            ],
+        ]);
 
     }
 }

@@ -1,26 +1,20 @@
 <?php
-namespace App\Http\Controllers\Admin;
+
+namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
-use App\Models\Course;
+use App\Http\Resources\SlotResource;
+use App\Models\Slot;
 use Illuminate\Http\Request;
 
-class CourseController extends Controller
+class SlotController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (request()->ajax()) {
-            return datatables()->of(Course::orderByDesc('id')->select('*'))
-                ->addColumn('action', 'admin.helper.action')
-                ->rawColumns(['action'])
-                ->addIndexColumn()
-                ->make(true);
-        }
-
-        return view('admin.course.index');
-
+        //
+        return SlotResource::collection(Slot::all());
     }
 
     /**
@@ -42,7 +36,7 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Course $course)
+    public function show(Slot $slot)
     {
         //
     }
@@ -50,7 +44,7 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Course $course)
+    public function edit(Slot $slot)
     {
         //
     }
@@ -58,7 +52,7 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, Slot $slot)
     {
         //
     }
@@ -66,7 +60,7 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy(Slot $slot)
     {
         //
     }

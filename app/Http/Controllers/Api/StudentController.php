@@ -1,12 +1,14 @@
 <?php
-
 namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+
+use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\StudentResource;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManager;
 
-class StudentController extends Controller
+class StudentController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +17,16 @@ class StudentController extends Controller
     {
         //
         return StudentResource::collection(Student::where('school_id', '=', $id)->get());
+
+    }
+
+    /**
+     * Display a listing of the students with school, class filter.
+     */
+    public function studentsbys($sid, $cid)
+    {
+        //
+        return StudentResource::collection(Student::where('school_id', '=', $sid)->where('course_id', '=', $cid)->get());
 
     }
 
@@ -31,7 +43,39 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        $name = $request->snapImg->getClientOriginalName();
+
+        $file = $request->snapImg->move(public_path('uploads/'), $name);
+
+        $thumbpath = "uploads/thumb/";
+        ImageManager::gd()->read($file->getRealPath())->scale(height: 100)->save(public_path($thumbpath . $name));
+
+        $smpath = "uploads/small/";
+        ImageManager::gd()->read($file->getRealPath())->scale(height: 200)->save(public_path($smpath . $name));
+
+        $larpath = "uploads/large/";
+        ImageManager::gd()->read($file->getRealPath())->scale(height: 470)->save(public_path($larpath . $name));
+
         //
+        $student = Student::create([
+            'school_id'   => $request->schoolId,
+            'course_id'   => $request->courseId,
+            'first_name'  => $request->firstName,
+            'last_name'   => $request->lastName,
+            'photo'       => $name,
+            'birthdate'   => $request->birthdate,
+            'father_name' => $request->fatherName,
+            'gender'      => $request->gender,
+            'roll_no'     => $request->rollNo,
+            'address'     => $request->address,
+        ]);
+
+        if ($student) {
+            return $this->sendResponse('Success', 'Student created successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
     }
 
     /**

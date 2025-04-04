@@ -21,7 +21,6 @@ class School extends Model
         'descr',
         'phone',
         'address'
-
     ];
 
 }

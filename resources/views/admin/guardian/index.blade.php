@@ -131,6 +131,7 @@
                                 <tr>
                                     <th class="text-center" style="width: 50px;"></th>
                                     <th>Name</th>
+                                    <th>Student Name</th>
                                     <th>Phone</th>
                                     <!-- <th class="d-none d-sm-table-cell" style="width: 15%;">Access</th> -->
                                     <th class="text-center" style="width: 130px;">Actions</th>
@@ -234,8 +235,12 @@ $(document).ready(function() {
                 searchable: false
             },
             {
-                data: 'name',
-                name: 'name'
+                data: 'first_name',
+                name: 'first_name'
+            },
+            {
+                data: 'student.first_name',
+                name: 'student.first_name'
             },
             {
                 data: 'phone',

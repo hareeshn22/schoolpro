@@ -22,4 +22,14 @@ class Attendance extends Model
         'timing',
         'status',
     ];
+
+    public function getStatusAttribute($value)
+    {
+        return $value ? 'present' : 'absent';
+    }
+
+    public function getStatusTextAttribute()
+    {
+        return $this->attributes['status'] ? 'Present' : 'Absent';
+    }
 }

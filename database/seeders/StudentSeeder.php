@@ -26,7 +26,7 @@ class StudentSeeder extends Seeder
             ['first_name' => 'Priya', 'last_name' => 'Joshi', 'photo' => null, 'birthdate' => '2008-06-29', 'father_name' => 'Vikas Joshi', 'gender' => 'Female', 'roll_no' => 10, 'address' => '707, Black Road, Kadapa, Andhra Pradesh', 'school_id' => 1, 'course_id' => 1],
 
         ];
-        foreach ($students as $index => $student) {
+        foreach ($students as $student) {
             \App\Models\Student::create($student);
         }
 

@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AttendanceResource;
 use App\Models\Attendance;
@@ -15,6 +15,39 @@ class AttendanceController extends Controller
     {
         //
         return AttendanceResource::collection(Attendance::where('school_id', '=', $sid)->where('course_id', '=', $cid)->get());
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function attendsbyc($sid, $cid, $slot)
+    {
+        // $data = AttendanceResource::collection(Attendance::where('school_id', '=', $sid)->groupBy( 'course_id', 'status', )->select('course_id', 'status', DB::raw('count(*) as total', 'id'))->get())->map(function ($item) {
+        //     return [
+        //         // 'id',  => $item->id,
+        //         'course_id' => $item->course_id,
+        //         $item->status => $item->total,
+        //         // 'total' => $item->total,
+        //     ];
+        // });
+        $data = AttendanceResource::collection(Attendance::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('timing', 'LIKE', $slot)->get());
+
+        $merged = collect($data)
+            ->groupBy('course_id', 'status')
+            ->map(function ($group, $courseId) {
+                return [
+                    'course_id' => $courseId,
+                    'Absent'    => $group->where('status', 'absent')->count(),
+                    'Present'   => $group->where('status', 'present')->count(),
+                ];
+            })
+            ->values()
+            ->toArray();
+        return $merged;
+
+        // return Attendance::where('school_id', '=', $sid)
+        // ->get()->countBy('status');
 
     }
 

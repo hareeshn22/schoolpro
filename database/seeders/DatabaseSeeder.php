@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             PeriodSeeder::class,
             ScheduleSeeder::class,
             FeedbackSeeder::class,
+            NewsSeeder::class,
         ]);
 
     }

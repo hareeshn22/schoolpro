@@ -202,8 +202,8 @@ $(document).ready(function() {
                 searchable: false
             },
             {
-                data: 'name',
-                name: 'name'
+                data: 'first_name',
+                name: 'first_name'
             },
             {
                 data: 'qualify',

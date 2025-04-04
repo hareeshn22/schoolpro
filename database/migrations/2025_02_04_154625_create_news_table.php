@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->id();
             $table->foreignId('school_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('category');
+            $table->string('title');
             $table->string('video_link');
             $table->timestamps();
         });

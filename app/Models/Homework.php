@@ -16,6 +16,42 @@ class Homework extends Model
      */
     protected $fillable = [
         'school_id',
-        'name',
+        'teacher_id',
+        'course_id',
+        'subject_id',
+        'workdate',
+        'content',
+        'status',
     ];
+
+
+    public function getStatusAttribute($value)
+    {
+        return $value ? 'done' : 'not done';
+    }
+
+    // Relationship with the School model
+    public function school()
+    {
+        return $this->belongsTo(School::class);
+    }
+
+    // Relationship with the teacher model
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
+    }
+
+    // Relationship with the teacher model
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    // Relationship with the subject model
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
+    
 }

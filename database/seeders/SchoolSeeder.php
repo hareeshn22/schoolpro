@@ -14,21 +14,21 @@ class SchoolSeeder extends Seeder
         $schools= [
             [
                 'name'  => 'Saraswati High School',
-                'logo' => 'saraswati_school.jpg',
+                'logo' => 'saraswati-school.jpg',
                 'descr' => 'Saraswati High School provides a vibrant learning environment with a focus on holistic education and character development.',
                 'phone' => '9000123456',
                 'address' => '5678 Oak Avenue, Vizianagaram, Andhra Pradesh, 535002'
             ],
             [
                 'name'  => 'Green Valley School',
-                'logo' => 'saraswati_school.jpg',
+                'logo' => 'saraswati-school.jpg',
                 'descr' => 'Green Valley School is known for its excellent academic record and a wide range of extracurricular activities that nurture talents.',
                 'phone' => '9000012345',
                 'address' => '1234 Elm Street, Vizianagaram, Andhra Pradesh, 535001'
             ],
             [
                 'name' => 'Sunshine High School',
-                'logo' => 'blueridge_logo.png',
+                'logo' => 'sunshine-school-logo.png',
                 'descr' => 'An international school with world-class facilities.',
                 'phone' => '9234567801',
                 'address' => 'ABC Avenue, Vijayawada, Andhra Pradesh'

@@ -21,14 +21,13 @@ class ImageController extends Controller
         if ($request->ajax()) {
 
             $view = view('admin.image.data', compact('images'))->render();
-
             return response()->json(['html' => $view]);
 
         }
         return view('admin.image.index', ['images' => $images]);
 
     }
-     /**
+    /**
      * Display a list of all images.
      *
      * @return \Illuminate\Http\Response

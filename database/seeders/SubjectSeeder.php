@@ -16,28 +16,50 @@ class SubjectSeeder extends Seeder
                 'school_id' => 1,
             ],
             [
+                'name'      => 'Hindi',
+                'school_id' => 1,
+            ],
+            [
+                'name'      => 'English',
+                'school_id' => 1,
+            ],
+            [
+                'name'      => 'English',
+                'school_id' => 2,
+            ],
+            [
+                'name'      => 'Mathematics',
+                'school_id' => 1,
+            ],
+            [
+                'name'      => 'Science',
+                'school_id' => 1,
+            ],
+
+            [
+                'name'      => 'Social Studies',
+                'school_id' => 1,
+            ],
+            [
+                'name'      => 'Arts and Crafts',
+                'school_id' => 1,
+            ],
+            [
+                'name'      => 'Computer',
+                'school_id' => 1,
+            ],
+            [
+                'name'      => 'Physical Education',
+                'school_id' => 1,
+            ],
+
+            [
                 'name'      => 'Telugu',
                 'school_id' => 2,
             ],
             [
                 'name'      => 'Hindi',
-                'school_id' => 1,
-            ],
-            [
-                'name'      => 'Hindi',
                 'school_id' => 2,
-            ],
-            [
-                'name'      => 'English',
-                'school_id' => 1,
-            ],
-            [
-                'name'      => 'English',
-                'school_id' => 2,
-            ],
-            [
-                'name'      => 'Mathematics',
-                'school_id' => 1,
             ],
             [
                 'name'      => 'Mathematics',
@@ -45,15 +67,7 @@ class SubjectSeeder extends Seeder
             ],
             [
                 'name'      => 'Science',
-                'school_id' => 1,
-            ],
-            [
-                'name'      => 'Science',
                 'school_id' => 2,
-            ],
-            [
-                'name'      => 'Social Studies',
-                'school_id' => 1,
             ],
             [
                 'name'      => 'Social Studies',
@@ -61,35 +75,22 @@ class SubjectSeeder extends Seeder
             ],
             [
                 'name'      => 'Arts and Crafts',
-                'school_id' => 1,
-            ],
-            [
-                'name'      => 'Arts and Crafts',
                 'school_id' => 2,
             ],
             [
                 'name'      => 'Computer',
-                'school_id' => 1,
-            ],
-            [
-                'name'      => 'Computer',
                 'school_id' => 2,
             ],
             [
-                'name'      => 'Environmental',
-                'school_id' => 1,
-            ],
-            [
-                'name'      => 'Environmental',
+                'name'      => 'Physical Education',
                 'school_id' => 2,
             ],
+
         ];
 
         foreach ($subjects as $key => $value) {
             \App\Models\Subject::create($value);
         }
-
-       
 
     }
 }

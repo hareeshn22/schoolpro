@@ -15,11 +15,16 @@ return new class extends Migration
             $table->id();
             $table->foreignId('school_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->enum('gender', ['male', 'female', 'others']);
             $table->date('birthdate')->nullable();
             $table->string('qualify');
             $table->string('address')->nullable();
+            $table->string('phone');
+            $table->string('email');
+            $table->string('username')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }

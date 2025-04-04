@@ -1,12 +1,12 @@
 <?php
-
 namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+
+use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\SubjectResource;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 
-class SubjectController extends Controller
+class SubjectController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -32,6 +32,17 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         //
+        $subject = Subject::create([
+            'school_id' => $request->schoolid,
+            'name'      => $request->name,
+        ]);
+
+        if ($subject) {
+            return $this->sendResponse('Success', 'Subject created successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
     }
 
     /**

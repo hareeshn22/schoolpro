@@ -3,16 +3,19 @@
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\ExamController;
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\HomeworkController;
 use App\Http\Controllers\Api\LeaveController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\NoticeController;
+use App\Http\Controllers\Api\PageController;
+use App\Http\Controllers\Api\PeriodController;
 use App\Http\Controllers\Api\ScheduleController;
+use App\Http\Controllers\Api\SlotController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\TeacherController;
-use App\Http\Controllers\Api\PageController;
 use Illuminate\Support\Facades\Route;
 
 // use App\Http\Controllers\Api\SubjectController;
@@ -45,16 +48,17 @@ Route::prefix('1')->group(function () {
 
     Route::middleware(['auth:sanctum'])->prefix('principal')->group(function () {
 
-        //Students
+        // Students
         Route::get('/students/{id}', [StudentController::class, 'index']);
+        Route::get('/students/{sid}/{cid}', [StudentController::class, 'studentsbys']);
         Route::get('/student/{id}', [StudentController::class, 'show']);
         Route::post('/storestudent', [StudentController::class, 'store']);
-        Route::post('/storestudent', [FlexController::class, 'storeMulti']);
-        Route::post('/updatestudent', [FlexController::class, 'update']);
-        Route::get('/flexdel/{id}', [FlexController::class, 'delete']);
-        Route::post('/flexreport', [FlexController::class, 'report']);
+        // Route::post('/storestudent', [StudentController::class, 'storeMulti']);
+        Route::post('/updatestudent', [StudentController::class, 'update']);
+        Route::get('/studentdel/{id}', [StudentController::class, 'delete']);
+        Route::post('/studentreport', [StudentController::class, 'report']);
 
-        //Teachers
+        // Teachers
         Route::get('/teachers/{id}', [TeacherController::class, 'index']);
         Route::get('/teachersbyd/{id}', [TeacherController::class, 'Teacherbyd']);
         Route::get('/Teacher/{id}', [TeacherController::class, 'show']);
@@ -79,7 +83,7 @@ Route::prefix('1')->group(function () {
 
         // Attendance
         Route::get('/attends/{sid}/{cid}', [AttendanceController::class, 'index']);
-        Route::get('/attendsbyc/{id}', [AttendanceController::class, 'villagebyd']);
+        Route::get('/attendsbyc/{sid}/{cid}/{slot}', [AttendanceController::class, 'attendsbyc']);
         Route::get('/attends/{id}', [AttendanceController::class, 'show']);
         Route::post('/storeattend', [AttendanceController::class, 'store']);
         Route::post('/updateattend', [AttendanceController::class, 'update']);
@@ -87,7 +91,7 @@ Route::prefix('1')->group(function () {
 
         // Homework
         Route::get('/work/{sid}/{cid}', [HomeworkController::class, 'index']);
-        Route::get('/workbyc/{id}', [HomeworkController::class, 'villagebyd']);
+        Route::get('/workbyc/{sid}/{cid}', [HomeworkController::class, 'workbyc']);
         Route::get('/work/{id}', [HomeworkController::class, 'show']);
         Route::post('/storework', [HomeworkController::class, 'store']);
         Route::post('/updatework', [HomeworkController::class, 'update']);
@@ -103,14 +107,14 @@ Route::prefix('1')->group(function () {
 
         // Leaves
         Route::get('/leaves/{id}', [LeaveController::class, 'index']);
-        Route::get('/leavebys/{id}', [LeaveController::class, 'villagebyd']);
+        Route::get('/leavesbyc/{id}/{cate}', [LeaveController::class, 'leavesbyc']);
         Route::get('/leave/{id}', [LeaveController::class, 'show']);
         Route::post('/storeleave', [LeaveController::class, 'store']);
         Route::post('/updateleave', [LeaveController::class, 'update']);
         Route::get('/leavedel/{id}', [LeaveController::class, 'delete']);
 
         // Schedule
-        Route::get('/timetables/{id}', [ScheduleController::class, 'index']);
+        Route::get('/timetables/{sid}/{cid}', [ScheduleController::class, 'index']);
         Route::get('/timetable/{id}', [ScheduleController::class, 'villagebyd']);
         Route::get('/time/{id}', [ScheduleController::class, 'show']);
         Route::post('/storetime', [ScheduleController::class, 'store']);
@@ -119,7 +123,7 @@ Route::prefix('1')->group(function () {
 
         // News
         Route::get('/news/{id}', [NewsController::class, 'index']);
-        Route::get('/newsbys/{id}', [NewsController::class, 'villagebyd']);
+        Route::get('/newsbyt/{id}', [NewsController::class, 'newsbyt']);
         // Route::get('/news/{id}', [NewsController::class, 'show']);
         Route::post('/storenews', [NewsController::class, 'store']);
         Route::post('/updatenews', [NewsController::class, 'update']);
@@ -138,12 +142,27 @@ Route::prefix('1')->group(function () {
         Route::get('/pages/{app}/{name}', [PageController::class, 'singlepage']);
         Route::get('/pagesbys/{id}', [PageController::class, 'villagebyd']);
 
+        // Slots
+        Route::get('/slots/{id}', [SlotController::class, 'index']);
+        Route::get('/slot/{id}', [SlotController::class, 'show']);
+
+        // Period
+        Route::get('/periods/{id}', [PeriodController::class, 'index']);
+        Route::get('/attendsbyc/{id}', [PeriodController::class, 'villagebyd']);
+        Route::get('/period/{id}', [PeriodController::class, 'show']);
+        Route::post('/storeperiod', [PeriodController::class, 'store']);
+        Route::post('/updateperiod', [PeriodController::class, 'update']);
+        Route::get('/delperiod/{id}', [PeriodController::class, 'delete']);
+
+        // Settings
+        Route::get('/settings/{id}', [SettingsController::class, 'index']);
+
         // // Hospital
         // Route::get('/hospital/{id}', [HospitalController::class, 'hospital']);
 
         // // Home
-        Route::get('/stat', [HomeController::class, 'stat']);
-        Route::get('/finalreport', [HomeController::class, 'final']);
+        Route::get('/home/{id}', [HomeController::class, 'index']);
+        // Route::get('/finalreport', [HomeController::class, 'final']);
 
     });
 
