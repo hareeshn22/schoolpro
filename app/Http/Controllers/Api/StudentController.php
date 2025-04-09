@@ -16,7 +16,7 @@ class StudentController extends BaseController
     public function index($id)
     {
         //
-        return StudentResource::collection(Student::where('school_id', '=', $id)->get());
+        return StudentResource::collection(Student::where('school_id', '=', $id)->with('guardian')->get());
 
     }
 
@@ -26,7 +26,7 @@ class StudentController extends BaseController
     public function studentsbys($sid, $cid)
     {
         //
-        return StudentResource::collection(Student::where('school_id', '=', $sid)->where('course_id', '=', $cid)->get());
+        return StudentResource::collection(Student::where('school_id', '=', $sid)->where('course_id', '=', $cid)->with('guardian')->get());
 
     }
 
@@ -81,9 +81,10 @@ class StudentController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(Student $student)
+    public function show($id)
     {
-        //
+        return StudentResource::collection(Student::where('id', '=', $id)->with('guardian')->get());
+
     }
 
     /**

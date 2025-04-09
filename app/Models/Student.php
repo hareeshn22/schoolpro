@@ -39,5 +39,10 @@ class Student extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function guardian()
+    {
+        return $this->hasOne(Guardian::class);
+    }
+
     
 }
