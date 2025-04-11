@@ -101,6 +101,53 @@ class StudentController extends BaseController
     public function update(Request $request, Student $student)
     {
         //
+        $student = Student::find(intval($request->id));
+
+        if ($request->snapImg) {
+            $image_path = 'uploads/' . $student->photo;
+            $larpath    = 'uploads/large/' . $student->photo;
+
+            if (File::exists($image_path)) {
+                File::delete($image_path);
+                File::delete($larpath);
+            }
+
+            $name = $request->file('snapImg')->getClientOriginalName();
+
+            $file      = $request->snapImg->move(public_path('uploads/'), $name);
+            $thumbpath = "uploads/thumb/";
+            ImageManager::gd()->read($file->getRealPath())->scale(height: 100)->save(public_path($thumbpath . $name));
+
+            $smpath = "uploads/small/";
+            ImageManager::gd()->read($file->getRealPath())->scale(height: 200)->save(public_path($smpath . $name));
+
+            $larpath = "uploads/large/";
+            ImageManager::gd()->read($file->getRealPath())->scale(height: 470)->save(public_path($larpath . $name));
+
+        }
+
+        $student->first_name  = $request->firstName;
+        $student->last_name   = $request->lastName;
+        $student->photo       = $request->photo;
+        $student->birthdate   = $request->birthdate;
+        $student->father_name = $request->fatherName;
+        $student->gender      = $request->gender;
+        // $student->code        = $request->code;
+        // $student->status      = $request->status;
+        $student->roll_no     = $request->rollNo;
+        $student->address     = $request->address;
+        // $student->school_id   = $request->schoolId;
+        // $student->course_id   = $request->courseId;
+
+        
+         
+
+        if ($student->save()) {
+            return $this->sendResponse('Success', 'Student Updated successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
     }
 
     /**
