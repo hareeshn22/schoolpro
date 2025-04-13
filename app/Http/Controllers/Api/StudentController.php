@@ -56,7 +56,15 @@ class StudentController extends BaseController
         $larpath = "uploads/large/";
         ImageManager::gd()->read($file->getRealPath())->scale(height: 470)->save(public_path($larpath . $name));
 
+        $pattern    = " ";
+        $firstPart  = strstr(strtolower($request->firstName), $pattern, true);
+        $secondPart = substr(strstr(strtolower($request->lastName), $pattern, false), 0, 3);
+        $thirdPart  = strstr(strtolower($request->address), $pattern, true);
+        $nrRand     = rand(0, 100);
+
         //
+        $username = trim($firstPart) . trim($secondPart) . trim($nrRand);
+
         $student = Student::create([
             'school_id'   => $request->schoolId,
             'course_id'   => $request->courseId,
@@ -69,6 +77,17 @@ class StudentController extends BaseController
             'roll_no'     => $request->rollNo,
             'address'     => $request->address,
         ]);
+        if ($student) {
+            $student->guardian()->create([
+                'school_id' => $request->schoolId,
+                'first_name' => $request->fatherName,
+                'last_name'  => $request->lastName,
+                'email'      => $request->email,
+                'username'   => $username,
+                'password'   => $username . $student->id,
+                'phone'      => $request->phone,
+            ]);
+        }
 
         if ($student) {
             return $this->sendResponse('Success', 'Student created successfully.');
@@ -128,19 +147,22 @@ class StudentController extends BaseController
 
         $student->first_name  = $request->firstName;
         $student->last_name   = $request->lastName;
-        $student->photo       = $request->photo;
+        if($request->snapImg) {
+            $student->photo = $name;
+        } else {
+            $student->photo = $student->photo;
+        }
+        // $student->photo       = $request->photo;
+
         $student->birthdate   = $request->birthdate;
         $student->father_name = $request->fatherName;
         $student->gender      = $request->gender;
         // $student->code        = $request->code;
         // $student->status      = $request->status;
-        $student->roll_no     = $request->rollNo;
-        $student->address     = $request->address;
+        $student->roll_no = $request->rollNo;
+        $student->address = $request->address;
         // $student->school_id   = $request->schoolId;
         // $student->course_id   = $request->courseId;
-
-        
-         
 
         if ($student->save()) {
             return $this->sendResponse('Success', 'Student Updated successfully.');

@@ -2,7 +2,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
-
 use App\Http\Resources\TeacherResource;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
@@ -34,7 +33,7 @@ class TeacherController extends BaseController
     {
         //
         $pattern    = " ";
-        $firstPart  = strstr(strtolower(    $request->firstName), $pattern, true);
+        $firstPart  = strstr(strtolower($request->firstName), $pattern, true);
         $secondPart = substr(strstr(strtolower($request->lastName), $pattern, false), 0, 3);
         $thirdPart  = strstr(strtolower($request->address), $pattern, true);
         $nrRand     = rand(0, 100);
@@ -42,22 +41,22 @@ class TeacherController extends BaseController
         $username = trim($firstPart) . trim($secondPart) . trim($nrRand);
 
         $teacher = Teacher::create([
-            'school_id'   => $request->schoolId,
-            'first_name'  => $request->firstName,
-            'last_name'   => $request->lastName,
-            'birthdate'   => $request->birthdate,
-            'subject_id'  => $request->subjectId,
-            'qualify'     => $request->qualify,
-            'gender'      => $request->gender,
-            'address'     => $request->address,
-            'phone'       => $request->phone,
-            'email'       => $request->firstName . '@gmail.com',
-            'username'    => $username,
-            'password'    => $username,
+            'school_id'  => $request->schoolId,
+            'first_name' => $request->firstName,
+            'last_name'  => $request->lastName,
+            'birthdate'  => $request->birthdate,
+            'subject_id' => $request->subjectId,
+            'qualify'    => $request->qualify,
+            'gender'     => $request->gender,
+            'address'    => $request->address,
+            'phone'      => $request->phone,
+            'email'      => $request->email,
+            'username'   => $username,
+            'password'   => $username,
         ]);
 
         if ($teacher) {
-            return $this->sendResponse('Success', 'Student created successfully.');
+            return $this->sendResponse('Success', 'Teacher created successfully.');
         } else {
             return $this->sendError('Error.', ['error' => 'error occured']);
         }
@@ -67,9 +66,10 @@ class TeacherController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(Teacher $teacher)
+    public function show($id)
     {
-        //
+        return TeacherResource::collection(Teacher::where('id', '=', $id)->get());
+
     }
 
     /**
@@ -83,9 +83,29 @@ class TeacherController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Teacher $teacher)
+    public function update(Request $request)
     {
         //
+        $teacher = Teacher::find(intval($request->id));
+
+
+        $teacher->first_name  = $request->firstName;
+        $teacher->last_name   = $request->lastName;
+        $teacher->subject_id  = $request->subjectId;
+        $teacher->qualify     = $request->qualify;
+        $teacher->phone       = $request->phone;
+        $teacher->email       = $request->email;
+        $teacher->birthdate   = $request->birthdate;
+        // $teacher->father_name = $request->fatherName;
+        $teacher->gender      = $request->gender;
+        $teacher->address     = $request->address;
+
+        if ($teacher->save()) {
+            return $this->sendResponse('Success', 'Teacher updated successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
     }
 
     /**
@@ -96,7 +116,7 @@ class TeacherController extends BaseController
         //
     }
 
-    function random_username($string)
+    public function random_username($string)
     {
         $pattern    = " ";
         $firstPart  = strstr(strtolower($string), $pattern, true);

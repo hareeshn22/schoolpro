@@ -61,7 +61,7 @@ Route::prefix('1')->group(function () {
         // Teachers
         Route::get('/teachers/{id}', [TeacherController::class, 'index']);
         Route::get('/teachersbyd/{id}', [TeacherController::class, 'Teacherbyd']);
-        Route::get('/Teacher/{id}', [TeacherController::class, 'show']);
+        Route::get('/teacher/{id}', [TeacherController::class, 'show']);
         Route::post('/storeteacher', [TeacherController::class, 'store']);
         Route::post('/updateteacher', [TeacherController::class, 'update']);
         Route::get('/cndel/{id}', [TeacherController::class, 'delete']);
