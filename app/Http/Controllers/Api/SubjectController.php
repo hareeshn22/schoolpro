@@ -64,9 +64,19 @@ class SubjectController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Subject $subject)
+    public function update(Request $request)
     {
-        //
+        $subject = Subject::find($request->id);
+
+        // $subject->school_id = $request->schoolid;
+        $subject->name = $request->name;
+
+        if ($subject->save()) {
+            return $this->sendResponse('Success', 'Subject Updated successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
     }
 
     /**

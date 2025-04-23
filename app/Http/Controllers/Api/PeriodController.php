@@ -1,12 +1,12 @@
 <?php
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\PeriodResource;
 use App\Models\Period;
 use Illuminate\Http\Request;
 
-class PeriodController extends Controller
+class PeriodController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -32,13 +32,13 @@ class PeriodController extends Controller
     {
         //
         $period = Period::create([
-            'school_id' => $request->schoolid,
-            'name'      => $request->name,
-            'start_time'=> $request->start_time,
-            'end_time'  => $request->end_time,
+            'school_id'  => $request->schoolid,
+            'name'       => $request->name,
+            'start_time' => $request->startTime,
+            'end_time'   => $request->endTime,
         ]);
 
-        if ($subject) {
+        if ($period) {
             return $this->sendResponse('Success', 'Period created successfully.');
         } else {
             return $this->sendError('Error.', ['error' => 'error occured']);
@@ -65,9 +65,22 @@ class PeriodController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Period $period)
+    public function update(Request $request)
     {
         //
+        $period = Period::find($request->id);
+
+        // $subject->school_id = $request->schoolid;
+        $period->name       = $request->name;
+        $period->start_time = $request->startTime;
+        $period->end_time   = $request->endTime;
+
+        if ($period->save()) {
+            return $this->sendResponse('Success', 'Period Updated successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
     }
 
     /**
