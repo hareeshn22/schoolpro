@@ -15,6 +15,10 @@ class Exam extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'school_id',
+        'course_id',
         'name',
+        'examdate',
+        'maxmarks',
     ];
 }

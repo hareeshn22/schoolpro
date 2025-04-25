@@ -1,12 +1,12 @@
 <?php
-
 namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+
+use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\ExamResource;
 use App\Models\Exam;
 use Illuminate\Http\Request;
 
-class ExamController extends Controller
+class ExamController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -32,14 +32,30 @@ class ExamController extends Controller
     public function store(Request $request)
     {
         //
+        $exam = Exam::create([
+            'school_id' => $request->schoolid,
+            'course_id' => $request->courseid,
+            'name'      => $request->name,
+            'examdate'  => $request->examdate,
+            'maxmarks'  => $request->maxmarks,
+        ]);
+
+        if ($exam) {
+            return $this->sendResponse('Success', 'Exam created successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Exam $exam)
+    public function show($id)
     {
         //
+        return ExamResource::collection(Exam::where('id', '=', $id)->get());
+
     }
 
     /**
@@ -53,9 +69,22 @@ class ExamController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Exam $exam)
+    public function update(Request $request)
     {
         //
+        $exam = Exam::find($request->id);
+
+        // $exam->school_id = $request->schoolid;
+        $exam->name      = $request->name;
+        $exam->examdate  = $request->examdate;
+        $exam->maxmarks  = $request->maxmarks;
+
+        if ($exam->save()) {
+            return $this->sendResponse('Success', 'Exam Updated successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
     }
 
     /**

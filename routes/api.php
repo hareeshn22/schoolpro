@@ -98,7 +98,7 @@ Route::prefix('1')->group(function () {
         Route::get('/delwork/{id}', [HomeworkController::class, 'delete']);
 
         // Exam
-        Route::get('/exam/{sid}/{cid}', [ExamController::class, 'index']);
+        Route::get('/exams/{sid}/{cid}', [ExamController::class, 'index']);
         Route::get('/attendsbyc/{id}', [ExamController::class, 'villagebyd']);
         Route::get('/exam/{id}', [ExamController::class, 'show']);
         Route::post('/storeexam', [ExamController::class, 'store']);
