@@ -1,20 +1,20 @@
 <?php
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\ScheduleResource;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 
-class ScheduleController extends Controller
+class ScheduleController extends BaseController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($id)
+    public function index($sid, $cid)
     {
         //
-        $data = ScheduleResource::collection(Schedule::where('school_id', '=', $id)->get());
+        $data = ScheduleResource::collection(Schedule::where('school_id', '=', $sid)->where('course_id', '=', $cid)->get());
 
         // Convert array to collection and group by "day"
         $datar = collect($data)->groupBy('day');
@@ -85,9 +85,13 @@ class ScheduleController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function timebyday($sid, $cid, $day)
     {
         //
+        $data = ScheduleResource::collection(Schedule::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('day', '=', $day)->get());
+        // $data = Schedule::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('day', '=', $day)->get();
+
+        return $data;
     }
 
     /**
@@ -95,15 +99,60 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $items = $request->schedules;
+        // $sitems = $request->subjectids;
+
+        // foreach ($variable as $key => $value) {
+        //     # code...
+        // }
+
+        // foreach ((array) $items as $item) {
+        //     // return response()->json($item["name"], 500);
+        //     Schedule::create([
+        //         'school_id'  => $item["schoolId"],
+        //         'course_id'  => $item["courseId"],
+        //         'period_id'  => $item["periodId"],
+        //         // 'subject_id' => $sitems[$key]['id'],
+        //         'subject_id' => $item['subjectId'],
+        //         'day'        => $request->day,
+        //     ]);
+
+        // }
+
+        $data = [];
+
+        foreach ((array) $items as $item) {
+            $data[] = [
+                'school_id'  => $item["schoolId"],
+                'course_id'  => $item["courseId"],
+                'period_id'  => $item["periodId"],
+                'subject_id' => $item['subjectId'],
+                'day'        => $item['day'],
+            ];
+        }
+        $schedule = Schedule::insert($data);
+
+        if ($schedule) {
+            return $this->sendResponse('Success', 'Timetable created successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Schedule $schedule)
+    public function show($id)
     {
-        //
+        $schedule = Schedule::find($id);
+        if ($schedule) {
+            $data = new ScheduleResource($schedule);
+            return $data;
+            // return $this->sendResponse(new ScheduleResource($schedule), 'Schedule retrieved successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+        // return ScheduleResource::collection(Schedule::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('day', '=', $day)->get());
     }
 
     /**
@@ -117,16 +166,34 @@ class ScheduleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Schedule $schedule)
+    public function update(Request $request)
     {
-        //
+        $schedule             = Schedule::find($request->id);
+        // $schedule->school_id  = $request->schoolid;
+        // $schedule->course_id  = $request->courseid;
+        $schedule->period_id  = $request->periodid;
+        $schedule->subject_id = $request->subjectid;
+        $schedule->day        = $request->day;
+
+        if ($schedule->save()) {
+            return $this->sendResponse('Success', 'Schedule Updated successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Schedule $schedule)
+    public function delete($id)
     {
-        //
+        $schedule = Schedule::find($id);
+
+        if ($schedule->delete()) {
+            return $this->sendResponse('Success', 'Schedule deleted successfully.');
+        } else {
+            return $this->sendError('Error', ['error' => 'error occured']);
+        }
+
     }
 }

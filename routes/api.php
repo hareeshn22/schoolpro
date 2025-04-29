@@ -115,7 +115,7 @@ Route::prefix('1')->group(function () {
 
         // Schedule
         Route::get('/timetables/{sid}/{cid}', [ScheduleController::class, 'index']);
-        Route::get('/timetable/{id}', [ScheduleController::class, 'villagebyd']);
+        Route::get('/timetable/{sid}/{cid}/{day}', [ScheduleController::class, 'timebyday']);
         Route::get('/time/{id}', [ScheduleController::class, 'show']);
         Route::post('/storetime', [ScheduleController::class, 'store']);
         Route::post('/updatetime', [ScheduleController::class, 'update']);

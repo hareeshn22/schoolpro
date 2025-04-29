@@ -37,7 +37,7 @@ class HomeController extends Controller
         $tecount = Teacher::count();
         $prcount = Principal::count();
         $gucount = Guardian::count();
-        $scount = School::count();
+        $scount  = School::count();
 
         $pacount = Page::count();
         $sycount = Syllabus::count();
