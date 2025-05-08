@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
-use App\Models\Staff;
+use App\Models\Teacher;
+use App\Models\Principal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \Carbon\Carbon;
@@ -45,7 +46,52 @@ class LoginController extends BaseController
         $id = $request->id;
         // $tokenId = $request->token;
         $tokenName = $request->tName;
-        $user = User::findorFail($id);
+        $user = Principal::findorFail($id);
+        // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
+        if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
+            return response()->json('success');
+
+        } else {
+            return response()->json('failed');
+
+        }
+
+    }
+
+    public function teachlogin(Request $request)
+    {
+        
+        // $user = auth()->guard('principal')->user();
+
+        if (Auth::guard('teacher')->attempt(['username' => $request->username, 'password' => $request->password])) {
+           
+            $user = Auth::guard('teacher')->user();
+
+            $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
+
+            $token = $user->createToken($tokenName)->plainTextToken;
+            $success['token'] = $token;
+            $success['name'] = $user->first_name;
+            $success['user'] = $user;
+            $success['tName'] = $tokenName;
+            $success['subject'] = $user->subject;
+            $success['courses'] = $user->courses();
+            // $success['school'] = $user->school;
+
+            return $this->sendResponse($success, 'Teacher login successfully.');
+        } else {
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        }
+
+    }
+
+    public function teachlogout(Request $request)
+    {
+
+        $id = $request->id;
+        // $tokenId = $request->token;
+        $tokenName = $request->tName;
+        $user = Teacher::findorFail($id);
         // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
         if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
             return response()->json('success');

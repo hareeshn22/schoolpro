@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use App\Models\Teacher;
 
 class CourseController extends BaseController
 {
@@ -16,6 +17,17 @@ class CourseController extends BaseController
         //
         // $success =
         return CourseResource::collection(Course::where('school_id', '=', $id)->get());
+        // return $this->sendResponse($success, 'Data Fetched successfully.');
+    }
+
+    /**
+     * Display courses by teacher.
+     */
+    public function coursebyt($id)
+    {
+        //
+        $teacher = Teacher::find($id);
+        return  CourseResource::collection($teacher->courses()->get());
         // return $this->sendResponse($success, 'Data Fetched successfully.');
     }
 
@@ -83,7 +95,7 @@ class CourseController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy($id)
     {
         $course = Course::find($id);
 

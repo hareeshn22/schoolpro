@@ -44,4 +44,9 @@ class Teacher extends Authenticatable
     {
         return $this->belongsTo(School::class);
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
+    }
 }

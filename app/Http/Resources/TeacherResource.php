@@ -32,7 +32,13 @@ class TeacherResource extends JsonResource
             'username'  => $this->username,
             'address'   => $this->address,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,         
+            'updated_at' => $this->updated_at,    
+            'courses'    => $this->courses()->get()->map(function ($course) {
+                return [
+                    'id' => $course->id,
+                    'name' => $course->name,
+                ];
+            }),
 
         ];
 

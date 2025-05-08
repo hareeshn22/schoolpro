@@ -55,6 +55,10 @@ class TeacherController extends BaseController
             'password'   => $username,
         ]);
 
+        if($teacher) {
+            $teacher->courses()->attach($request->courses);
+        }
+
         if ($teacher) {
             return $this->sendResponse('Success', 'Teacher created successfully.');
         } else {
@@ -100,7 +104,12 @@ class TeacherController extends BaseController
         $teacher->gender      = $request->gender;
         $teacher->address     = $request->address;
 
-        if ($teacher->save()) {
+        $teacher->save();
+        
+        
+        
+
+        if ($teacher->courses()->sync($request->courses)) {
             return $this->sendResponse('Success', 'Teacher updated successfully.');
         } else {
             return $this->sendError('Error.', ['error' => 'error occured']);

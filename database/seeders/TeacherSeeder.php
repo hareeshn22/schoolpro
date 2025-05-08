@@ -2,6 +2,10 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\Models\Course;
+use Illuminate\Support\Collection;
 
 class TeacherSeeder extends Seeder
 {
@@ -25,7 +29,7 @@ class TeacherSeeder extends Seeder
                 'phone'      => '9876543210',
                 'email'      => 'asha12@school.com',
                 'username'   => 'asha.sharma',
-                'password'   => 'password123',
+                'password'   => Hash::make('password123'),
             ],
             [
                 'school_id'  => 1,
@@ -39,7 +43,7 @@ class TeacherSeeder extends Seeder
                 'phone'      => '9876543211',
                 'email'      => 'rajesh12@school.com',
                 'username'   => 'rajesh.singh',
-                'password'   => 'password123',
+                'password'   => Hash::make('password123'),
             ],
             [
                 'school_id'  => 1,
@@ -53,7 +57,7 @@ class TeacherSeeder extends Seeder
                 'phone'      => '9876543212',
                 'email'      => 'priya12@school.com',
                 'username'   => 'priya.reddy',
-                'password'   => 'password123',
+                'password'   => Hash::make('password123'),
             ],
             [
                 'school_id'  => 1,
@@ -67,7 +71,7 @@ class TeacherSeeder extends Seeder
                 'phone'      => '9876543213',
                 'email'      => 'aman12@school.com',
                 'username'   => 'aman.verma',
-                'password'   => 'password123',
+                'password'   => Hash::make('password123'),
             ],
             [
                 'school_id'  => 1,
@@ -81,7 +85,7 @@ class TeacherSeeder extends Seeder
                 'phone'      => '9876543214',
                 'email'      => 'neha12@school.com',
                 'username'   => 'neha.patel',
-                'password'   => 'password123',
+                'password'   => Hash::make('password123'),
             ],
             [
                 'school_id'  => 1,
@@ -95,12 +99,22 @@ class TeacherSeeder extends Seeder
                 'phone'      => '9876543215',
                 'email'      => 'jayalakshmi12@school.com',
                 'username'   => 'jayalakshmi.priya',
-                'password'   => 'password123',
+                'password'   => Hash::make('password123'),
             ],
         ];
 
+        $courses = Course::where('school_id', '=', 1)->pluck('id')->toArray(); // Get all course IDs
+
+        $list = collect($courses);
+
         foreach ($teachers as $teacher) {
-            \App\Models\Teacher::create($teacher);
+           $teach =  \App\Models\Teacher::create($teacher);
+           $randomids = [
+            $list->random(), // Random number between 1 and 100
+            $list->random(),
+            $list->random(),
+        ];
+           $teach->courses()->attach($randomids); // Attach courses to the teacher
         }
 
     }

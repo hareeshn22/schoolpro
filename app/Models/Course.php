@@ -18,4 +18,8 @@ class Course extends Model
         'school_id',
         'name',
     ];
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class);
+    }
 }

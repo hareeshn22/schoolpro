@@ -41,19 +41,19 @@ class ScheduleController extends BaseController
         return $output;
 
         // Transform the grouped data into the desired format
-        $result = $groupedData->map(function ($items, $day) {
-            return [
-                "day"  => $day,
-                "data" => $items->map(function ($item) {
-                    return [
-                        "timing"  => date("H:i", strtotime($item['period'])),
-                        "subject" => $item['subject'],
-                    ];
-                })->values()->toArray(),
-            ];
-        })->values()->toArray();
+        // $result = $groupedData->map(function ($items, $day) {
+        //     return [
+        //         "day"  => $day,
+        //         "data" => $items->map(function ($item) {
+        //             return [
+        //                 "timing"  => date("H:i", strtotime($item['period'])),
+        //                 "subject" => $item['subject'],
+        //             ];
+        //         })->values()->toArray(),
+        //     ];
+        // })->values()->toArray();
 
-        return $result;
+        // return $result;
 
         // $oData = Schedule::with('Period', 'Subject')->where('school_id', '=', $id)->get();
 

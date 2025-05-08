@@ -43,49 +43,54 @@ class StudentController extends BaseController
      */
     public function store(Request $request)
     {
-        $name = $request->snapImg->getClientOriginalName();
+        if ($request->snapImg != null) {
 
-        $file = $request->snapImg->move(public_path('uploads/'), $name);
+            $name = $request->snapImg->getClientOriginalName();
 
-        $thumbpath = "uploads/thumb/";
-        ImageManager::gd()->read($file->getRealPath())->scale(height: 100)->save(public_path($thumbpath . $name));
+            $file = $request->snapImg->move(public_path('uploads/'), $name);
 
-        $smpath = "uploads/small/";
-        ImageManager::gd()->read($file->getRealPath())->scale(height: 200)->save(public_path($smpath . $name));
+            $thumbpath = "uploads/thumb/";
+            ImageManager::gd()->read($file->getRealPath())->scale(height: 100)->save(public_path($thumbpath . $name));
 
-        $larpath = "uploads/large/";
-        ImageManager::gd()->read($file->getRealPath())->scale(height: 470)->save(public_path($larpath . $name));
+            $smpath = "uploads/small/";
+            ImageManager::gd()->read($file->getRealPath())->scale(height: 200)->save(public_path($smpath . $name));
 
-        $pattern    = " ";
-        $firstPart  = strstr(strtolower($request->firstName), $pattern, true);
+            $larpath = "uploads/large/";
+            ImageManager::gd()->read($file->getRealPath())->scale(height: 470)->save(public_path($larpath . $name));
+        } else {
+            $name = '';
+        }
+
+        $pattern = " ";
+        $firstPart = strstr(strtolower($request->firstName), $pattern, true);
         $secondPart = substr(strstr(strtolower($request->lastName), $pattern, false), 0, 3);
-        $thirdPart  = strstr(strtolower($request->address), $pattern, true);
-        $nrRand     = rand(0, 100);
+        $thirdPart = strstr(strtolower($request->address), $pattern, true);
+        $nrRand = rand(0, 100);
 
         //
         $username = trim($firstPart) . trim($secondPart) . trim($nrRand);
 
         $student = Student::create([
-            'school_id'   => $request->schoolId,
-            'course_id'   => $request->courseId,
-            'first_name'  => $request->firstName,
-            'last_name'   => $request->lastName,
-            'photo'       => $name,
-            'birthdate'   => $request->birthdate,
+            'school_id' => $request->schoolId,
+            'course_id' => $request->courseId,
+            'first_name' => $request->firstName,
+            'last_name' => $request->lastName,
+            'photo' => $name,
+            'birthdate' => $request->birthdate,
             'father_name' => $request->fatherName,
-            'gender'      => $request->gender,
-            'roll_no'     => $request->rollNo,
-            'address'     => $request->address,
+            'gender' => $request->gender,
+            'roll_no' => $request->rollNo,
+            'address' => $request->address,
         ]);
         if ($student) {
             $student->guardian()->create([
                 'school_id' => $request->schoolId,
                 'first_name' => $request->fatherName,
-                'last_name'  => $request->lastName,
-                'email'      => $request->email,
-                'username'   => $username,
-                'password'   => $username . $student->id,
-                'phone'      => $request->phone,
+                'last_name' => $request->lastName,
+                'email' => $request->email,
+                'username' => $username,
+                'password' => $username . $student->id,
+                'phone' => $request->phone,
             ]);
         }
 
@@ -124,7 +129,7 @@ class StudentController extends BaseController
 
         if ($request->snapImg) {
             $image_path = 'uploads/' . $student->photo;
-            $larpath    = 'uploads/large/' . $student->photo;
+            $larpath = 'uploads/large/' . $student->photo;
 
             if (File::exists($image_path)) {
                 File::delete($image_path);
@@ -133,7 +138,7 @@ class StudentController extends BaseController
 
             $name = $request->file('snapImg')->getClientOriginalName();
 
-            $file      = $request->snapImg->move(public_path('uploads/'), $name);
+            $file = $request->snapImg->move(public_path('uploads/'), $name);
             $thumbpath = "uploads/thumb/";
             ImageManager::gd()->read($file->getRealPath())->scale(height: 100)->save(public_path($thumbpath . $name));
 
@@ -145,18 +150,18 @@ class StudentController extends BaseController
 
         }
 
-        $student->first_name  = $request->firstName;
-        $student->last_name   = $request->lastName;
-        if($request->snapImg) {
+        $student->first_name = $request->firstName;
+        $student->last_name = $request->lastName;
+        if ($request->snapImg) {
             $student->photo = $name;
         } else {
-            $student->photo = $student->photo;
+            // $student->photo = $student->photo;
         }
         // $student->photo       = $request->photo;
 
-        $student->birthdate   = $request->birthdate;
+        $student->birthdate = $request->birthdate;
         $student->father_name = $request->fatherName;
-        $student->gender      = $request->gender;
+        $student->gender = $request->gender;
         // $student->code        = $request->code;
         // $student->status      = $request->status;
         $student->roll_no = $request->rollNo;
