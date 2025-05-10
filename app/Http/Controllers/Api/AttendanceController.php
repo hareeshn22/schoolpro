@@ -125,20 +125,29 @@ class AttendanceController extends BaseController
         // return $this->sendResponse($items, 'Attendance created successfully.');
 
         foreach ((array) $items as $item) {
+            if($request->date == 'today') {
+                $adate = Carbon::today()->toDateString();
+            }else {
+                $adate = Carbon::yesterday()->toDateString();
+            }
+            
             $main = [
                 'course_id' => $item["course_id"],
                 'student_id' => $item['student_id'],
-                'attenddate' => Carbon::today()->toDateString(),
+                'attenddate' => $adate,
+                'timing' => $item['timing'],
             ];
             $data = [
                 'school_id' => $item["school_id"],
                 'course_id' => $item["course_id"],
                 'student_id' => $item['student_id'],
-                'attenddate' => Carbon::today()->toDateString(),
+                'attenddate' => $adate,
                 'timing' => $item['timing'],
                 'status' => $item['status'] == 'present' ? 1 : 0,
             ];
             $attends = Attendance::firstOrNew($main,$data);
+            $attends->status = $item['status'] == 'present' ? 1 : 0;
+            $attends->save();
         }
 
 

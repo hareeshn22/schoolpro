@@ -56,7 +56,7 @@ class TeacherController extends BaseController
         ]);
 
         if($teacher) {
-            $teacher->courses()->attach($request->courses);
+            $teacher->courses()->sync($request->courses);
         }
 
         if ($teacher) {
