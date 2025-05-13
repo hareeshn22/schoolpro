@@ -44,6 +44,12 @@ class Teacher extends Authenticatable
     {
         return $this->belongsTo(School::class);
     }
+     // Relationship with the Subject model
+     public function subject()
+     {
+         return $this->belongsTo(Subject::class);
+     }
+ 
 
     public function courses()
     {

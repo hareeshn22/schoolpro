@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\HomeworkResource;
 use App\Models\Homework;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-class HomeworkController extends Controller
+class HomeworkController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class HomeworkController extends Controller
 
     }
 
-    public function workbyc($sid, $cid)
+    public function workbyc($sid, $cid, $subjid)
     {
         // $data = AttendanceResource::collection(Attendance::where('school_id', '=', $sid)->groupBy( 'course_id', 'status', )->select('course_id', 'status', DB::raw('count(*) as total', 'id'))->get())->map(function ($item) {
         //     return [
@@ -32,10 +32,13 @@ class HomeworkController extends Controller
         //         // 'total' => $item->total,
         //     ];
         // });
-        $data = HomeworkResource::collection(Homework::where('school_id', '=', $sid)->where('course_id', '=', $cid)->get());
+        $fdata =[];
+        for ($i = 0; $i < 6; $i++) {
+            $sDate = Carbon::today()->subDays($i);
+        $data = HomeworkResource::collection(Homework::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('subject_id', '=', $subjid)->where('workdate', '=', $sDate)->get());
 
         $merged = collect($data)
-            ->groupBy('course_id', 'subject_id', 'status')
+            ->groupBy('course_id',  'status')
             ->map(function ($group, $courseId) {
                 return [
                     'course_id' => $courseId,
@@ -43,18 +46,30 @@ class HomeworkController extends Controller
                     'Not Done'   => $group->where('status', 'not done')->count(),
                 ];
             })
-            ->values()
-            ->toArray();
-        return $merged;
+            ->values();
+
+            if (count($merged) > 0) {
+                $fdata[] = $merged->collapse();
+            }
+
+
+        }
+        return $fdata;
 
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      */
-    public function create()
+    public function wdata($sid, $cid)
     {
         //
+        return HomeworkResource::collection(Homework::where('school_id', '=', $sid)
+        ->where('course_id', '=', $cid)
+        ->whereBetween('workdate', [Carbon::today()->subDays(7)->toDateString(), Carbon::today()->toDateString()])
+        // ->where('workdate', '<', Carbon::today()->toDateString())
+        ->get());
+
     }
 
     /**
@@ -62,7 +77,25 @@ class HomeworkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+
+        $data = [
+            'school_id'   => $request->schoolId,
+            'teacher_id'  => $request->teacherId,
+            'course_id'   => $request->courseId,
+            'subject_id'  => $request->subjectId,
+            'title'       => $request->title,
+            'workdate'    => $request->workdate,
+            'content'     => $request->content,
+        ];
+        $work = Homework::create($data);
+
+
+        if ($work) {
+            return $this->sendResponse('Success', 'Homework created successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
     }
 
     /**

@@ -74,8 +74,9 @@ class LoginController extends BaseController
             $success['name'] = $user->first_name;
             $success['user'] = $user;
             $success['tName'] = $tokenName;
-            $success['subject'] = $user->subject;
-            $success['courses'] = $user->courses();
+            $success['subject'] = $user->subject->name;
+            $success['subject_id'] = $user->subject_id;
+            $success['courses'] = $user->courses()->get();
             // $success['school'] = $user->school;
 
             return $this->sendResponse($success, 'Teacher login successfully.');

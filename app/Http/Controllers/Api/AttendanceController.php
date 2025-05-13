@@ -79,9 +79,9 @@ class AttendanceController extends BaseController
 
         // ->subDays(2);
         // $startDate = Carbon::today()->subDays(8);
-
+        $fdata = [];
         for ($i = 0; $i < 6; $i++) {
-            $sDate = Carbon::today()->subDays($i);
+            $sDate = Carbon::yesterday()->subDays($i);
             $data = AttendanceResource::collection(Attendance::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('timing', 'LIKE', $slot)->where('attenddate', '=', $sDate)->get());
 
             $merged = collect($data)
@@ -142,7 +142,7 @@ class AttendanceController extends BaseController
                 'course_id' => $item["course_id"],
                 'student_id' => $item['student_id'],
                 'attenddate' => $adate,
-                'timing' => $item['timing'],
+                'timing'   => $item['timing'],
                 'status' => $item['status'] == 'present' ? 1 : 0,
             ];
             $attends = Attendance::firstOrNew($main,$data);

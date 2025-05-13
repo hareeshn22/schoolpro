@@ -39,8 +39,9 @@ class HomeworkResource extends JsonResource
             'subject'    => $this->subject->name,
             'teacher'    => $this->teacher->first_name,
             'workdate'   => $this->workdate,
+            'title'      => $this->title,
             'content'    => $this->content,
-            'data'       => $merged,
+            // 'data'       => $merged,
         ];
 
     }

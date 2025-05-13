@@ -216,8 +216,9 @@ Route::prefix('1')->group(function () {
 
         // Homework
         Route::get('/work/{sid}/{cid}', [HomeworkController::class, 'index']);
-        Route::get('/workbyc/{sid}/{cid}', [HomeworkController::class, 'workbyc']);
+        Route::get('/workbyc/{sid}/{cid}/{subjid}', [HomeworkController::class, 'workbyc']);
         Route::get('/work/{id}', [HomeworkController::class, 'show']);
+        Route::get('/wdata/{sid}/{cid}', [HomeworkController::class, 'wdata']);
         Route::post('/storework', [HomeworkController::class, 'store']);
         Route::post('/updatework', [HomeworkController::class, 'update']);
         // Route::get('/delwork/{id}', [HomeworkController::class, 'delete']);

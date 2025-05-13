@@ -107,10 +107,11 @@ class TeacherSeeder extends Seeder
 
         $list = collect($courses);
 
-        foreach ($teachers as $teacher) {
+        foreach ($teachers as $key => $teacher) {
            $teach =  \App\Models\Teacher::create($teacher);
            $randomids = [
-            $list->random(), // Random number between 1 and 100
+            $key == 0 ? 1 :
+            $list->random(), 
             $list->random(),
             $list->random(),
         ];

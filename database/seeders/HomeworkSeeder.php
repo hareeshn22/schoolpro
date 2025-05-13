@@ -22,6 +22,8 @@ class HomeworkSeeder extends Seeder
                 'subject_id' => 1,
                 'workdate'   => Carbon::now(),
                 'content'    => 'Homework content for Subject A',
+                'title'      => 'Math Homework - Algebra',
+                'image'      => 'math_homework.jpg',
             ],
             [
                 'school_id'  => 1,
@@ -30,6 +32,8 @@ class HomeworkSeeder extends Seeder
                 'subject_id' => 2,
                 'workdate'   => Carbon::now(),
                 'content'    => 'Homework content for Subject B',
+                'title'      => 'Science Homework - Physics',
+                'image'      => 'science_homework.jpg',
             ],
             [
                 'school_id'  => 1,
@@ -38,6 +42,8 @@ class HomeworkSeeder extends Seeder
                 'subject_id' => 3,
                 'workdate'   => Carbon::now(),
                 'content'    => 'Homework content for Subject C',
+                'title'      => 'History Homework - Ancient Civilizations',
+                'image'      => 'history_homework.jpg',
             ],
             [
                 'school_id'  => 1,
@@ -46,6 +52,8 @@ class HomeworkSeeder extends Seeder
                 'subject_id' => 4,
                 'workdate'   => Carbon::now(),
                 'content'    => 'Homework content for Subject D',
+                'title'      => 'Literature Homework - Poetry Analysis',
+                'image'      => 'literature_homework.jpg',
             ],
         ];
         foreach ($homeworks as $key => $work) {

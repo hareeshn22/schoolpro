@@ -19,9 +19,10 @@ class Homework extends Model
         'teacher_id',
         'course_id',
         'subject_id',
+        'title',
+        'image',
         'workdate',
         'content',
-        'status',
     ];
 
 
