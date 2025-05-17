@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class ExamResult extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'exam_id',
+        'student_id',
+        'subject_id',
+        'marks',
+    ];
 }

@@ -17,7 +17,7 @@ class HomeworkResource extends JsonResource
         // return parent::toArray($request);
         $data = DB::table('homework_data')->where('homework_id', $this->id)->get();
         $merged = collect($data)
-            ->groupBy('course_id', 'subject_id', 'status')
+            ->groupBy(['course_id', 'subject_id', 'status'])
             ->map(function ($group, $courseId) {
                 return [
                     'course_id' => $courseId,
@@ -40,6 +40,7 @@ class HomeworkResource extends JsonResource
             'teacher'    => $this->teacher->first_name,
             'workdate'   => $this->workdate,
             'title'      => $this->title,
+            'image'      => $this->image,
             'content'    => $this->content,
             // 'data'       => $merged,
         ];

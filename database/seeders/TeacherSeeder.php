@@ -110,8 +110,7 @@ class TeacherSeeder extends Seeder
         foreach ($teachers as $key => $teacher) {
            $teach =  \App\Models\Teacher::create($teacher);
            $randomids = [
-            $key == 0 ? 1 :
-            $list->random(), 
+            1, 
             $list->random(),
             $list->random(),
         ];

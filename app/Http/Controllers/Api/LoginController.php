@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
+use App\Models\Guardian;
+use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Principal;
 use Illuminate\Http\Request;
@@ -103,4 +105,55 @@ class LoginController extends BaseController
         }
 
     }
+
+     /**
+     * Login api
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function guardlogin(Request $request)
+    {
+        
+        // $user = auth()->guard('principal')->user();
+
+        if (Auth::guard('guardian')->attempt(['username' => $request->username, 'password' => $request->password])) {
+           
+            $user = Auth::guard('guardian')->user();
+
+            $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
+
+            $token = $user->createToken($tokenName)->plainTextToken;
+
+            $courseid = Student::find($user->student_id)->course_id;
+            $success['token'] = $token;
+            $success['name'] = $user->first_name;
+            $success['user'] = $user;
+            $success['tName'] = $tokenName;
+            $success['courseid'] = $courseid;
+
+            return $this->sendResponse($success, 'Parent login successfully.');
+        } else {
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        }
+
+    }
+
+    public function guardlogout(Request $request)
+    {
+
+        $id = $request->id;
+        // $tokenId = $request->token;
+        $tokenName = $request->tName;
+        $user = Guardian::findorFail($id);
+        // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
+        if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
+            return response()->json('success');
+
+        } else {
+            return response()->json('failed');
+
+        }
+
+    }
+
 }
