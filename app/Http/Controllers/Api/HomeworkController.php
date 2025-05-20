@@ -87,6 +87,23 @@ class HomeworkController extends BaseController
 
     }
 
+    public function workweek($sid, $cid)
+    {
+        //
+        return HomeworkResource::collection(
+            Homework::where('school_id', '=', $sid)
+            ->where('course_id', '=', $cid)
+            // ->where('subject_id', '=', $subid)
+            ->whereBetween('workdate', [Carbon::yesterday()->subDays(7)->toDateString(), Carbon::yesterday()->toDateString()])
+            // ->where('workdate', '<', Carbon::today()->toDateString())
+            ->orderBy('workdate', 'desc')
+            ->get())->map(function ($assignment) {
+            return collect($assignment)->only(['id', 'subject', 'title', 'workdate']);
+        })->groupBy('workdate');
+
+
+    }
+
     /**
      * Store a newly created resource in storage.
      */

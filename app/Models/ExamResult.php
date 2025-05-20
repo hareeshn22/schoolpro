@@ -20,4 +20,10 @@ class ExamResult extends Model
         'subject_id',
         'marks',
     ];
+
+    // Relationship with the subject model
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
 }

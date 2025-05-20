@@ -338,7 +338,7 @@ Route::prefix('1')->group(function () {
         // Route::get('/delcourse/{id}', [CourseController::class, 'destroy']);
 
         // Attendance
-        Route::get('/attends/{sid}/{cid}', [AttendanceController::class, 'index']);
+        Route::get('/attendsbyst/{sid}/{week}', [AttendanceController::class, 'attendsbyst']);
         Route::get('/attendsbyc/{sid}/{cid}/{slot}', [AttendanceController::class, 'attendsbyc']);
         Route::get('/attends/{id}', [AttendanceController::class, 'show']);
         // Route::post('/storeattend', [AttendanceController::class, 'store']);
@@ -349,6 +349,7 @@ Route::prefix('1')->group(function () {
         Route::get('/work/{sid}/{cid}', [HomeworkController::class, 'index']);
         Route::get('/workbyc/{sid}/{cid}', [HomeworkController::class, 'workbyc']);
         Route::get('/worktoday/{sid}/{cid}', [HomeworkController::class, 'worktoday']);
+        Route::get('/workweek/{sid}/{cid}', [HomeworkController::class, 'workweek']);
         Route::get('/work/{id}', [HomeworkController::class, 'show']);
         // Route::post('/storework', [HomeworkController::class, 'store']);
         // Route::post('/updatework', [HomeworkController::class, 'update']);
@@ -361,6 +362,9 @@ Route::prefix('1')->group(function () {
         // Route::post('/storeexam', [ExamController::class, 'store']);
         // Route::post('/updateexam', [ExamController::class, 'update']);
         // Route::get('/delexam/{id}', [ExamController::class, 'delete']);
+
+        //ExamResult
+        Route::get('/examresultsbyst/{eid}/{sid}', [ExamResultController::class, 'resultsbyst']);
 
         // Leaves
         Route::get('/leaves/{id}', [LeaveController::class, 'index']);

@@ -19,6 +19,16 @@ class ExamResultController extends BaseController
         return ExamResultResource::collection(ExamResult::where('exam_id', '=', $eid)->where('subject_id', '=', $sid)->get());
     }
 
+    
+    /**
+     * Display a listing of the resource.
+     */
+    public function resultsbyst($eid, $sid)
+    {
+        //
+        return ExamResultResource::collection(ExamResult::where('exam_id', '=', $eid)->where('student_id', '=', $sid)->get());
+    }
+
     /**
      * Show the form for creating a new resource.
      */

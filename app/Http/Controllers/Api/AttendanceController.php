@@ -85,8 +85,8 @@ class AttendanceController extends BaseController
             $data = AttendanceResource::collection(Attendance::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('timing', 'LIKE', $slot)->where('attenddate', '=', $sDate)->get());
 
             $merged = collect($data)
-                ->groupBy('course_id', 'status')
-                ->map(function ($group, $courseId) {
+                ->groupBy('course_id', 'status', 'attenddate')
+                ->map(function ($group, $courseId, ) {
                     return [
                         'course_id' => $courseId,
                         'Absent' => $group->where('status', 'absent')->count(),
@@ -125,12 +125,12 @@ class AttendanceController extends BaseController
         // return $this->sendResponse($items, 'Attendance created successfully.');
 
         foreach ((array) $items as $item) {
-            if($request->date == 'today') {
+            if ($request->date == 'today') {
                 $adate = Carbon::today()->toDateString();
-            }else {
+            } else {
                 $adate = Carbon::yesterday()->toDateString();
             }
-            
+
             $main = [
                 'course_id' => $item["course_id"],
                 'student_id' => $item['student_id'],
@@ -142,10 +142,10 @@ class AttendanceController extends BaseController
                 'course_id' => $item["course_id"],
                 'student_id' => $item['student_id'],
                 'attenddate' => $adate,
-                'timing'   => $item['timing'],
+                'timing' => $item['timing'],
                 'status' => $item['status'] == 'present' ? 1 : 0,
             ];
-            $attends = Attendance::firstOrNew($main,$data);
+            $attends = Attendance::firstOrNew($main, $data);
             $attends->status = $item['status'] == 'present' ? 1 : 0;
             $attends->save();
         }
@@ -157,6 +157,37 @@ class AttendanceController extends BaseController
         } else {
             return $this->sendError('Error.', ['error' => 'error occured']);
         }
+    }
+
+
+    public function attendsbyst($sid, $week)
+    {
+        if ($week == 'this') {
+            $sDate = Carbon::today()->subDays(7)->toDateString();
+            $date = Carbon::today()->toDateString();
+        } else {
+            $sDate = Carbon::today()->subDays(14)->toDateString();
+            $date = Carbon::today()->subDays(7)->toDateString();
+        }
+        $data = AttendanceResource::collection(Attendance::
+            where('student_id', '=', $sid)
+            // ->where('timing', 'LIKE', $slot)
+            ->whereBetween('attenddate', [$sDate, $date])
+            ->get());
+        $finaldata = collect($data)
+            ->groupBy('attenddate') // Group by date
+            ->map(function ($items, $date) {
+                return [
+                    "date" => $date,
+                    "morning" => $items->where('timing', 'Morning')->first()['status'] ?? "",
+                    "afternoon" => $items->where('timing', 'Afternoon')->first()['status'] ?? "",
+                    "extra" => $items->where('timing', 'Extra')->first()['status'] ?? ""
+                ];
+            })->values()->all();
+
+        return $finaldata;
+
+
     }
 
     /**
