@@ -5,8 +5,10 @@ use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\HomeworkResource;
 use App\Models\Homework;
 use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManager;
 use Carbon\Carbon;
 
@@ -92,15 +94,67 @@ class HomeworkController extends BaseController
         //
         return HomeworkResource::collection(
             Homework::where('school_id', '=', $sid)
-            ->where('course_id', '=', $cid)
-            // ->where('subject_id', '=', $subid)
-            ->whereBetween('workdate', [Carbon::yesterday()->subDays(7)->toDateString(), Carbon::yesterday()->toDateString()])
-            // ->where('workdate', '<', Carbon::today()->toDateString())
-            ->orderBy('workdate', 'desc')
-            ->get())->map(function ($assignment) {
+                ->where('course_id', '=', $cid)
+                // ->where('subject_id', '=', $subid)
+                ->whereBetween('workdate', [Carbon::yesterday()->subDays(7)->toDateString(), Carbon::yesterday()->toDateString()])
+                // ->where('workdate', '<', Carbon::today()->toDateString())
+                ->orderBy('workdate', 'desc')
+                ->get()
+        )->map(function ($assignment) {
             return collect($assignment)->only(['id', 'subject', 'title', 'workdate']);
         })->groupBy('workdate');
 
+
+    }
+
+    public function tworkdata($sid, $cid, $date)
+    {
+        // $data = AttendanceResource::collection(Attendance::where('school_id', '=', $sid)->groupBy( 'course_id', 'status', )->select('course_id', 'status', DB::raw('count(*) as total', 'id'))->get())->map(function ($item) {
+        //     return [
+        //         // 'id',  => $item->id,
+        //         'course_id' => $item->course_id,
+        //         $item->status => $item->total,
+        //         // 'total' => $item->total,
+        //     ];
+        // });
+        $subjects = Subject::where('school_id', '=', $sid)->get();
+        $fdata = [];
+        if($date == 'today'){
+             $sDate = Carbon::today()->toDateString();
+        }else {
+             $sDate = Carbon::yesterday()->toDateString();
+        }
+
+        foreach ($subjects as $subject) {
+           
+            $homework = Homework::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('subject_id', '=', $subject->id)->where('workdate', '=', $sDate)->first();
+            if ($homework) {
+                $id = $homework->id;
+                $hwdata = DB::table('homework_data')->where('homework_id', $id)->get();
+                // return $hwdata;
+                $merged = collect($hwdata)
+                    ->groupBy([ 'status'])
+                    ->map(function ($group, $courseId ) use($subject, $cid) {
+                        $students = Student::where('course_id', '=', $cid)->count();
+                        return [
+                            'Subject' => $subject->name,
+                            'Done' => $group->where('status', 'done')->count(),
+                            'Not Done' => ($students - $group->where('status', 'done')->count()),
+                        ];
+                    })
+                    ->values();
+                // $fdata[] = $merged;
+
+                if (count($merged) > 0) {
+                    $fdata[] = $merged->collapse();
+                }
+
+            }
+
+
+
+        }
+        return $fdata;
 
     }
 
@@ -158,6 +212,33 @@ class HomeworkController extends BaseController
             // ->where('course_id', '=', $cid)
             // ->where('workdate', '=', Carbon::today()->toDateString())
             ->get());
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function workdone(Request $request)
+    {
+        // $work = Homework::find($$request->id);
+        $match = [
+            'homework_id' => $request->workid,
+            'student_id' => $request->studentId,
+        ];
+        $workdata = DB::table('homework_data')->updateOrInsert(
+            $match,
+            [
+                'school_id'   => $request->schoolId,
+                'homework_id' => $request->workid,
+                'student_id'  => $request->studentId,
+                'status'      => $request->status,
+            ]
+        );
+
+        if ($workdata) {
+            return $this->sendResponse('Success', 'Homework Status created successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
     }
 
     /**

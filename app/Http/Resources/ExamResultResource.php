@@ -23,6 +23,7 @@ class ExamResultResource extends JsonResource
             'subject_id' => $this->subject_id,
             'subject'    => $this->subject->name,
             'marks'      => $this->marks,
+            'grade'      => $this->grade,
           ];
     }
 }

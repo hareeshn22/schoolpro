@@ -19,7 +19,43 @@ class ExamResultController extends BaseController
         return ExamResultResource::collection(ExamResult::where('exam_id', '=', $eid)->where('subject_id', '=', $sid)->get());
     }
 
-    
+    /**
+     * Display a listing of the resource.
+     */
+    public function resultbyexam($eid)
+    {
+        //
+        $results = ExamResultResource::collection(ExamResult::where('exam_id', '=', $eid)->get());
+
+        // Convert to Laravel collection for easier manipulation
+        // $collection = collect($results);
+
+        // return $collection;
+        $customOrder = ["A+", "A", "B+", "B", "C", "D", "F"];
+
+
+        // Group by subject and grade, then count occurrences
+        $groupedData = collect($results)->groupBy('subject')->map(function ($subjectGroup) use ($customOrder) {
+            return [
+                "subject" => $subjectGroup->first()->subject->name, // Explicitly including subject name
+                "grades" => $subjectGroup->groupBy('grade')->map(function ($gradeGroup) {
+                    return [
+                        'grade' => $gradeGroup->first()->grade,
+                        'count' => $gradeGroup->count(),
+                    ];
+                })->values()->sortBy(function ($item) use ($customOrder) {
+                    return array_search($item['grade'], $customOrder);
+                })->values()->all(),
+
+            ];
+        })->values()->all();
+
+
+        return $groupedData;
+
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -47,7 +83,24 @@ class ExamResultController extends BaseController
         $results = $request->examResults;
 
         foreach ((array) $results as $item) {
-            
+            $marks = $item['marks'];
+          
+            if ($marks >= 90) {
+               $grade = 'A+';
+            } elseif ($marks >= 80) {
+                $grade = 'A';
+            } elseif ($marks >= 70) {
+               $grade = 'B+';
+            } elseif ($marks >= 60) {
+                $grade = 'B';
+            }elseif ($marks >= 50) {
+                $grade = 'C';
+            } elseif ($marks >= 35) {
+                $grade = 'D';
+            }else {
+                $grade = 'F';
+            }
+
             $main = [
                 'exam_id' => $item["exam_id"],
                 'student_id' => $item['student_id'],
@@ -58,11 +111,13 @@ class ExamResultController extends BaseController
                 'exam_id' => $item["exam_id"],
                 'student_id' => $item['student_id'],
                 'subject_id' => $item["subject_id"],
-                'marks'   => $item['marks'],
+                'marks' => $item['marks'],
+                'grade' => $grade,
             ];
 
-            $results = ExamResult::firstOrNew($main,$data);
+            $results = ExamResult::firstOrNew($main, $data);
             $results->marks = $item['marks'];
+            $results->grade = $grade;
             $results->save();
         }
 

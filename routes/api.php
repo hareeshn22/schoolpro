@@ -84,6 +84,7 @@ Route::prefix('1')->group(function () {
         // Attendance
         Route::get('/attends/{sid}/{cid}', [AttendanceController::class, 'index']);
         Route::get('/attendsbyc/{sid}/{cid}/{slot}', [AttendanceController::class, 'attendsbyc']);
+        Route::get('/wattendsbyc/{sid}/{cid}/{slot}', [AttendanceController::class, 'wattendsbyc']);
         Route::get('/attends/{id}', [AttendanceController::class, 'show']);
         Route::post('/storeattend', [AttendanceController::class, 'store']);
         Route::post('/updateattend', [AttendanceController::class, 'update']);
@@ -91,7 +92,7 @@ Route::prefix('1')->group(function () {
 
         // Homework
         Route::get('/work/{sid}/{cid}', [HomeworkController::class, 'index']);
-        Route::get('/workbyc/{sid}/{cid}', [HomeworkController::class, 'workbyc']);
+        Route::get('/tworkdata/{sid}/{cid}/{date}', [HomeworkController::class, 'tworkdata']);
         Route::get('/work/{id}', [HomeworkController::class, 'show']);
         Route::post('/storework', [HomeworkController::class, 'store']);
         Route::post('/updatework', [HomeworkController::class, 'update']);
@@ -104,6 +105,10 @@ Route::prefix('1')->group(function () {
         Route::post('/storeexam', [ExamController::class, 'store']);
         Route::post('/updateexam', [ExamController::class, 'update']);
         Route::get('/delexam/{id}', [ExamController::class, 'delete']);
+
+        // ExamResult
+        Route::get('/examresults/{eid}/{sid}', [ExamResultController::class, 'index']);
+        Route::get('/resultsbyexam/{eid}/', [ExamResultController::class, 'resultbyexam']);
 
         // Leaves
         Route::get('/leaves/{id}', [LeaveController::class, 'index']);
@@ -186,7 +191,7 @@ Route::prefix('1')->group(function () {
         // Route::get('/studentdel/{id}', [StudentController::class, 'delete']);
         // Route::post('/studentreport', [StudentController::class, 'report']);
 
-       
+
 
         // Subjects
         Route::get('/subjects/{id}', [SubjectController::class, 'index']);
@@ -226,7 +231,7 @@ Route::prefix('1')->group(function () {
         Route::get('/exams/{sid}/{cid}', [ExamController::class, 'index']);
         // Route::get('/attendsbyc/{id}', [ExamController::class, 'villagebyd']);
         Route::get('/exam/{id}', [ExamController::class, 'show']);
-        
+
         // Route::post('/updateexam', [ExamController::class, 'update']);
         // Route::get('/delexam/{id}', [ExamController::class, 'delete']);
 
@@ -283,7 +288,7 @@ Route::prefix('1')->group(function () {
         // Route::post('/updateperiod', [PeriodController::class, 'update']);
         // Route::get('/delperiod/{id}', [PeriodController::class, 'delete']);
 
-    
+
 
         // // Hospital
         // Route::get('/hospital/{id}', [HospitalController::class, 'hospital']);
@@ -351,6 +356,7 @@ Route::prefix('1')->group(function () {
         Route::get('/worktoday/{sid}/{cid}', [HomeworkController::class, 'worktoday']);
         Route::get('/workweek/{sid}/{cid}', [HomeworkController::class, 'workweek']);
         Route::get('/work/{id}', [HomeworkController::class, 'show']);
+        Route::post('/workdone/{id}', [HomeworkController::class, 'workdone']);
         // Route::post('/storework', [HomeworkController::class, 'store']);
         // Route::post('/updatework', [HomeworkController::class, 'update']);
         // Route::get('/delwork/{id}', [HomeworkController::class, 'delete']);

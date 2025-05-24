@@ -22,9 +22,10 @@ class ScheduleController extends BaseController
         $result = collect($datar)->map(function ($items, $day) {
             return collect($items)->map(function ($item) {
                 return [
-                    "id"      => $item['id'],
-                    "subject" => $item['subject']['name'],
-                    "period"  => $item['period']['start_time'],
+                    "id"         => $item['id'],
+                    "subject"    => $item['subject']['name'],
+                    "startTime"  => $item['period']['start_time'],
+                    "endTime"    => $item['period']['end_time'],
                 ];
             })->toArray();
         })->toArray();
