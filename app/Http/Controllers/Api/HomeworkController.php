@@ -27,7 +27,7 @@ class HomeworkController extends BaseController
 
     }
 
-    public function workbyc($sid, $cid, $subjid)
+    public function workdonehbys($sid, $cid, $subjid)
     {
         // $data = AttendanceResource::collection(Attendance::where('school_id', '=', $sid)->groupBy( 'course_id', 'status', )->select('course_id', 'status', DB::raw('count(*) as total', 'id'))->get())->map(function ($item) {
         //     return [
@@ -41,21 +41,27 @@ class HomeworkController extends BaseController
         for ($i = 0; $i < 6; $i++) {
             $sDate = Carbon::today()->subDays($i);
             $data = HomeworkResource::collection(Homework::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('subject_id', '=', $subjid)->where('workdate', '=', $sDate)->get());
+            foreach ($data as $item) {
+                $id = $item->id;
+                $hwdata = DB::table('homework_data')->where('homework_id', $id)->get();
+                $workdate = $item->workdate;
+                $merged = collect($hwdata)
+                    ->groupBy([ 'status'])
+                    ->map(function ($group) use ($id,$workdate, $cid) {
+                        $students = Student::where('course_id', '=', $cid)->count();
+                        return [
+                            'id' => $id,
+                            'workdate' => $workdate,
+                            'Done' => $group->where('status', 'done')->count(),
+                            'Not Done' => ($students - $group->where('status', 'done')->count()),
+                        ];
+                    })
+                    ->values();
 
-            $merged = collect($data)
-                ->groupBy(['course_id', 'status'])
-                ->map(function ($group, $courseId) {
-                    $students = Student::where('course_id', '=', $courseId)->count();
-                    return [
-                        'course_id' => $courseId,
-                        'Done' => $group->where('status', 'done')->count(),
-                        'Not Done' => ($students - $group->where('status', 'done')->count()),
-                    ];
-                })
-                ->values();
+                if (count($merged) > 0) {
+                    $fdata[] = $merged->collapse();
+                }
 
-            if (count($merged) > 0) {
-                $fdata[] = $merged->collapse();
             }
 
 
@@ -63,6 +69,26 @@ class HomeworkController extends BaseController
         return $fdata;
 
     }
+
+    public function notdoneStudents($id)
+    {
+        $homework = Homework::find($id);
+        if (!$homework) {
+            return $this->sendError('Homework not found.');
+        }
+
+        $hwdata = DB::table('homework_data')->where('homework_id', $id)->get();
+        $students = Student::where('course_id', '=', $homework->course_id)->get();
+
+        $notDoneStudents = $students->filter(function ($student) use ($hwdata) {
+            return !$hwdata->contains('student_id', $student->id);
+        })->values();
+
+        // return $this->sendResponse($notDoneStudents, 'Not done students retrieved successfully.');
+        return $notDoneStudents;
+    }
+
+
 
     /**
      * Display a listing of the resource.
@@ -119,22 +145,22 @@ class HomeworkController extends BaseController
         // });
         $subjects = Subject::where('school_id', '=', $sid)->get();
         $fdata = [];
-        if($date == 'today'){
-             $sDate = Carbon::today()->toDateString();
-        }else {
-             $sDate = Carbon::yesterday()->toDateString();
+        if ($date == 'today') {
+            $sDate = Carbon::today()->toDateString();
+        } else {
+            $sDate = Carbon::yesterday()->toDateString();
         }
 
         foreach ($subjects as $subject) {
-           
+
             $homework = Homework::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('subject_id', '=', $subject->id)->where('workdate', '=', $sDate)->first();
             if ($homework) {
                 $id = $homework->id;
                 $hwdata = DB::table('homework_data')->where('homework_id', $id)->get();
                 // return $hwdata;
                 $merged = collect($hwdata)
-                    ->groupBy([ 'status'])
-                    ->map(function ($group, $courseId ) use($subject, $cid) {
+                    ->groupBy(['status'])
+                    ->map(function ($group, $courseId) use ($subject, $cid) {
                         $students = Student::where('course_id', '=', $cid)->count();
                         return [
                             'Subject' => $subject->name,
@@ -225,17 +251,17 @@ class HomeworkController extends BaseController
             'student_id' => $request->studentId,
         ];
         $workdata = DB::table('homework_data')->updateOrInsert(
-            $match,
+            // $match,
             [
-                'school_id'   => $request->schoolId,
+                'school_id' => $request->schoolId,
                 'homework_id' => $request->workid,
-                'student_id'  => $request->studentId,
-                'status'      => $request->status,
+                'student_id' => $request->studentId,
+                'status' => $request->status,
             ]
         );
 
         if ($workdata) {
-            return $this->sendResponse('Success', 'Homework Status created successfully.');
+            return $this->sendResponse('Success', 'Homework Done successfully.');
         } else {
             return $this->sendError('Error.', ['error' => 'error occured']);
         }

@@ -32,6 +32,20 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         //
+        $news = News::create([
+            'school_id' => $request->schoolId,
+            'category' => $request->category,
+            'title' => $request->title,
+            'videolink' => $request->videolink,
+        ]);
+
+
+        if ($news) {
+            return $this->sendResponse('Success', 'News created successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
     }
 
     /**

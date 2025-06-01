@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('notices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('school_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('student_id')->nullable()->constrained()->onUpdate('SET NULL')->onDelete('SET NULL'); 
+            $table->enum('user_type', ['student', 'teacher']);
             $table->string('notice');
             $table->timestamps();
         });

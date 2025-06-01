@@ -1,12 +1,12 @@
 <?php
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\LeaveResource;
 use App\Models\Leave;
 use Illuminate\Http\Request;
 
-class LeaveController extends Controller
+class LeaveController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +15,26 @@ class LeaveController extends Controller
     {
         //
         return LeaveResource::collection(Leave::where('school_id', '=', $id)->get());
+
+    }
+
+    /**
+     * Display a leaves of the teacher.
+     */
+    public function tleaves($id)
+    {
+        //
+        return LeaveResource::collection(Leave::where('teacher_id', '=', $id)->get());
+
+    }
+
+    /**
+     * Display a leaves of the teacher.
+     */
+    public function sleaves($id)
+    {
+        //
+        return LeaveResource::collection(Leave::where('student_id', '=', $id)->get());
 
     }
 
@@ -34,21 +54,6 @@ class LeaveController extends Controller
     public function create()
     {
         //
-        $leave = Leave::create([
-            'school_id'  => $request->schoolid,
-            'student_id' => $request->studentid,
-            'teacher_id' => $request->teacherid,
-            'user_type'  => $request->usertype,
-            'leavedate'  => $request->leavedate,
-            'reason'     => $request->reason,
-        ]);
-
-        if ($leave) {
-            return $this->sendResponse('Success', 'Leave created successfully.');
-        } else {
-            return $this->sendError('Error.', ['error' => 'error occured']);
-        }
-
     }
 
     /**
@@ -56,6 +61,31 @@ class LeaveController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->user_type == 'student') {
+            $leave = Leave::create([
+                'school_id' => $request->schoolId,
+                'student_id' => $request->studentId,
+                'user_type' => $request->usertype,
+                'leavedate' => $request->leavedate,
+                'reason' => $request->reason,
+            ]);
+
+        } else {
+            $leave = Leave::create([
+                'school_id' => $request->schoolId,
+                'teacher_id' => $request->teacherId,
+                'user_type' => $request->usertype,
+                'leavedate' => $request->leavedate,
+                'reason' => $request->reason,
+            ]);
+        }
+
+
+        if ($leave) {
+            return $this->sendResponse('Success', 'Leave created successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
 
     }
 
@@ -83,7 +113,7 @@ class LeaveController extends Controller
         $leave = Leave::find($request->id);
 
         $leave->school_id = $request->schoolid;
-        $leave->name      = $request->name;
+        $leave->name = $request->name;
 
         if ($leave->save()) {
             return $this->sendResponse('Success', 'Leave Updated successfully.');

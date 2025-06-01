@@ -84,18 +84,19 @@ class ExamResultController extends BaseController
 
         foreach ((array) $results as $item) {
             $marks = $item['marks'];
+            $permarks = ($marks/$exam->maxmarks) * 100;
           
-            if ($marks >= 90) {
+            if ($permarks >= 90) {
                $grade = 'A+';
-            } elseif ($marks >= 80) {
+            } elseif ($permarks >= 80) {
                 $grade = 'A';
-            } elseif ($marks >= 70) {
+            } elseif ($permarks >= 70) {
                $grade = 'B+';
-            } elseif ($marks >= 60) {
+            } elseif ($permarks >= 60) {
                 $grade = 'B';
-            }elseif ($marks >= 50) {
+            }elseif ($permarks >= 50) {
                 $grade = 'C';
-            } elseif ($marks >= 35) {
+            } elseif ($permarks >= 35) {
                 $grade = 'D';
             }else {
                 $grade = 'F';

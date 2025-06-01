@@ -85,10 +85,11 @@ class AttendanceController extends BaseController
             $data = AttendanceResource::collection(Attendance::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('timing', 'LIKE', $slot)->where('attenddate', '=', $sDate)->get());
 
             $merged = collect($data)
-                ->groupBy('course_id', 'status', 'attenddate')
+                ->groupBy( 'course_id','status', )
                 ->map(function ($group, $courseId, ) {
                     return [
-                        'course_id' => $courseId,
+                        // 'course_id' => $courseId,
+                        'attenddate' => $group->first()->attenddate,
                         'Absent' => $group->where('status', 'absent')->count(),
                         'Present' => $group->where('status', 'present')->count(),
                     ];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\ScheduleResource;
 use App\Models\Schedule;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class ScheduleController extends BaseController
@@ -83,6 +84,44 @@ class ScheduleController extends BaseController
 
     }
 
+     /**
+     * Display a listing of the resource.
+     */
+    public function teachtables($sid, $cid)
+    {
+        //
+        $data = ScheduleResource::collection(Schedule::where('school_id', '=', $sid)->where('subject_id', '=', $cid)->get());
+
+        // Convert array to collection and group by "day"
+        $datar = collect($data)->groupBy('day');
+
+        $result = collect($datar)->map(function ($items ) {
+            return collect($items)->map(function ($item ) {
+                return [
+                    "id"         => $item['id'],
+                    'courseid'   => $item['course_id'],
+                    'course'     => Course::find($item['course_id'])->name,
+                    // "subject"    => $item['subject']['name'],
+                    "startTime"  => $item['period']['start_time'],
+                    "endTime"    => $item['period']['end_time'],
+                ];
+            })->toArray();
+        })->toArray();
+
+        $output = [];
+
+        foreach ($result as $day => $data) {
+            $output[] = [
+                "day"  => $day,
+                "data" => $data,
+            ];
+        }
+
+        return $output;
+
+       
+
+    }
     /**
      * Show the form for creating a new resource.
      */

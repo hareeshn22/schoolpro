@@ -136,7 +136,7 @@ Route::prefix('1')->group(function () {
 
         // Notice
         Route::get('/notices/{id}', [NoticeController::class, 'index']);
-        Route::get('/noticebys/{id}', [NoticeController::class, 'villagebyd']);
+        // Route::get('/noticebys/{id}', [NoticeController::class, 'villagebyd']);
         // Route::get('/news/{id}', [NewsController::class, 'show']);
         Route::post('/storenotice', [NoticeController::class, 'store']);
         Route::post('/updatenotice', [NewsController::class, 'update']);
@@ -191,6 +191,9 @@ Route::prefix('1')->group(function () {
         // Route::get('/studentdel/{id}', [StudentController::class, 'delete']);
         // Route::post('/studentreport', [StudentController::class, 'report']);
 
+        // Teacher
+        Route::get('/teacher/{id}', [TeacherController::class, 'show']);
+
 
 
         // Subjects
@@ -220,11 +223,14 @@ Route::prefix('1')->group(function () {
 
         // Homework
         Route::get('/work/{sid}/{cid}', [HomeworkController::class, 'index']);
-        Route::get('/workbyc/{sid}/{cid}/{subjid}', [HomeworkController::class, 'workbyc']);
+        Route::get('/workdonehbys/{sid}/{cid}/{subjid}', [HomeworkController::class, 'workdonehbys']);
         Route::get('/homework/{id}', [HomeworkController::class, 'show']);
         Route::get('/wdata/{sid}/{cid}/{subid}', [HomeworkController::class, 'wdata']);
         Route::post('/storework', [HomeworkController::class, 'store']);
         Route::post('/updatework', [HomeworkController::class, 'update']);
+
+        Route::get('/notdoneStudents/{id}', [HomeworkController::class, 'notdoneStudents']);
+
         // Route::get('/delwork/{id}', [HomeworkController::class, 'delete']);
 
         // Exam
@@ -240,7 +246,8 @@ Route::prefix('1')->group(function () {
         Route::post('/storeresult', [ExamResultController::class, 'store']);
 
         // Leaves
-        Route::get('/leaves/{id}', [LeaveController::class, 'index']);
+        Route::get('/tleaves/{id}', [LeaveController::class, 'tleaves']);
+        Route::get('/sleaves/{id}', [LeaveController::class, 'sleaves']);
         Route::get('/leavesbyc/{id}/{cate}', [LeaveController::class, 'leavesbyc']);
         Route::get('/leave/{id}', [LeaveController::class, 'show']);
         Route::post('/storeleave', [LeaveController::class, 'store']);
@@ -251,6 +258,8 @@ Route::prefix('1')->group(function () {
         Route::get('/timetables/{sid}/{cid}', [ScheduleController::class, 'index']);
         Route::get('/timetable/{sid}/{cid}/{day}', [ScheduleController::class, 'timebyday']);
         Route::get('/time/{id}', [ScheduleController::class, 'show']);
+
+        Route::get('/teachtables/{sid}/{cid}', [ScheduleController::class, 'teachtables']);
         // Route::post('/storetime', [ScheduleController::class, 'store']);
         // Route::post('/updatetime', [ScheduleController::class, 'update']);
         // Route::get('/deltime/{id}', [ScheduleController::class, 'delete']);
@@ -266,6 +275,8 @@ Route::prefix('1')->group(function () {
         // Notice
         Route::get('/notices/{id}', [NoticeController::class, 'index']);
         Route::get('/noticebys/{id}', [NoticeController::class, 'villagebyd']);
+        Route::get('/tnotices/{id}', [NoticeController::class, 'tnotices']);
+        Route::get('/tnotice/{id}', [NoticeController::class, 'tnotice']);
         // Route::get('/news/{id}', [NewsController::class, 'show']);
         Route::post('/storenotice', [NoticeController::class, 'store']);
         Route::post('/updatenotice', [NewsController::class, 'update']);
@@ -360,6 +371,8 @@ Route::prefix('1')->group(function () {
         // Route::post('/storework', [HomeworkController::class, 'store']);
         // Route::post('/updatework', [HomeworkController::class, 'update']);
         // Route::get('/delwork/{id}', [HomeworkController::class, 'delete']);
+
+        Route::get('/notdonestudents/{id}', [HomeworkController::class, 'notdoneStudents']);
 
         // Exam
         Route::get('/exams/{sid}/{cid}', [ExamController::class, 'index']);
