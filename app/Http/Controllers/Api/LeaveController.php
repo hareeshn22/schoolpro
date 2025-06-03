@@ -92,9 +92,9 @@ class LeaveController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(Leave $leave)
+    public function show($id)
     {
-        //
+        return LeaveResource::collection(Leave::where('id', '=', $id)->get());
     }
 
     /**

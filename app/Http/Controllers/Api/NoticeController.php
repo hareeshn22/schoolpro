@@ -32,7 +32,13 @@ class NoticeController extends BaseController
     public function tnotices($id)
     {
         //
-        return NoticeResource::collection(Notice::where('teacher_id', '=', $id)->get());
+        return NoticeResource::collection(Notice::where('user_type', '=', 'teacher')->get());
+
+    }
+    public function snotice($id)
+    {
+        //
+        return Notice::where('student_id', '=', $id)->first();
 
     }
     public function tnotice($id)
@@ -86,6 +92,36 @@ class NoticeController extends BaseController
                 'notice' => $request->notice,
             ]);
         }
+
+
+        if ($notice) {
+            return $this->sendResponse('Success', 'Notice created successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function storenotices(Request $request)
+    {
+        //
+        if ($request->usertype == 'student') {
+            $items = $request->notices;
+            // if ($items = $request->notices) {
+            foreach ((array) $items as $item) {
+                $notice = Notice::create([
+                    'school_id'  => $item['school_id'],
+                    'student_id' => $item['student_id'],
+                    'user_type'  => $request->usertype,
+                    'notice'     => $item['notice'],
+                ]);
+            }
+            // }
+
+        } 
 
 
         if ($notice) {

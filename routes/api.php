@@ -139,6 +139,7 @@ Route::prefix('1')->group(function () {
         // Route::get('/noticebys/{id}', [NoticeController::class, 'villagebyd']);
         // Route::get('/news/{id}', [NewsController::class, 'show']);
         Route::post('/storenotice', [NoticeController::class, 'store']);
+        Route::post('/storenotices', [NoticeController::class, 'storenotices']);
         Route::post('/updatenotice', [NewsController::class, 'update']);
         Route::get('/delnotice/{id}', [NewsController::class, 'delete']);
 
@@ -410,6 +411,7 @@ Route::prefix('1')->group(function () {
         // Route::get('/delnews/{id}', [NewsController::class, 'delete']);
 
         // Notice
+        Route::get('/snotice/{id}', [NoticeController::class, 'snotice']);
         Route::get('/notices/{id}', [NoticeController::class, 'index']);
         Route::get('/noticebys/{id}', [NoticeController::class, 'villagebyd']);
         // Route::get('/news/{id}', [NewsController::class, 'show']);
