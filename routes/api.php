@@ -389,6 +389,7 @@ Route::prefix('1')->group(function () {
         // Leaves
         Route::get('/leaves/{id}', [LeaveController::class, 'index']);
         Route::get('/leavesbyc/{id}/{cate}', [LeaveController::class, 'leavesbyc']);
+        Route::get('/sleaves/{id}', [LeaveController::class, 'sleaves']);
         Route::get('/leave/{id}', [LeaveController::class, 'show']);
         // Route::post('/storeleave', [LeaveController::class, 'store']);
         // Route::post('/updateleave', [LeaveController::class, 'update']);
