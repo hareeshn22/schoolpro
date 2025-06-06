@@ -33,9 +33,17 @@ class StudentController extends BaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function studentsinfo($cid)
     {
-        //
+        //  return StudentResource::collection();
+        $students = Student::where('course_id', '=', $cid)->count();
+        $mstudents = Student::where('course_id', '=', $cid)->where('gender', '=', 'male')->count();
+        $fstudents = Student::where('course_id', '=', $cid)->where('gender', '=', 'female')->count();
+        $data['total'] = $students;
+        $data['boys']  = $mstudents;
+        $data['girls'] = $fstudents;
+
+        return response()->json($data);
     }
 
     /**

@@ -51,6 +51,7 @@ Route::prefix('1')->group(function () {
         // Students
         Route::get('/students/{id}', [StudentController::class, 'index']);
         Route::get('/students/{sid}/{cid}', [StudentController::class, 'studentsbys']);
+        Route::get('/studentsinfo/{cid}', [StudentController::class, 'studentsinfo']);
         Route::get('/student/{id}', [StudentController::class, 'show']);
         Route::post('/storestudent', [StudentController::class, 'store']);
         // Route::post('/storestudent', [StudentController::class, 'storeMulti']);
