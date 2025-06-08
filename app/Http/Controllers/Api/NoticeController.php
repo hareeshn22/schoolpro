@@ -29,7 +29,7 @@ class NoticeController extends BaseController
     /**
      * Display a leaves of the teacher.
      */
-    public function tnotices($id)
+    public function tnotices()
     {
         //
         return NoticeResource::collection(Notice::where('user_type', '=', 'teacher')->get());
@@ -38,13 +38,13 @@ class NoticeController extends BaseController
     public function snotice($id)
     {
         //
-        return Notice::where('student_id', '=', $id)->first();
+        return Notice::where('student_id', '=', $id)->orderBy('id', 'DESC')->first();
 
     }
     public function tnotice($id)
     {
         //
-        return Notice::where('user_type', '=', 'teacher')->first();
+        return Notice::where('user_type', '=', 'teacher')->orderBy('id', 'DESC')->first();
 
     }
 

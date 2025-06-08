@@ -277,7 +277,7 @@ Route::prefix('1')->group(function () {
         // Notice
         Route::get('/notices/{id}', [NoticeController::class, 'index']);
         Route::get('/noticebys/{id}', [NoticeController::class, 'villagebyd']);
-        Route::get('/tnotices/{id}', [NoticeController::class, 'tnotices']);
+        Route::get('/tnotices', [NoticeController::class, 'tnotices']);
         Route::get('/tnotice/{id}', [NoticeController::class, 'tnotice']);
         // Route::get('/news/{id}', [NewsController::class, 'show']);
         Route::post('/storenotice', [NoticeController::class, 'store']);
@@ -392,9 +392,9 @@ Route::prefix('1')->group(function () {
         Route::get('/leavesbyc/{id}/{cate}', [LeaveController::class, 'leavesbyc']);
         Route::get('/sleaves/{id}', [LeaveController::class, 'sleaves']);
         Route::get('/leave/{id}', [LeaveController::class, 'show']);
-        // Route::post('/storeleave', [LeaveController::class, 'store']);
-        // Route::post('/updateleave', [LeaveController::class, 'update']);
-        // Route::get('/leavedel/{id}', [LeaveController::class, 'delete']);
+        Route::post('/storeleave', [LeaveController::class, 'store']);
+        Route::post('/updateleave', [LeaveController::class, 'update']);
+        Route::get('/leavedel/{id}', [LeaveController::class, 'delete']);
 
         // Schedule
         Route::get('/timetables/{sid}/{cid}', [ScheduleController::class, 'index']);
@@ -413,6 +413,7 @@ Route::prefix('1')->group(function () {
         // Route::get('/delnews/{id}', [NewsController::class, 'delete']);
 
         // Notice
+        Route::get('/snotices/{id}', [NoticeController::class, 'snotices']);
         Route::get('/snotice/{id}', [NoticeController::class, 'snotice']);
         Route::get('/notices/{id}', [NoticeController::class, 'index']);
         Route::get('/noticebys/{id}', [NoticeController::class, 'villagebyd']);

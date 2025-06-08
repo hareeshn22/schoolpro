@@ -61,7 +61,7 @@ class LeaveController extends BaseController
      */
     public function store(Request $request)
     {
-        if ($request->user_type == 'student') {
+        if ($request->usertype == 'student') {
             $leave = Leave::create([
                 'school_id' => $request->schoolId,
                 'student_id' => $request->studentId,
@@ -112,8 +112,8 @@ class LeaveController extends BaseController
     {
         $leave = Leave::find($request->id);
 
-        $leave->school_id = $request->schoolid;
-        $leave->name = $request->name;
+        $leave->leavedate = $request->leavedate;
+        $leave->reason = $request->reason;
 
         if ($leave->save()) {
             return $this->sendResponse('Success', 'Leave Updated successfully.');
@@ -126,8 +126,14 @@ class LeaveController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Leave $leave)
+    public function delete($id)
     {
-        //
+         $leave = Leave::find($id);
+
+        if ($leave->delete()) {
+            return $this->sendResponse('Success', 'Leave deleted successfully.');
+        } else {
+            return $this->sendError('Error', ['error' => 'error occured']);
+        }
     }
 }
