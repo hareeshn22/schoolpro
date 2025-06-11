@@ -78,7 +78,7 @@ class HomeworkController extends BaseController
         }
 
         $hwdata = DB::table('homework_data')->where('homework_id', $id)->get();
-        $students = Student::where('course_id', '=', $homework->course_id)->get();
+        $students = Student::select('id', 'first_name', 'last_name', 'roll_no')->where('course_id', '=', $homework->course_id)->get();
 
         $notDoneStudents = $students->filter(function ($student) use ($hwdata) {
             return !$hwdata->contains('student_id', $student->id);

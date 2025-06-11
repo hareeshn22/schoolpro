@@ -28,8 +28,8 @@ class Attendance extends Model
         return $value ? 'present' : 'absent';
     }
 
-    public function getStatusTextAttribute()
-    {
-        return $this->attributes['status'] ? 'Present' : 'Absent';
-    }
+//     public function getStatusTextAttribute()
+//     {
+//         return $this->attributes['status'] ? 'Present' : 'Absent';
+//     }
 }

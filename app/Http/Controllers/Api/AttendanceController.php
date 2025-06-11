@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\AttendanceResource;
 use App\Models\Attendance;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -81,11 +82,11 @@ class AttendanceController extends BaseController
         // $startDate = Carbon::today()->subDays(8);
         $fdata = [];
         for ($i = 0; $i < 6; $i++) {
-            $sDate = Carbon::yesterday()->subDays($i);
+            $sDate = Carbon::today()->subDays($i);
             $data = AttendanceResource::collection(Attendance::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('timing', 'LIKE', $slot)->where('attenddate', '=', $sDate)->get());
 
             $merged = collect($data)
-                ->groupBy( 'course_id','status', )
+                ->groupBy('course_id', 'status', )
                 ->map(function ($group, $courseId, ) {
                     return [
                         // 'course_id' => $courseId,
@@ -189,6 +190,27 @@ class AttendanceController extends BaseController
         return $finaldata;
 
 
+    }
+
+    public function absentStudents($cid, $slot, $date)
+    {
+        // $homework = Homework::find($id);
+        // if (!$homework) {
+        //     return $this->sendError('Homework not found.');
+        // }
+
+         $data = Attendance::where('course_id', '=', $cid)->where('timing', 'LIKE', $slot)->where('attenddate', '=', $date)->where('status', true)->get();
+
+
+        // $hwdata = DB::table('homework_data')->where('homework_id', $id)->get();
+        $students = Student::select('id', 'first_name', 'last_name', 'roll_no')->where('course_id', '=', $cid)->get();
+
+        $absentStudents = $students->filter(function ($student) use ($data) {
+            return !$data->contains('student_id', $student->id);
+        })->values();
+
+        // return $this->sendResponse($notDoneStudents, 'Not done students retrieved successfully.');
+        return $absentStudents;
     }
 
     /**

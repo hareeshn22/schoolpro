@@ -223,6 +223,8 @@ Route::prefix('1')->group(function () {
         // Route::post('/updateattend', [AttendanceController::class, 'update']);
         // Route::get('/delattend/{id}', [AttendanceController::class, 'delete']);
 
+        Route::get('/absentStudents/{cid}/{slot}/{date}', [AttendanceController::class, 'absentStudents']);
+
         // Homework
         Route::get('/work/{sid}/{cid}', [HomeworkController::class, 'index']);
         Route::get('/workdonehbys/{sid}/{cid}/{subjid}', [HomeworkController::class, 'workdonehbys']);
