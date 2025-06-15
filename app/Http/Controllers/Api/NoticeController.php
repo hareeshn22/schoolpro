@@ -23,16 +23,16 @@ class NoticeController extends BaseController
     public function snotices($id)
     {
         //
-        return NoticeResource::collection(Notice::where('student_id', '=', $id)->get());
+        return NoticeResource::collection(Notice::where('student_id', '=', $id)->orderBy('id', 'DESC')->get());
 
     }
     /**
      * Display a leaves of the teacher.
      */
-    public function tnotices()
+    public function tnotices($id)
     {
         //
-        return NoticeResource::collection(Notice::where('user_type', '=', 'teacher')->get());
+        return NoticeResource::collection(Notice::where('school_id', '=', $id)->where('user_type', '=', 'teacher')->orderBy('id', 'DESC')->get());
 
     }
     public function snotice($id)
@@ -44,7 +44,14 @@ class NoticeController extends BaseController
     public function tnotice($id)
     {
         //
-        return Notice::where('user_type', '=', 'teacher')->orderBy('id', 'DESC')->first();
+        return Notice::where('school_id', '=', $id)->where('user_type', '=', 'teacher')->orderBy('id', 'DESC')->first();
+
+    }
+
+    public function allsnotices($id)
+    {
+        //
+        return NoticeResource::collection(Notice::where('school_id', '=', $id)->where('user_type', '=', 'student')->orderBy('id', 'DESC')->get());
 
     }
 
@@ -158,8 +165,16 @@ class NoticeController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Notice $notice)
+    public function delete($id)
     {
-        //
+        $notice = Notice::find($id);
+
+        if ($notice->delete()) {
+            return $this->sendResponse('Success', 'Notice deleted successfully.');
+        } else {
+            return $this->sendError('Error', ['error' => 'error occured']);
+        }
+
     }
+
 }

@@ -36,16 +36,19 @@ class AttendanceController extends BaseController
         $data = AttendanceResource::collection(Attendance::where('school_id', '=', $sid)->where('course_id', '=', $cid)->where('timing', 'LIKE', $slot)->where('attenddate', '=', Carbon::today()->toDateString())->get());
 
         $merged = collect($data)
-            ->groupBy('course_id', 'status')
-            ->map(function ($group, $courseId) {
-                return [
-                    'course_id' => $courseId,
-                    'Absent' => $group->where('status', 'absent')->count(),
-                    'Present' => $group->where('status', 'present')->count(),
-                ];
-            })
-            ->values()
-            ->toArray();
+                ->groupBy('course_id', 'status', )
+                ->map(function ($group, $courseId, ) {
+                    return [
+                        // 'course_id' => $courseId,
+                        'attenddate' => $group->first()->attenddate,
+                        'Absent' => $group->where('status', 'absent')->count(),
+                        'Present' => $group->where('status', 'present')->count(),
+                    ];
+                })
+                ->values();
+            if (count($merged) > 0) {
+                $fdata[] = $merged->collapse();
+            }
         return $merged;
 
         // return Attendance::where('school_id', '=', $sid)

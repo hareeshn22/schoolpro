@@ -36,17 +36,28 @@ class ExamResultController extends BaseController
 
         // Group by subject and grade, then count occurrences
         $groupedData = collect($results)->groupBy('subject')->map(function ($subjectGroup) use ($customOrder) {
+            $gradesCount = $subjectGroup->groupBy('grade')->map(function ($gradeGroup) {
+                return [
+                    'grade' => $gradeGroup->first()->grade,
+                    'count' => $gradeGroup->count(),
+                ];
+            })->all();
+
+            // Ensure missing grades are set to zero
+            foreach ($customOrder as $grade) {
+                if (!isset($gradesCount[$grade])) {
+                    $gradesCount[$grade] = [
+                        'grade' => $grade,
+                        'count' => 0,
+                    ];
+                }
+            }
+
             return [
                 "subject" => $subjectGroup->first()->subject->name, // Explicitly including subject name
-                "grades" => $subjectGroup->groupBy('grade')->map(function ($gradeGroup) {
-                    return [
-                        'grade' => $gradeGroup->first()->grade,
-                        'count' => $gradeGroup->count(),
-                    ];
-                })->values()->sortBy(function ($item) use ($customOrder) {
+                "grades" => collect($gradesCount)->values()->sortBy(function ($item) use ($customOrder) {
                     return array_search($item['grade'], $customOrder);
                 })->values()->all(),
-
             ];
         })->values()->all();
 
@@ -84,21 +95,21 @@ class ExamResultController extends BaseController
 
         foreach ((array) $results as $item) {
             $marks = $item['marks'];
-            $permarks = ($marks/$exam->maxmarks) * 100;
-          
+            $permarks = ($marks / $exam->maxmarks) * 100;
+
             if ($permarks >= 90) {
-               $grade = 'A+';
+                $grade = 'A+';
             } elseif ($permarks >= 80) {
                 $grade = 'A';
             } elseif ($permarks >= 70) {
-               $grade = 'B+';
+                $grade = 'B+';
             } elseif ($permarks >= 60) {
                 $grade = 'B';
-            }elseif ($permarks >= 50) {
+            } elseif ($permarks >= 50) {
                 $grade = 'C';
             } elseif ($permarks >= 35) {
                 $grade = 'D';
-            }else {
+            } else {
                 $grade = 'F';
             }
 

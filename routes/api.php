@@ -137,12 +137,16 @@ Route::prefix('1')->group(function () {
 
         // Notice
         Route::get('/notices/{id}', [NoticeController::class, 'index']);
+        Route::get('/tnotices/{id}', [NoticeController::class, 'tnotices']);
+        Route::get('/snotices/{id}', [NoticeController::class, 'snotices']);
+        Route::get('/snotices', [NoticeController::class, 'snotices']);
+        Route::get('/allsnotices/{id}', [NoticeController::class, 'allsnotices']);
         // Route::get('/noticebys/{id}', [NoticeController::class, 'villagebyd']);
         // Route::get('/news/{id}', [NewsController::class, 'show']);
         Route::post('/storenotice', [NoticeController::class, 'store']);
         Route::post('/storenotices', [NoticeController::class, 'storenotices']);
-        Route::post('/updatenotice', [NewsController::class, 'update']);
-        Route::get('/delnotice/{id}', [NewsController::class, 'delete']);
+        Route::post('/updatenotice', [NoticeController::class, 'update']);
+        Route::get('/delnotice/{id}', [NoticeController::class, 'delete']);
 
         // Pages
         Route::get('/pages/{id}', [PageController::class, 'index']);
@@ -279,7 +283,7 @@ Route::prefix('1')->group(function () {
         // Notice
         Route::get('/notices/{id}', [NoticeController::class, 'index']);
         Route::get('/noticebys/{id}', [NoticeController::class, 'villagebyd']);
-        Route::get('/tnotices', [NoticeController::class, 'tnotices']);
+        Route::get('/tnotices/{id}', [NoticeController::class, 'tnotices']);
         Route::get('/tnotice/{id}', [NoticeController::class, 'tnotice']);
         // Route::get('/news/{id}', [NewsController::class, 'show']);
         Route::post('/storenotice', [NoticeController::class, 'store']);
