@@ -10,6 +10,7 @@ use App\Models\Principal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \Carbon\Carbon;
+use Hash;
 
 class LoginController extends BaseController
 {
@@ -20,11 +21,11 @@ class LoginController extends BaseController
      */
     public function login(Request $request)
     {
-        
+
         // $user = auth()->guard('principal')->user();
 
         if (Auth::guard('principal')->attempt(['username' => $request->username, 'password' => $request->password])) {
-           
+
             $user = Auth::guard('principal')->user();
 
             $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
@@ -62,11 +63,11 @@ class LoginController extends BaseController
 
     public function teachlogin(Request $request)
     {
-        
+
         // $user = auth()->guard('principal')->user();
 
         if (Auth::guard('teacher')->attempt(['username' => $request->username, 'password' => $request->password])) {
-           
+
             $user = Auth::guard('teacher')->user();
 
             $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
@@ -106,18 +107,18 @@ class LoginController extends BaseController
 
     }
 
-     /**
+    /**
      * Login api
      *
      * @return \Illuminate\Http\Response
      */
     public function guardlogin(Request $request)
     {
-        
+
         // $user = auth()->guard('principal')->user();
 
         if (Auth::guard('guardian')->attempt(['username' => $request->username, 'password' => $request->password])) {
-           
+
             $user = Auth::guard('guardian')->user();
 
             $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
@@ -145,6 +146,63 @@ class LoginController extends BaseController
         // $tokenId = $request->token;
         $tokenName = $request->tName;
         $user = Guardian::findorFail($id);
+        // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
+        if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
+            return response()->json('success');
+
+        } else {
+            return response()->json('failed');
+
+        }
+
+    }
+
+    /**
+     * Login api
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function studentlogin(Request $request)
+    {
+
+        // $user = auth()->guard('principal')->user();
+
+        $student = Student::where('username', $request->username)->first();
+
+        if (!$student || !Hash::check($request->password, $student->password)) {
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        }
+
+
+        // if (! $student || ! Hash::check($request->password, $student->password)) {
+
+        $user = $student;
+
+        $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
+
+        $token = $user->createToken($tokenName)->plainTextToken;
+
+        $courseid = Student::find($user->id)->course_id;
+        $success['token'] = $token;
+        $success['name'] = $user->first_name;
+        $success['user'] = $user;
+        $success['tName'] = $tokenName;
+        $success['courseid'] = $courseid;
+
+        return $this->sendResponse($success, 'Student login successfully.');
+        // } else {
+        //     return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        // }
+
+    }
+
+    public function studentlogout(Request $request)
+    {
+
+        $id = $request->id;
+        // $tokenId = $request->token;
+        $tokenName = $request->tName;
+        $user = Student::findorFail($id);
         // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
         if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
             return response()->json('success');

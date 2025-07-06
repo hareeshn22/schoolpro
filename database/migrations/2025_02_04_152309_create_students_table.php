@@ -23,6 +23,8 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female', 'other']);
             $table->string('roll_no');
             $table->string('address')->nullable();
+            $table->string('username')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }
