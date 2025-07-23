@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PrincipalController;
 use App\Http\Controllers\Admin\SchoolController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SlideController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\SyllabusController;
@@ -27,6 +28,18 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [SchoolController::class, 'edit'])->name('.edit');
             Route::post('/update', [SchoolController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [SchoolController::class, 'delete'])->name('.delete');
+
+        });
+
+        Route::name("admin.slides")->middleware(['auth'])->prefix('slides')->group(function () {
+
+            Route::get('/', [SlideController::class, 'index']);
+            Route::post('/filter', [SlideController::class, 'filter'])->name('.filter');
+            Route::get('/add', [SlideController::class, 'create'])->name('.add');
+            Route::post('/store', [SlideController::class, 'store'])->name('.store');
+            Route::get('/edit/{id}', [SlideController::class, 'edit'])->name('.edit');
+            Route::post('/update', [SlideController::class, 'update'])->name('.update');
+            Route::get('/delete/{id}', [SlideController::class, 'delete'])->name('.delete');
 
         });
 

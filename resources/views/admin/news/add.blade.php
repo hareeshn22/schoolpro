@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section ('title') Add Page @endsection
+@section ('title') Add News @endsection
 
 @section ('css')
 
@@ -39,7 +39,7 @@
 
 <div class="my-3 text-center">
     <h2 class="fw-bold mb-2">
-        Add Page
+        Add News
     </h2>
     <!-- <h3 class="fs-base fw-medium text-muted mb-0">
             This is the 7th property you are adding to your portfolio.
@@ -49,10 +49,10 @@
 
 <div class="block block-rounded">
     <div class="block-header block-header-default">
-        <h3 class="block-title">Page <small>Fill Required fields</small></h3>
+        <h3 class="block-title">News <small>Fill Required fields</small></h3>
     </div>
     <div class="block-content">
-        <form action="{{ route('admin.pages.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.news.store') }}" method="POST" enctype="multipart/form-data">
 
             @csrf
             <div class="row items-push">
@@ -60,25 +60,19 @@
                 <div class="col-12">
                     <div class="row mb-4">
                         <div class="col-md-8">
-                            <label class="form-label" for="appname">App Name</label>
-                            <input type="text" class="form-control form-control-lg" id="appname" name="appname">
+                            <label class="form-label" for="appname">Title</label>
+                            <input type="text" class="form-control form-control-lg" id="appname" name="title">
                         </div>
                     </div>
 
                     <div class="row mb-4">
                         <div class="col-md-8">
-                            <label class="form-label" for="name">Name</label>
-                            <input type="text" class="form-control form-control-lg" id="name" name="name">
+                            <label class="form-label" for="name">Video Link</label>
+                            <input type="text" class="form-control form-control-lg" id="name" name="videolink">
                         </div>
                     </div>
 
-                     <div class="row mb-4">
-                        <div class="col-md-12">
-                            <label class="form-label" for="content"> Content</label>
-                            <textarea id="js-ckeditor" name="content" class="postcontent" rows="40"
-                                cols="80"> {{ old('content') }}</textarea>
-                        </div>
-                    </div>
+                     
 
 
 

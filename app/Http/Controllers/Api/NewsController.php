@@ -14,7 +14,17 @@ class NewsController extends Controller
     public function index($id)
     {
         //
-        return NewsResource::collection(News::where('school_id', '=', $id)->get());
+        return NewsResource::collection(News::where('school_id', '=', $id)->where('category', '=', 'schoolpro')->get());
+
+    }
+
+     /**
+     * Display a listing of the news by teachersdesk category.
+     */
+    public function newsbyt($id)
+    {
+        //
+        return NewsResource::collection(News::where('category', '=', 'teachersdesk')->get());
 
     }
 

@@ -40,7 +40,7 @@ class StudentController extends BaseController
         $mstudents = Student::where('course_id', '=', $cid)->where('gender', '=', 'male')->count();
         $fstudents = Student::where('course_id', '=', $cid)->where('gender', '=', 'female')->count();
         $data['total'] = $students;
-        $data['boys']  = $mstudents;
+        $data['boys'] = $mstudents;
         $data['girls'] = $fstudents;
 
         return response()->json($data);
@@ -176,6 +176,13 @@ class StudentController extends BaseController
         $student->address = $request->address;
         // $student->school_id   = $request->schoolId;
         // $student->course_id   = $request->courseId;
+
+        if ($student) {
+            $student->guardian()->update([
+                'email' => $request->email,
+                'phone' => $request->phone,
+            ]);
+        }
 
         if ($student->save()) {
             return $this->sendResponse('Success', 'Student Updated successfully.');

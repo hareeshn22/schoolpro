@@ -7,6 +7,7 @@ use App\Models\Guardian;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Principal;
+use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \Carbon\Carbon;
@@ -22,24 +23,42 @@ class LoginController extends BaseController
     public function login(Request $request)
     {
 
-        // $user = auth()->guard('principal')->user();
+        $principal = Principal::where('username', $request->username)->first();
 
-        if (Auth::guard('principal')->attempt(['username' => $request->username, 'password' => $request->password])) {
-
-            $user = Auth::guard('principal')->user();
-
+        if ($principal && Hash::check($request->password, $principal->password)) {
             $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
+            $token = $principal->createToken($tokenName)->plainTextToken;
 
-            $token = $user->createToken($tokenName)->plainTextToken;
             $success['token'] = $token;
-            $success['name'] = $user->name;
-            $success['user'] = $user;
+            $success['name'] = $principal->name;
+            $success['user'] = $principal;
+            $success['school'] = School::find($principal->school_id);
             $success['tName'] = $tokenName;
 
             return $this->sendResponse($success, 'Principal login successfully.');
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }
+
+
+        // $user = auth()->guard('principal')->user();
+
+        // if (Auth::guard('principal')->attempt(['username' => $request->username, 'password' => $request->password])) {
+
+        //     $user = Auth::guard('principal')->user();
+
+        //     $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
+
+        //     $token = $user->createToken($tokenName)->plainTextToken;
+        //     $success['token'] = $token;
+        //     $success['name'] = $user->name;
+        //     $success['user'] = $user;
+        //     $success['tName'] = $tokenName;
+
+        //     return $this->sendResponse($success, 'Principal login successfully.');
+        // } else {
+        //     return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        // }
 
     }
 

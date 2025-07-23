@@ -77,7 +77,7 @@
                                     <span class="nav-main-link-name">Dashboard</span>
                                 </a>
                             </li>
-                            <li class="nav-main-item {{ str_contains(url()->current(), '/sliders') ? 'open' : ''}}">
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/schools') ? 'open' : ''}}">
                                 <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/sliders') ? 'active' : ''}}" data-toggle="submenu"
                                     aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa fa-award"></i>
@@ -92,6 +92,27 @@
                                     <li class="nav-main-item">
                                         <a class="nav-main-link" href="{{ route('admin.schools') }}">
                                             <span class="nav-main-link-name">View Schools</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+
+                             <li class="nav-main-item {{ str_contains(url()->current(), '/slides') ? 'open' : ''}}">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/slides') ? 'active' : ''}}" data-toggle="submenu"
+                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa fa-image"></i>
+                                    <span class="nav-main-link-name">Slides</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.slides.add') }}">
+                                            <span class="nav-main-link-name">Add Slide</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.slides') }}">
+                                            <span class="nav-main-link-name">View Slides</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -262,11 +283,11 @@
                                             <span class="nav-main-link-name">View News</span>
                                         </a>
                                     </li>
-                                    <!-- <li class="nav-main-item">
+                                    <li class="nav-main-item">
                                         <a class="nav-main-link" href="{{ route('admin.news.add') }}">
                                             <span class="nav-main-link-name">Add News</span>
                                         </a>
-                                    </li> -->
+                                    </li>
 
 
                                 </ul>

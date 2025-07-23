@@ -47,18 +47,20 @@ class SchoolController extends Controller
     {
         //
         $this->validate($request, [
-            'name'  => 'required',
-            'logo'  => 'required',
+            'name' => 'required',
+            // 'logo'  => 'required',
             'content' => 'required',
             'phone' => 'required',
         ]);
 
         School::create([
-            'name'    => $request->name,
-            'logo'    => $request->logo,
-            'descr'   => $request->content,
-            'phone'   => $request->phone,
+            'name' => $request->name,
+            'logo' => $request->logo,
+            'descr' => $request->content,
+            'phone' => $request->phone,
             'address' => $request->address,
+            'pcolor' => $request->pcolor,
+            'scolor' => $request->scolor,
         ]);
 
         return back()->with('success', 'You have successfully created the school.');
@@ -94,11 +96,17 @@ class SchoolController extends Controller
         $school = School::find($request->id);
 
         // $school->school_id = $request->schoolid;
-        $school->name    = $request->name;
-        $school->logo    = $request->logo;
-        $school->descr   = $request->content;
-        $school->phone   = $request->phone;
+        $school->name = $request->name;
+        
+        $school->descr = $request->content;
+        $school->phone = $request->phone;
         $school->address = $request->address;
+        $school->pcolor = $request->pcolor;
+        $school->scolor = $request->scolor;
+
+        if($request->logo != '') {
+            $school->logo = $request->logo;
+        }
 
         $school->save();
 

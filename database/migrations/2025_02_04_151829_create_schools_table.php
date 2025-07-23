@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('descr')->nullable();
             $table->string('phone');
             $table->string('address')->nullable();
+            $table->string('pcolor');
+            $table->string('scolor');
             $table->timestamps();
         });
     }

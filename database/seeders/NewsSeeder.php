@@ -14,26 +14,26 @@ class NewsSeeder extends Seeder
         $videos = [
             [
                 'school_id'  => 1,
-                "category"   => "TeachersDesk",
+                "category"   => "teachersdesk",
                 "title"      => "పాఠశాలల విద్యాసంస్కరణ లు విధాన ప్రణాళిక 2024",
                 "video_link" => "X5yvsumisRM",
             ],
             [
                 'school_id'  => 1,
-                "category"   => "SchoolPro",
+                "category"   => "school",
                 "title"      => "Saraswati School Activity 2024",
                 "video_link" => "5LTWkLhCPa8",
             ],
             [
                 'school_id'  => 1,
-                "category"   => "Teachersdesk",
+                "category"   => "teachersdesk",
                 "title"      => "SchoolPro closely monitors the trends and changes in the education system. - SchoolPro Team",
                 "video_link" => "X5yvsumisRM",
 
             ],
             [
                 'school_id'  => 1,
-                "category"   => "SchoolPro",
+                "category"   => "school",
                 "title"      => "Saraswati School Program and Anniversary Day Function  Activity",
                 "video_link" => "5LTWkLhCPa8",
             ],
