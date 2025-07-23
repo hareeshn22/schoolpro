@@ -35,8 +35,8 @@ class HomeController extends BaseController
         // $pacount = Page::count();
         // $sycount = Syllabus::count();
         $school = School::find($id);
-        $svideo = News::orderByDesc('id')->where('school_id', '=', $id)->where('category', '=', 'SchoolPro')->first();
-        $tvideo = News::orderByDesc('id')->where('school_id', '=', $id)->where('category', '=', 'TeachersDesk')->first();
+        $svideo = News::orderByDesc('id')->where('school_id', '=', $id)->where('category', '=', 'school')->first();
+        $tvideo = News::orderByDesc('id')->where('school_id', '=', $id)->where('category', '=', 'teachersdesk')->first();
 
         $data['logo']    = $school->logo;
         $data['svideo']  = $svideo;
