@@ -20,7 +20,7 @@ class NewsSeeder extends Seeder
             ],
             [
                 'school_id'  => 1,
-                "category"   => "school",
+                "category"   => "schoolpro",
                 "title"      => "Saraswati School Activity 2024",
                 "video_link" => "5LTWkLhCPa8",
             ],
@@ -33,7 +33,7 @@ class NewsSeeder extends Seeder
             ],
             [
                 'school_id'  => 1,
-                "category"   => "school",
+                "category"   => "schoolpro",
                 "title"      => "Saraswati School Program and Anniversary Day Function  Activity",
                 "video_link" => "5LTWkLhCPa8",
             ],
