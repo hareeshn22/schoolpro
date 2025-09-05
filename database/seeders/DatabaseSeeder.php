@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             SchoolSeeder::class,
             CourseSeeder::class,
+            StreamSeeder::class,
             SubjectSeeder::class,
             DaySeeder::class,
             SlotSeeder::class,

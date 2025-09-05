@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AcademicController;
+use App\Http\Controllers\Admin\AIController;
 use App\Http\Controllers\Admin\CourseController;
+use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\GuardianController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\NewsController;
@@ -46,7 +49,8 @@ Route::middleware(['auth'])
         Route::name("admin.principals")->middleware(['auth'])->prefix('principals')->group(function () {
 
             Route::get('/', [PrincipalController::class, 'index']);
-            Route::get('/sub/{id}', [PrincipalController::class, 'subprobs'])->name('.sub');;
+            Route::get('/sub/{id}', [PrincipalController::class, 'subprobs'])->name('.sub');
+            ;
             Route::post('/prfilter', [PrincipalController::class, 'prfilter'])->name('.prfilter');
             Route::get('/create', [PrincipalController::class, 'create'])->name('.add');
             Route::get('/createsub', [PrincipalController::class, 'createsub'])->name('.addsub');
@@ -141,6 +145,7 @@ Route::middleware(['auth'])
         Route::name("admin.courses")->middleware(['auth'])->prefix('courses')->group(function () {
 
             Route::get('/', [CourseController::class, 'index']);
+            Route::post('/filter', [CourseController::class, 'coursebys'])->name('.filterbys');
             Route::get('/create', [CourseController::class, 'create'])->name('.add');
             Route::post('/store', [CourseController::class, 'store'])->name('.store');
             Route::get('/edit/{id}', [CourseController::class, 'edit'])->name('.edit');
@@ -152,6 +157,7 @@ Route::middleware(['auth'])
         Route::name("admin.subjects")->middleware(['auth'])->prefix('subjects')->group(function () {
 
             Route::get('/', [SubjectController::class, 'index']);
+            Route::post('/filter', [SubjectController::class, 'filter'])->name('.filter');
             Route::get('/create', [SubjectController::class, 'create'])->name('.add');
             Route::post('/store', [SubjectController::class, 'store'])->name('.store');
             Route::get('/edit/{id}', [SubjectController::class, 'edit'])->name('.edit');
@@ -160,20 +166,66 @@ Route::middleware(['auth'])
 
         });
 
-        // Route::name("admin.categories")->middleware(['auth'])->prefix('cates')->group(function () {
+        // Exams
+        Route::name("admin.exams")->middleware(['auth'])->prefix('exams')->group(function () {
 
+            Route::get('/', [ExamController::class, 'index']);
+            Route::post('/filter', [ExamController::class, 'exambys'])->name('.filterbys');
+
+
+        });
+
+        // Route::name("admin.categories")->middleware(['auth'])->prefix('cates')->group(function () {
+    
         //     Route::get('/', [App\Http\Controllers\Admin\CategoryController::class, 'index']);
         //     Route::get('/sub/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'subcates'])->name('.sub');
-
+    
         //     Route::get('/create', [App\Http\Controllers\Admin\CategoryController::class, 'create'])->name('.add');
         //     Route::get('/createsub', [App\Http\Controllers\Admin\CategoryController::class, 'createsub'])->name('.addsub');
-
+    
         //     Route::post('/store', [App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('.store');
         //     Route::get('/edit/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('.edit');
         //     Route::post('/update', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('.update');
         //     Route::get('/delete/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'delete'])->name('.delete');
-
+    
         // });
+    
+        // Academic
+        Route::name("admin.academic")->middleware(['auth'])->prefix('academic')->group(function () {
+
+            Route::get('/', [AcademicController::class, 'index']);
+            Route::post('/filter', [AcademicController::class, 'academicbys'])->name('.filterbys');
+            Route::get('/add', [AcademicController::class, 'create'])->name('.add');
+            Route::post('/store', [AcademicController::class, 'store'])->name('.store');
+            Route::get('/edit/{id}', [AcademicController::class, 'edit'])->name('.edit');
+            Route::post('/update', [AcademicController::class, 'update'])->name('.update');
+            Route::get('/delete/{id}', [AcademicController::class, 'delete'])->name('.delete');
+
+        });
+
+        // Attendance AI
+        Route::name("admin.attendai")->middleware(['auth'])->prefix('attendai')->group(function () {
+
+            Route::get('/', [AIController::class, 'index']);
+            Route::get('/add', [AIController::class, 'create'])->name('.add');
+            Route::post('/store', [AIController::class, 'store'])->name('.store');
+            Route::get('/edit/{id}', [AIController::class, 'edit'])->name('.edit');
+            Route::post('/update', [AIController::class, 'update'])->name('.update');
+            Route::get('/delete/{id}', [AIController::class, 'delete'])->name('.delete');
+
+        });
+        // Attendance AI
+        Route::name("admin.homeworkai")->middleware(['auth'])->prefix('homeworkai')->group(function () {
+
+            Route::get('/', [AIController::class, 'index']);
+            Route::get('/add', [AIController::class, 'createhome'])->name('.add');
+            Route::get('/addoption', [AIController::class, 'createoption'])->name('.addoption');
+            Route::post('/store', [AIController::class, 'store'])->name('.store');
+            Route::get('/edit/{id}', [AIController::class, 'edit'])->name('.edit');
+            Route::post('/update', [AIController::class, 'update'])->name('.update');
+            Route::get('/delete/{id}', [AIController::class, 'delete'])->name('.delete');
+
+        });
 
         Route::name("admin.setting")->middleware(['auth'])->prefix('setting')->group(function () {
 

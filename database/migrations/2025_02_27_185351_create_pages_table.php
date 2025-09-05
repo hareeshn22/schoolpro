@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->string('app_name');
+            $table->string('language');
             $table->string('name');
-            $table->text('content');
+            $table->longText('info');
             $table->timestamps();
         });
     }

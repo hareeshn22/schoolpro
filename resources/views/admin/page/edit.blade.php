@@ -42,8 +42,8 @@
             Edit Page
         </h2>
         <!-- <h3 class="fs-base fw-medium text-muted mb-0">
-                                                This is the 7th property you are adding to your portfolio.
-                                            </h3> -->
+                                                                    This is the 7th property you are adding to your portfolio.
+                                                                </h3> -->
     </div>
 
 
@@ -78,15 +78,40 @@
                             </div>
                         </div>
 
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <label class="form-label" for="lang">Language</label>
+                                <select id="school" name="language" class="select2 custom-select form-control" required>
+                                    <option value="" disabled selected> Select Language</option>
+
+                                    <option value="english" {{ strtolower($page->language) == 'english' ? 'Selected' : '' }}>
+                                        English
+                                    </option>
+                                    <option value="telugu" {{ strtolower($page->language) == 'telugu' ? 'Selected' : '' }}>
+                                        Telugu
+                                    </option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- <div class="row mb-4">
+                            <div class="col-md-8">
+                                <label class="form-label" for="lang"> Language </label>
+                                <input type="text" class="form-control form-control-lg" id="lang" name="language"
+                                    value="{{ $page->language }}">
+                            </div>
+                        </div> -->
+
 
                         <div class="row mb-4">
                             <div class="col-md-12">
-                                <label class="form-label" for="content">Content</label>
+                                <label class="form-label" for="info">Content</label>
                                 <!-- <textarea id="js-ckeditor" name="content" class="postcontent" rows="40"
-                                                                    cols="80"> {{ $page->content }}</textarea> -->
-                                <div id="editor" style="height: 400px;" name="content"> {!! $page->content !!}</div>
+                                                                                        cols="80"> {{ $page->content }}</textarea> -->
+                                <div id="editor" style="height: 400px;" name="info"> {!! $page->info !!}</div>
                                 <!-- Hidden input to hold HTML content -->
-                                <input type="hidden" name="content" id="hiddenContent">
+                                <input type="hidden" name="info" id="hiddenContent">
 
                             </div>
                         </div>
@@ -128,75 +153,76 @@
     </script>
     <!-- Initialize Quill editor -->
     <!-- <script>
-                    const toolbarOptions = [
-                        // [{ font: [] }, { 'size': ['small', false, 'large', 'huge'] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'color': [] }, { 'background': [] }],
-                        [{ 'script': 'sub' }, { 'script': 'super' }],
-                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                        ['blockquote', 'code-block'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
-                        [{ 'indent': '-1' }, { 'indent': '+1' }],
-                        [{ 'align': [] }, { 'direction': 'rtl' }],
-                        ['link'],
-                        ['clean']
-                    ];
+                                        const toolbarOptions = [
+                                            // [{ font: [] }, { 'size': ['small', false, 'large', 'huge'] }],
+                                            ['bold', 'italic', 'underline', 'strike'],
+                                            [{ 'color': [] }, { 'background': [] }],
+                                            [{ 'script': 'sub' }, { 'script': 'super' }],
+                                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                                            ['blockquote', 'code-block'],
+                                            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+                                            [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                            [{ 'align': [] }, { 'direction': 'rtl' }],
+                                            ['link'],
+                                            ['clean']
+                                        ];
 
-                    var quill = new Quill("#editor", {
+                                        var quill = new Quill("#editor", {
 
-                        theme: "snow",
-                        modules: {
-                            toolbar: toolbarOptions
+                                            theme: "snow",
+                                            modules: {
+                                                toolbar: toolbarOptions
 
-                            //     toolbar: [
-                            //     [{ 'color': [] }, { 'background': [] }],
-                            //     ['bold', 'italic', 'underline'],
-                            //     ['clean']
-                            // ]
-                        }
+                                                //     toolbar: [
+                                                //     [{ 'color': [] }, { 'background': [] }],
+                                                //     ['bold', 'italic', 'underline'],
+                                                //     ['clean']
+                                                // ]
+                                            }
 
-                    });
+                                        });
 
-                    const form = document.querySelector('form');
-                    form.addEventListener('submit', function () {
-                        const htmlContent = quill.root.innerHTML;
-                        document.getElementById('hiddenContent').value = htmlContent;
-                    });
-                </script> -->
+                                        const form = document.querySelector('form');
+                                        form.addEventListener('submit', function () {
+                                            const htmlContent = quill.root.innerHTML;
+                                            document.getElementById('hiddenContent').value = htmlContent;
+                                        });
+                                    </script> -->
 
     <!-- <script>
-                document.addEventListener('DOMContentLoaded', function () {
+                                    document.addEventListener('DOMContentLoaded', function () {
 
-                    const toolbarOptions = [
-                        // [{ font: [] }, { 'size': ['small', false, 'large', 'huge'] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'color': [] }, { 'background': [] }],
-                        [{ 'script': 'sub' }, { 'script': 'super' }],
-                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                        ['blockquote', 'code-block'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
-                        [{ 'indent': '-1' }, { 'indent': '+1' }],
-                        [{ 'align': [] }, { 'direction': 'rtl' }],
-                        ['link'],
-                        ['clean']
-                    ];
+                                        const toolbarOptions = [
+                                            // [{ font: [] }, { 'size': ['small', false, 'large', 'huge'] }],
+                                            ['bold', 'italic', 'underline', 'strike'],
+                                            [{ 'color': [] }, { 'background': [] }],
+                                            [{ 'script': 'sub' }, { 'script': 'super' }],
+                                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                                            ['blockquote', 'code-block'],
+                                            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+                                            [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                            [{ 'align': [] }, { 'direction': 'rtl' }],
+                                            ['link'],
+                                            ['clean']
+                                        ];
 
-                    var quill = new Quill("#editor", {
+                                        var quill = new Quill("#editor", {
 
-                        theme: "snow",
-                        modules: {
-                            toolbar: toolbarOptions
+                                            theme: "snow",
+                                            modules: {
+                                                toolbar: toolbarOptions
 
-                        }
+                                            }
 
-                    });
-                    const form = document.querySelector('form');
-                    form.addEventListener('submit', function () {
-                        const htmlContent = quill.root.innerHTML;
-                        document.getElementById('hiddenContent').value = htmlContent;
-                    });
-                });
-            </script> -->
+                                        });
+                                        const form = document.querySelector('form');
+                                        form.addEventListener('submit', function () {
+                                            const htmlContent = quill.root.innerHTML;
+                                            document.getElementById('hiddenContent').value = htmlContent;
+                                        });
+                                    });
+                                </script> -->
+
 
     <script>
         $(document).ready(function () {
@@ -218,7 +244,15 @@
 
                 theme: "snow",
                 modules: {
-                    toolbar: toolbarOptions
+                    toolbar: toolbarOptions,
+                    htmlEditButton: {
+                        debug: true,
+                        msg: "Edit HTML here",
+                        okText: "OK",
+                        cancelText: "Cancel"
+                    }
+
+
 
                     //     toolbar: [
                     //     [{ 'color': [] }, { 'background': [] }],
@@ -236,28 +270,32 @@
                 $('#hiddenContent').val(htmlContent);
             });
         });
+
+        // // Inject HTML content
+        // quill.clipboard.dangerouslyPasteHTML(quillContent);
+
     </script>
 
 
 
     <!-- <script>
-                                        ClassicEditor
-                                            .create(document.querySelector('#js-ckeditor'), {
-                                                // removePlugins: ['Image', 'MediaEmbed'],
-                                                toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
-                                            })
-                                            .catch(error => {
-                                                console.error(error);
-                                            });
+                                                            ClassicEditor
+                                                                .create(document.querySelector('#js-ckeditor'), {
+                                                                    // removePlugins: ['Image', 'MediaEmbed'],
+                                                                    toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
+                                                                })
+                                                                .catch(error => {
+                                                                    console.error(error);
+                                                                });
 
-                                        // bsCustomFileInput.init();
+                                                            // bsCustomFileInput.init();
 
 
 
-                                        $(document).ready(function () {
-                                            $('.js-select2').select2();
-                                        });
-                                    </script> -->
+                                                            $(document).ready(function () {
+                                                                $('.js-select2').select2();
+                                                            });
+                                                        </script> -->
 
 
 

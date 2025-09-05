@@ -103,7 +103,7 @@ class TeacherSeeder extends Seeder
             ],
         ];
 
-        $courses = Course::where('school_id', '=', 1)->pluck('id')->toArray(); // Get all course IDs
+        $courses = Course::all()->pluck('id')->toArray(); // Get all course IDs
 
         $list = collect($courses);
 

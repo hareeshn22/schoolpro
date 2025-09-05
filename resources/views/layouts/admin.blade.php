@@ -78,8 +78,8 @@
                                 </a>
                             </li>
                             <li class="nav-main-item {{ str_contains(url()->current(), '/schools') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/sliders') ? 'active' : ''}}" data-toggle="submenu"
-                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/sliders') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa fa-award"></i>
                                     <span class="nav-main-link-name">Schools</span>
                                 </a>
@@ -96,11 +96,11 @@
                                     </li>
                                 </ul>
                             </li>
-                            
 
-                             <li class="nav-main-item {{ str_contains(url()->current(), '/slides') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/slides') ? 'active' : ''}}" data-toggle="submenu"
-                                    aria-haspopup="true" aria-expanded="true" href="#">
+
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/slides') ? 'open' : ''}}">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/slides') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa fa-image"></i>
                                     <span class="nav-main-link-name">Slides</span>
                                 </a>
@@ -119,8 +119,8 @@
                             </li>
 
                             <li class="nav-main-item {{ str_contains(url()->current(), '/principals') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu  {{ str_contains(url()->current(), '/problems') ? 'active' : ''}}" data-toggle="submenu"
-                                    aria-haspopup="true" aria-expanded="false" href="#">
+                                <a class="nav-main-link nav-main-link-submenu  {{ str_contains(url()->current(), '/problems') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                                     <i class="nav-main-link-icon fa-regular fa-address-card"></i>
                                     <span class="nav-main-link-name">Principals</span>
                                 </a>
@@ -140,8 +140,8 @@
                             </li>
 
                             <li class="nav-main-item {{ str_contains(url()->current(), '/curriculum') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/posts') ? 'active' : ''}}" data-toggle="submenu"
-                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/posts') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa fa-location-dot"></i>
                                     <span class="nav-main-link-name">Curriculum</span>
                                 </a>
@@ -161,8 +161,8 @@
                             </li>
 
                             <li class="nav-main-item {{ str_contains(url()->current(), '/images') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/images') ? 'active' : ''}}" data-toggle="submenu"
-                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/images') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa fa-image"></i>
                                     <span class="nav-main-link-name">Images</span>
                                 </a>
@@ -182,8 +182,8 @@
                             </li>
 
                             <li class="nav-main-item {{ str_contains(url()->current(), '/pages') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/pages') ? 'active' : ''}}" data-toggle="submenu"
-                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/pages') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa-regular fa-file-lines"></i>
                                     <span class="nav-main-link-name">Pages</span>
                                 </a>
@@ -204,8 +204,8 @@
                             </li>
 
                             <li class="nav-main-item {{ str_contains(url()->current(), '/guardian') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/guardian') ? 'active' : ''}}" data-toggle="submenu"
-                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/guardian') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa-solid fa-user"></i>
                                     <span class="nav-main-link-name">Parents</span>
                                 </a>
@@ -227,9 +227,9 @@
 
 
 
-                             <li class="nav-main-item {{ str_contains(url()->current(), '/teachers') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/teachers') ? 'active' : ''}}" data-toggle="submenu"
-                                    aria-haspopup="true" aria-expanded="true" href="#">
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/teachers') ? 'open' : ''}}">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/teachers') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa-solid fa-chalkboard-user"></i>
                                     <span class="nav-main-link-name">Teachers</span>
                                 </a>
@@ -250,8 +250,8 @@
                             </li>
 
                             <li class="nav-main-item {{ str_contains(url()->current(), '/students') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/students') ? 'active' : ''}}" data-toggle="submenu"
-                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/students') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa-solid  fa-user-tie"></i>
                                     <span class="nav-main-link-name">Students</span>
                                 </a>
@@ -272,8 +272,8 @@
                             </li>
 
                             <li class="nav-main-item {{ str_contains(url()->current(), '/news') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/news') ? 'active' : ''}}" data-toggle="submenu"
-                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/news') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa-regular fa-newspaper"></i>
                                     <span class="nav-main-link-name">News</span>
                                 </a>
@@ -293,10 +293,65 @@
                                 </ul>
                             </li>
 
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/subjects') ? 'open' : ''}}">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/subjects') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa-solid fa-book"></i>
+                                    <span class="nav-main-link-name">Subjects</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.subjects') }}">
+                                            <span class="nav-main-link-name">View Subjects</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.subjects.add') }}">
+                                            <span class="nav-main-link-name">Add Subject</span>
+                                        </a>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+
+
+                            <li class="nav-main-item {{ str_contains(url()->current(), '/attendai') ? 'open' : ''}}">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/attendai') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa-solid fa-gears"></i>
+                                    <span class="nav-main-link-name">Academic AI</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.academic.add') }}">
+                                            <span class="nav-main-link-name">Add Academic Term</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.attendai.add') }}">
+                                            <span class="nav-main-link-name">Add Attendance AI</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.homeworkai.add') }}">
+                                            <span class="nav-main-link-name">Add Homework AI</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="{{ route('admin.homeworkai.addoption') }}">
+                                            <span class="nav-main-link-name">Add AI Option</span>
+                                        </a>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+
 
                             <li class="nav-main-item {{ str_contains(url()->current(), '/setting') ? 'open' : ''}}">
-                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/setting') ? 'active' : ''}}" data-toggle="submenu"
-                                    aria-haspopup="true" aria-expanded="true" href="#">
+                                <a class="nav-main-link nav-main-link-submenu {{ str_contains(url()->current(), '/setting') ? 'active' : ''}}"
+                                    data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                     <i class="nav-main-link-icon fa-solid fa-gears"></i>
                                     <span class="nav-main-link-name">Setting</span>
                                 </a>
@@ -375,14 +430,15 @@
 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item d-flex align-items-center justify-content-between space-x-1"
-                                    href="{{ route('logout') }}" onclick="event.preventDefault();
+                                    href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
                                                                          document.getElementById('logout-form').submit();">
                                     <span>Sign Out</span>
                                     <i class="fa fa-fw fa-sign-out-alt opacity-25"></i>
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
+                                    @csrf
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -435,12 +491,12 @@
             <div class="content py-3">
                 <div class="row fs-sm">
                     <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
-                        Crafted with <i class="fa fa-heart text-danger"></i> by <a class="fw-semibold" href="https://infovict.com"
-                            target="_blank">Infovict</a>
+                        Crafted with <i class="fa fa-heart text-danger"></i> by <a class="fw-semibold"
+                            href="https://infovict.com" target="_blank">Infovict</a>
                     </div>
                     <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
                         <script>
-                        document.write(new Date().getFullYear())
+                            document.write(new Date().getFullYear())
                         </script> © SchoolPro
                     </div>
                 </div>

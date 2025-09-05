@@ -93,8 +93,8 @@
                         <div class="row mb-4">
                             <div class="col-md-12">
                                 <label class="form-label" for="content"> Description </label>
-                                <textarea id="js-ckeditor" name="content" class="postcontent" rows="10"
-                                    cols="80"> {{ old('content') }}</textarea>
+                                <textarea id="js-ckeditor" name="descr" class="postcontent" rows="10"
+                                    cols="80"> {{ old('descr') }}</textarea>
                                 <!-- <textarea id="content" name="content" class="summernote" > {{ old('content') }}</textarea> -->
                             </div>
                         </div>

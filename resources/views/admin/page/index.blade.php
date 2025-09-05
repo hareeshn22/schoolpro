@@ -74,6 +74,7 @@
                                     <th class="text-center" style="width: 50px;"></th>
                                     <th>App Name</th>
                                     <th>Name</th>
+                                    <th>Language</th>
                                     <!-- <th class="d-none d-sm-table-cell" style="width: 15%;">Access</th> -->
                                     <th class="text-center" style="width: 130px;">Actions</th>
                                 </tr>
@@ -182,6 +183,10 @@ $(document).ready(function() {
             {
                 data: 'name',
                 name: 'name'
+            },
+            {
+                data: 'language',
+                name: 'Language'
             },
             
             {

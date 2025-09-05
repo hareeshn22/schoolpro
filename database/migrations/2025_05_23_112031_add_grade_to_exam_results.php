@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('exam_results', function (Blueprint $table) {
             $table->string('grade')->after('marks')->nullable();
+            $table->string('feedback')->after('grade')->nullable();
         });
     }
 

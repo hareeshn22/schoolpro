@@ -43,8 +43,8 @@
             Add Page
         </h2>
         <!-- <h3 class="fs-base fw-medium text-muted mb-0">
-                                                                This is the 7th property you are adding to your portfolio.
-                                                            </h3> -->
+                                                                            This is the 7th property you are adding to your portfolio.
+                                                                        </h3> -->
     </div>
 
 
@@ -73,14 +73,33 @@
                             </div>
                         </div>
 
+                        
+
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <label class="form-label" for="lang">Language</label>
+                                <select id="school" name="language" class="select2 custom-select form-control" required>
+                                    <option value="" disabled selected> Select Language</option>
+
+                                    <option value="english" {{ old('language') == 'english' ? 'Selected' : '' }}>
+                                        English
+                                    </option>
+                                    <option value="telugu" {{ old('language') == 'telugu' ? 'Selected' : '' }}>
+                                        Telugu
+                                    </option>
+
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="row mb-4">
                             <div class="col-md-12">
-                                <label class="form-label" for="content"> Content</label>
+                                <label class="form-label" for="content"> Content </label>
                                 <!-- Hidden input to hold HTML content -->
-                                <input type="hidden" name="content" id="hiddenContent">
+                                <input type="hidden" name="info" id="hiddenContent">
 
                                 <!-- <textarea id="editor" name="content" class="postcontent" rows="20"
-                                                                cols="100%"> {{ old('content') }}</textarea> -->
+                                                                            cols="100%"> {{ old('content') }}</textarea> -->
                                 <div id="editor" style="height: 400px;"></div>
 
                             </div>
@@ -166,7 +185,7 @@
                 }
 
             });
-           
+
 
 
 

@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CourseResource;
+
 use App\Models\Course;
 use Illuminate\Http\Request;
 
@@ -21,6 +23,14 @@ class CourseController extends Controller
 
         return view('admin.course.index');
 
+    }
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function coursebys(Request $request)
+    {
+        //
+         return CourseResource::collection(Course::where('school_id', '=', $request->id)->get());
     }
 
     /**

@@ -1,22 +1,30 @@
 <?php
 
+use App\Http\Controllers\Api\AcademicController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\ExamController;
+use App\Http\Controllers\Api\ExamFeedbackController;
 use App\Http\Controllers\Api\ExamResultController;
+use App\Http\Controllers\Api\ExamSyllabusController;
+use App\Http\Controllers\Api\GuidanceController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\HomeworkController;
 use App\Http\Controllers\Api\LeaveController;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\MaterialController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\NoticeController;
 use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\PeriodController;
+use App\Http\Controllers\Api\RemarkController;
 use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\SlotController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\TeacherController;
+use App\Http\Controllers\Api\TeachersdeskController;
+use App\Http\Controllers\Api\LessonController;
 use Illuminate\Support\Facades\Route;
 
 // use App\Http\Controllers\Api\SubjectController;
@@ -171,6 +179,14 @@ Route::prefix('1')->group(function () {
         // // Hospital
         // Route::get('/hospital/{id}', [HospitalController::class, 'hospital']);
 
+        // Lessons
+        Route::get('/lessons/{id}', [LessonController::class, 'index']);
+        Route::get('/lessonsbyc/{id}/{cate}', [LessonController::class, 'leavesbyc']);
+        Route::get('/lesson/{id}', [LessonController::class, 'show']);
+        Route::post('/storelesson', [LessonController::class, 'store']);
+        Route::post('/updatelesson', [LessonController::class, 'update']);
+        Route::get('/lessondel/{id}', [LessonController::class, 'delete']);
+
         // // Home
         Route::get('/home/{id}', [HomeController::class, 'index']);
         // Route::get('/finalreport', [HomeController::class, 'final']);
@@ -232,6 +248,7 @@ Route::prefix('1')->group(function () {
         // Homework
         Route::get('/work/{sid}/{cid}', [HomeworkController::class, 'index']);
         Route::get('/workdonehbys/{sid}/{cid}/{subjid}', [HomeworkController::class, 'workdonehbys']);
+        Route::get('/worktodaybys/{sid}/{cid}/{subid}', [HomeworkController::class, 'worktodaybys']);
         Route::get('/homework/{id}', [HomeworkController::class, 'show']);
         Route::get('/wdata/{sid}/{cid}/{subid}', [HomeworkController::class, 'wdata']);
         Route::post('/storework', [HomeworkController::class, 'store']);
@@ -306,6 +323,84 @@ Route::prefix('1')->group(function () {
         // Route::post('/storeperiod', [PeriodController::class, 'store']);
         // Route::post('/updateperiod', [PeriodController::class, 'update']);
         // Route::get('/delperiod/{id}', [PeriodController::class, 'delete']);
+
+        // Academic Attendance AI
+        Route::get('/attendance-ai/{id}', [AcademicController::class, 'index']);
+        Route::get('/newsbyt/{id}', [NewsController::class, 'newsbyt']);
+        // Route::get('/news/{id}', [NewsController::class, 'show']);
+        Route::post('/storenews', [NewsController::class, 'store']);
+        Route::post('/updatenews', [NewsController::class, 'update']);
+        Route::get('/delnews/{id}', [NewsController::class, 'delete']);
+
+        // Lessons
+        Route::get('/lessons/{id}/{cid}/{sid}', [LessonController::class, 'index']);
+        Route::get('/sLessons/{id}', [LessonController::class, 'sLessons']);
+        // Route::get('/Lessonsbyc/{id}/{cate}', [LessonController::class, 'Lessonsbyc']);
+        Route::get('/lesson/{id}', [LessonController::class, 'show']);
+        Route::post('/storelesson', [LessonController::class, 'store']);
+        Route::post('/updatelesson', [LessonController::class, 'update']);
+        Route::get('/lessondel/{id}', [LessonController::class, 'delete']);
+
+        //Remark
+        Route::get('/remarks/{id}', [RemarkController::class, 'show']);
+        Route::get('/remarksbyc/{sid}/{cid}/{hid}', [RemarkController::class, 'remarksbyc']);
+        Route::post('/storeremark', [RemarkController::class, 'store']);
+
+        // Exam Syllabus
+        Route::get('/syllabus/{cid}/{sid}', [ExamSyllabusController::class, 'tExamSyllabuss']);
+        Route::get('/examsyllabus/{id}', [ExamSyllabusController::class, 'sExamSyllabuss']);
+        // Route::get('/ExamSyllabussbyc/{id}/{cate}', [ExamSyllabusController::class, 'ExamSyllabussbyc']);
+        Route::get('/ExamSyllabus/{id}', [ExamSyllabusController::class, 'show']);
+        Route::post('/storeExamSyllabus', [ExamSyllabusController::class, 'store']);
+        Route::post('/updateExamSyllabus', [ExamSyllabusController::class, 'update']);
+        Route::get('/ExamSyllabusdel/{id}', [ExamSyllabusController::class, 'delete']);
+
+        // Exam Feedback
+        Route::get('/Feedback/{cid}/{sid}', [ExamFeedbackController::class, 'tExamFeedbacks']);
+        Route::get('/examFeedback/{id}', [ExamFeedbackController::class, 'sExamFeedbacks']);
+        // Route::get('/ExamFeedbacksbyc/{id}/{cate}', [ExamFeedbackController::class, 'ExamFeedbacksbyc']);
+        Route::get('/ExamFeedback/{id}', [ExamFeedbackController::class, 'show']);
+        Route::post('/storeExamFeedback', [ExamFeedbackController::class, 'store']);
+        Route::post('/updateExamFeedback', [ExamFeedbackController::class, 'update']);
+        Route::get('/ExamFeedbackdel/{id}', [ExamFeedbackController::class, 'delete']);
+
+        // Guidance
+        Route::get('/guidance/{sid}/{cid}', [GuidanceController::class, 'index']);
+        // Route::get('/workdonehbys/{sid}/{cid}/{subjid}', [GuidanceController::class, 'workdonehbys']);
+        // Route::get('/worktodaybys/{sid}/{cid}/{subid}', [GuidanceController::class, 'worktodaybys']);
+        Route::get('/guidance/{id}', [GuidanceController::class, 'show']);
+        // Route::get('/wdata/{sid}/{cid}/{subid}', [GuidanceController::class, 'wdata']);
+        Route::post('/storeguidance', [GuidanceController::class, 'store']);
+        Route::post('/updateguidance', [GuidanceController::class, 'update']);
+        
+         // Materials
+        Route::get('/materials/{id}', [MaterialController::class, 'index']);
+        Route::get('/materialsbyt/{id}', [MaterialController::class, 'materialbyt']);
+        // Route::get('/material/{id}', [MaterialController::class, 'show']);
+        Route::post('/storeMaterial', [MaterialController::class, 'store']);
+        Route::post('/updateMaterial', [MaterialController::class, 'update']);
+        Route::get('/delMaterial/{id}', [MaterialController::class, 'delete']);
+
+
+        //Teachersdesk
+        // Lessons
+        Route::get('/tdlessons/{subj}', [TeachersdeskController::class, 'lessons']);
+        Route::get('/sleaves/{id}', [LeaveController::class, 'sleaves']);
+        // Topics
+        Route::get('/tdtopics/{lid}', [TeachersdeskController::class, 'topics']);
+        Route::get('/sleaves/{id}', [LeaveController::class, 'sleaves']);
+
+        // SubTopics
+        Route::get('/tdsubtopics/{tid}', [TeachersdeskController::class, 'subtopics']);
+
+         // Materials
+        Route::get('/tdmaterials/{tid}', [TeachersdeskController::class, 'materials']);
+
+        // Materials
+        Route::get('/tdexamples/{tid}', [TeachersdeskController::class, 'examples']);
+
+        // Videos
+        Route::get('/tdvideos/{tid}', [TeachersdeskController::class, 'videos']);
 
 
 
@@ -461,7 +556,7 @@ Route::prefix('1')->group(function () {
 
 
 // Student Routes
-Route::prefix('1')->group(function () { 
+Route::prefix('1')->group(function () {
 
     Route::post('student/login', [LoginController::class, 'studentlogin']);
     Route::post('student/logout', [LoginController::class, 'studentlogout']);

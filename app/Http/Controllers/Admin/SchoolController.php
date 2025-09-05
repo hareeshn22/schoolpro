@@ -56,7 +56,7 @@ class SchoolController extends Controller
         School::create([
             'name' => $request->name,
             'logo' => $request->logo,
-            'descr' => $request->content,
+            'descr' => $request->descr,
             'phone' => $request->phone,
             'address' => $request->address,
             'pcolor' => $request->pcolor,
@@ -98,7 +98,7 @@ class SchoolController extends Controller
         // $school->school_id = $request->schoolid;
         $school->name = $request->name;
         
-        $school->descr = $request->content;
+        $school->descr = $request->descr;
         $school->phone = $request->phone;
         $school->address = $request->address;
         $school->pcolor = $request->pcolor;

@@ -345,7 +345,6 @@ $(document).ready(function() {
                 if (response.html == '') {
 
                     $('.auto-load').html("We don't have more data to display :(");
-
                     return;
 
                 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('school_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('course_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
+            // $table->string('pdf_path');
             $table->timestamps();
         });
     }

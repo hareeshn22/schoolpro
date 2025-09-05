@@ -56,13 +56,14 @@ class PageController extends Controller
         $this->validate($request, [
             'appname' => 'required',
             'name'    => 'required',
-            'content' => 'required',
+            'info' => 'required',
         ]);
 
         Page::create([
-            'appname' => $request->appname,
+            'app_name' => $request->appname,
+            'language' =>$request->language,
             'name'    => $request->name,
-            'content' => $request->content,
+            'info' => $request->info,
         ]);
 
         return back()->with('success', 'You have successfully created the page.');
@@ -96,8 +97,9 @@ class PageController extends Controller
         $page = Page::find($request->id);
 
         $page->app_name = $request->appname;
+        $page->language = $request->language;
         $page->name     = $request->name;
-        $page->content  = $request->content;
+        $page->info  = $request->info;
         $page->save();
 
         return redirect()->back()->with('success', 'You have successfully updated the page.');

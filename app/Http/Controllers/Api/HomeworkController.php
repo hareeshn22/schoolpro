@@ -115,6 +115,16 @@ class HomeworkController extends BaseController
 
     }
 
+    public function worktodaybys($sid, $cid, $subid)
+    {
+        //
+        return HomeworkResource::collection(Homework::where('school_id', '=', $sid)
+            ->where('course_id', '=', $cid)
+             ->where('subject_id', '=', $subid)
+            ->where('workdate', '=', Carbon::today()->toDateString())
+            ->get());
+
+    }
     public function workweek($sid, $cid)
     {
         //

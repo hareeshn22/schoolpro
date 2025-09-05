@@ -18,4 +18,10 @@ class Subject extends Model
         'school_id',
         'name',
     ];
+
+    // Relation to school
+    public function school()
+    {
+        return $this->belongsTo(School::class);
+    }
 }

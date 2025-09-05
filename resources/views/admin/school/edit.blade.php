@@ -81,8 +81,8 @@
                             </div>
                             <div class="row mb-4">
                                 <div class="col-md-12">
-                                    <label class="form-label" for="content"> Description </label>
-                                    <textarea id="js-ckeditor" name="content" class="postcontent" rows="10"
+                                    <label class="form-label" for="descr"> Description </label>
+                                    <textarea id="js-ckeditor" name="descr" class="postcontent" rows="10"
                                         cols="80"> {{  $school->descr  }}</textarea>
                                     <!-- <textarea id="content" name="content" class="summernote" > {{ old('content') }}</textarea> -->
                                 </div>
@@ -114,7 +114,7 @@
                         <div class="row mb-4">
                             <div class="col-md-8">
                                 <label class="form-label" for="color2">Secondary Color</label>
-                                <input class="coloris picker2" value="{{$school->scolor}}" name="scolor" />
+                                <input class="coloris picker2" value="{{ $school->scolor }}" name="scolor" />
                             </div>
                         </div>
 

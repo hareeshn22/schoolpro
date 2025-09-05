@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\ExamResource;
 use App\Models\Exam;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,16 @@ class ExamController extends Controller
     {
         //
     }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function exambys(Request $request)
+    {
+        //
+         return ExamResource::collection(Exam::where('school_id', '=', $request->id)->get());
+    }
+    
 
     /**
      * Show the form for creating a new resource.

@@ -1,6 +1,11 @@
 <?php
 namespace Database\Seeders;
 
+use App\Models\Subject;
+use App\Models\Course;
+use App\Models\Stream;
+
+
 use Illuminate\Database\Seeder;
 
 class SubjectSeeder extends Seeder
@@ -22,10 +27,6 @@ class SubjectSeeder extends Seeder
             [
                 'name'      => 'English',
                 'school_id' => 1,
-            ],
-            [
-                'name'      => 'English',
-                'school_id' => 2,
             ],
             [
                 'name'      => 'Mathematics',
@@ -59,6 +60,10 @@ class SubjectSeeder extends Seeder
             ],
             [
                 'name'      => 'Hindi',
+                'school_id' => 2,
+            ],
+            [
+                'name'      => 'English',
                 'school_id' => 2,
             ],
             [
@@ -89,8 +94,25 @@ class SubjectSeeder extends Seeder
         ];
 
         foreach ($subjects as $key => $value) {
-            \App\Models\Subject::create($value);
+            Subject::create($value);
         }
+
+        // $subjects = ['Telugu', 'Mathematics', 'Science', 'English', 'Social Studies', 'Hindi', 'Computer'];
+
+        // $courses = Course::all();
+        // $streams = Stream::all();
+
+        // foreach ($courses as $course) {
+        //     foreach ($streams as $stream) {
+        //         foreach ($subjects as $subjectName) {
+        //             Subject::create([
+        //                 'name' => $subjectName,
+        //                 'course_id' => $course->id,
+        //                 'stream_id' => $stream->id,
+        //             ]);
+        //         }
+        //     }
+        // }
 
     }
 }

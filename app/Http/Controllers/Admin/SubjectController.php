@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Models\Subject;
+use App\Models\School;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
@@ -13,7 +14,56 @@ class SubjectController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            return datatables()->of(Subject::orderByDesc('id')->select('*'))
+                ->addColumn('action', 'admin.helper.action')
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+         $schools = School::all();
+        return view('admin.subject.index', ['schools' => $schools]);
+    }
+
+    /**
+     * Filter the listing of the resource.
+     */
+    public function filter(Request $request)
+    {
         //
+        if (request()->ajax()) {
+            return datatables()->of(Subject::orderByDesc('id')->select('*'))
+
+                ->filter(function ($query) use ($request) {
+
+                    // if ($request->get('startDate') && $request->get('endDate')) {
+                    //     $startDate = $request->get('startDate');
+                    //     $endDate = $request->get('endDate');
+                    //     if ($startDate && $endDate) {
+                    //         $query->whereDate('appointdate', '>=', \Carbon\Carbon::parse($startDate)->format('Y-m-d'))
+                    //             ->whereDate('appointdate', '<=', \Carbon\Carbon::parse($endDate)->format('Y-m-d'));
+                    //     }
+                    // }
+    
+                    if ($request->get('schoolId')) {
+                        $schoolId = $request->get('schoolId');
+                        if ($schoolId) {
+                            $query->where('school_id', '=', $schoolId);
+                        }
+                    }
+
+                })
+                ->addColumn('school', function ($query) {
+                    $name = $query->school->name;
+                    // $html =  $name ;
+                    return $name;
+                })
+                ->addColumn('action', 'admin.helper.action')
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
     }
 
     /**
