@@ -22,7 +22,7 @@ class HomeworkSeeder extends Seeder
                 'subject_id' => 1,
                 'workdate'   => Carbon::now(),
                 'content'    => 'Homework content for Subject A',
-                'title'      => 'Math Homework - Algebra',
+                'title'      => 'Telugu Homework ',
                 'image'      => 'math_homework.jpg',
             ],
             [

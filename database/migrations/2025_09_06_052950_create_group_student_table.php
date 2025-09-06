@@ -10,17 +10,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('group_student', function (Blueprint $table) {
             $table->id();
             $table->foreignId('group_id')->constrained('groups')->cascadeOnDelete();
             $table->foreignId('student_id')->constrained('students')->cascadeOnDelete();
-            $table->text('body');
-            $table->enum('type', ['text'])->default('text');
-            $table->timestamps();
+            $table->timestamps(); // Optional: useful for tracking when they joined
 
-            // $table->index(['group_id', 'created_at']);
-
+            $table->unique('student_id');
         });
+
     }
 
     /**
@@ -28,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('group_student');
     }
 };

@@ -57,5 +57,17 @@ class Student extends Authenticatable
         return $this->hasOne(Guardian::class);
     }
 
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_student', 'student_id', 'group_id')
+                    ->withTimestamps();
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'student_id');
+    }
+
+
     
 }

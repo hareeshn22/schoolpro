@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ExamFeedbackController;
 use App\Http\Controllers\Api\ExamResultController;
 use App\Http\Controllers\Api\ExamSyllabusController;
 use App\Http\Controllers\Api\GuidanceController;
+use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\HomeworkController;
 use App\Http\Controllers\Api\LeaveController;
@@ -347,8 +348,8 @@ Route::prefix('1')->group(function () {
         Route::post('/storeremark', [RemarkController::class, 'store']);
 
         // Exam Syllabus
-        Route::get('/syllabus/{cid}/{sid}', [ExamSyllabusController::class, 'tExamSyllabuss']);
-        Route::get('/examsyllabus/{id}', [ExamSyllabusController::class, 'sExamSyllabuss']);
+        Route::get('/examsyllabus/{eid}/{sid}', [ExamSyllabusController::class, 'index']);
+        // Route::get('/examsyllabus/{id}', [ExamSyllabusController::class, 'sExamSyllabuss']);
         // Route::get('/ExamSyllabussbyc/{id}/{cate}', [ExamSyllabusController::class, 'ExamSyllabussbyc']);
         Route::get('/ExamSyllabus/{id}', [ExamSyllabusController::class, 'show']);
         Route::post('/storeExamSyllabus', [ExamSyllabusController::class, 'store']);
@@ -363,6 +364,11 @@ Route::prefix('1')->group(function () {
         Route::post('/storeExamFeedback', [ExamFeedbackController::class, 'store']);
         Route::post('/updateExamFeedback', [ExamFeedbackController::class, 'update']);
         Route::get('/ExamFeedbackdel/{id}', [ExamFeedbackController::class, 'delete']);
+
+        //Groups
+        Route::get('/groups/{sid}/{cid}', [GroupController::class, 'index']);
+        Route::get('/groupstudents/{sid}/{cid}', [GroupController::class, 'students']);
+        Route::post('/storegroup', [GroupController::class, 'store']);
 
         // Guidance
         Route::get('/guidance/{sid}/{cid}', [GuidanceController::class, 'index']);
