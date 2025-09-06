@@ -24,7 +24,7 @@ class TeachersdeskController extends BaseController
     {
         //
         $response = Http::withToken(env('TEACHERSDESK_API_TOKEN'))
-            ->get('http://127.0.0.1:7200/api/1/lessonsbys/' . $subj);
+            ->get(env('TEACHERSDESK_URL') .'lessonsbys/' . $subj);
 
         if ($response->successful()) {
             $lessons = $response->json();
@@ -44,7 +44,7 @@ class TeachersdeskController extends BaseController
     {
         //
         $response = Http::withToken(env('TEACHERSDESK_API_TOKEN'))
-            ->get('http://127.0.0.1:7200/api/1/topics/' . $lid);
+            ->get(env('TEACHERSDESK_URL') .'topics/' . $lid);
 
         if ($response->successful()) {
             $lessons = $response->json();
@@ -62,7 +62,7 @@ class TeachersdeskController extends BaseController
     {
         //
         $response = Http::withToken(env('TEACHERSDESK_API_TOKEN'))
-            ->get('http://127.0.0.1:7200/api/1/subtopics/' . $tid);
+            ->get(env('TEACHERSDESK_URL') .'subtopics/' . $tid);
 
         if ($response->successful()) {
             $lessons = $response->json();
@@ -98,7 +98,7 @@ class TeachersdeskController extends BaseController
     {
         //
         $response = Http::withToken(env('TEACHERSDESK_API_TOKEN'))
-            ->get('http://127.0.0.1:7200/api/1/examples/' . $tid);
+            ->get(env('TEACHERSDESK_URL') .'examples/' . $tid);
 
         if ($response->successful()) {
             $lessons = $response->json();
