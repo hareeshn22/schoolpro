@@ -119,11 +119,17 @@ class ExamSyllabusController extends BaseController
         //
     }
 
-    /**
+     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ExamSyllabus $examSyllabus)
+    public function delete($id)
     {
-        //
+         $examsyllabus = ExamSyllabus::find($id);
+
+        if ($examsyllabus->delete()) {
+            return $this->sendResponse('Success', 'Exam Syllabus deleted successfully.');
+        } else {
+            return $this->sendError('Error', ['error' => 'error occured']);
+        }
     }
 }

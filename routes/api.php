@@ -354,7 +354,7 @@ Route::prefix('1')->group(function () {
         Route::get('/ExamSyllabus/{id}', [ExamSyllabusController::class, 'show']);
         Route::post('/storeExamSyllabus', [ExamSyllabusController::class, 'store']);
         Route::post('/updateExamSyllabus', [ExamSyllabusController::class, 'update']);
-        Route::get('/ExamSyllabusdel/{id}', [ExamSyllabusController::class, 'delete']);
+        Route::get('/examsyllabusdel/{id}', [ExamSyllabusController::class, 'delete']);
 
         // Exam Feedback
         Route::get('/Feedback/{cid}/{sid}', [ExamFeedbackController::class, 'tExamFeedbacks']);
@@ -369,6 +369,8 @@ Route::prefix('1')->group(function () {
         Route::get('/groups/{sid}/{cid}', [GroupController::class, 'index']);
         Route::get('/groupstudents/{sid}/{cid}', [GroupController::class, 'students']);
         Route::post('/storegroup', [GroupController::class, 'store']);
+        Route::get('/group/{id}', [GroupController::class, 'show']);
+        Route::post('/removestudent', [GroupController::class, 'remove']);
 
         // Guidance
         Route::get('/guidance/{sid}/{cid}', [GuidanceController::class, 'index']);

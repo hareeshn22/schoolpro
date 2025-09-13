@@ -55,15 +55,17 @@ class PageController extends Controller
         //
         $this->validate($request, [
             'appname' => 'required',
-            'name'    => 'required',
+            'name' => 'required',
             'info' => 'required',
         ]);
 
         Page::create([
             'app_name' => $request->appname,
-            'language' =>$request->language,
-            'name'    => $request->name,
-            'info' => $request->info,
+            'language' => $request->language,
+            'name' => $request->name,
+            'info' => mb_convert_encoding($request->info, 'UTF-8', 'auto'),
+
+            // 'info' => htmlspecialchars_decode($request->info, ENT_QUOTES),
         ]);
 
         return back()->with('success', 'You have successfully created the page.');
@@ -98,8 +100,9 @@ class PageController extends Controller
 
         $page->app_name = $request->appname;
         $page->language = $request->language;
-        $page->name     = $request->name;
-        $page->info  = $request->info;
+        $page->name = $request->name;
+        $page->info = mb_convert_encoding($request->info, 'UTF-8', 'auto');
+
         $page->save();
 
         return redirect()->back()->with('success', 'You have successfully updated the page.');

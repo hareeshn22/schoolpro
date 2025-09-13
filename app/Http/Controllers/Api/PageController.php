@@ -14,11 +14,26 @@ class PageController extends Controller
     public function index($app)
     {
         //
-        return PageResource::collection(Page::where('app_name', '=', $app)->get());
+
+        return response()->json(
+            PageResource::collection(Page::where('app_name', '=', $app)->get()),
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+
+        // return response()->json(
+        //     PageResource::collection(Page::where('app_name', '=', $app)->get()),
+        //     200,
+        //     [],
+        //     JSON_UNESCAPED_UNICODE
+        // );
+
+        // return PageResource::collection(Page::where('app_name', '=', $app)->get());
 
     }
 
-     /**
+    /**
      * Display a listing of the resource.
      */
     public function singlepage($app, $name)

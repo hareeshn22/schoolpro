@@ -74,8 +74,14 @@ class LessonController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Lesson $lesson)
+    public function delete($id)
     {
-        //
+         $lesson = Lesson::find($id);
+
+        if ($lesson->delete()) {
+            return $this->sendResponse('Success', 'Lesson deleted successfully.');
+        } else {
+            return $this->sendError('Error', ['error' => 'error occured']);
+        }
     }
 }

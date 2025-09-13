@@ -18,7 +18,7 @@ class GroupController extends BaseController
         return GroupResource::collection(Group::with('students')->where('school_id', '=', $id)->where('course_id', '=', $cid)->get());
     }
 
-    public function students($sid,$cid)
+    public function students($sid, $cid)
     {
         $students = Student::query()
             ->leftJoin('group_student', 'students.id', '=', 'group_student.student_id')
@@ -52,8 +52,8 @@ class GroupController extends BaseController
             'created_by' => $request->teacherid,
             'name' => $request->name,
         ]);
-        if($group) {
-            $as = $group->students()->syncWithoutDetaching($request->students->pluck('id'));
+        if ($group) {
+            $as = $group->students()->syncWithoutDetaching(collect($request->students)->pluck('id'));
         }
 
         if ($as) {
@@ -64,11 +64,27 @@ class GroupController extends BaseController
     }
 
     /**
+     * Remove the specified resource from storage.
+     */
+    public function remove(Request $request)
+    {
+        $group = Group::find($request->id);
+
+        if ($group->students()->detach($request->studentid)) {
+            return $this->sendResponse('Success', 'Removed Student successfully.');
+        } else {
+            return $this->sendError('Error', ['error' => 'error occured']);
+        }
+    }
+
+    /**
      * Display the specified resource.
      */
-    public function show(Group $group)
+    public function show($id)
     {
         //
+        $group = Group::find($id);
+        return response()->json($group);
     }
 
     /**
@@ -76,7 +92,7 @@ class GroupController extends BaseController
      */
     public function edit(Group $group)
     {
-        //
+         
     }
 
     /**
@@ -90,8 +106,14 @@ class GroupController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Group $group)
+    public function delete($id)
     {
-        //
+        $group = Group::find($id);
+
+        if ($group->delete()) {
+            return $this->sendResponse('Success', 'Group deleted successfully.');
+        } else {
+            return $this->sendError('Error', ['error' => 'error occured']);
+        }
     }
 }

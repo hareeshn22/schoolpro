@@ -99,6 +99,7 @@ class LoginController extends BaseController
             $success['subject'] = $user->subject->name;
             $success['subject_id'] = $user->subject_id;
             $success['courses'] = $user->courses()->get();
+            $success['school'] = School::find($user->school_id);
             // $success['school'] = $user->school;
 
             return $this->sendResponse($success, 'Teacher login successfully.');
