@@ -46,8 +46,8 @@ class HomeworkController extends BaseController
                 $hwdata = DB::table('homework_data')->where('homework_id', $id)->get();
                 $workdate = $item->workdate;
                 $merged = collect($hwdata)
-                    ->groupBy([ 'status'])
-                    ->map(function ($group) use ($id,$workdate, $cid) {
+                    ->groupBy(['status'])
+                    ->map(function ($group) use ($id, $workdate, $cid) {
                         $students = Student::where('course_id', '=', $cid)->count();
                         return [
                             'id' => $id,
@@ -120,7 +120,7 @@ class HomeworkController extends BaseController
         //
         return HomeworkResource::collection(Homework::where('school_id', '=', $sid)
             ->where('course_id', '=', $cid)
-             ->where('subject_id', '=', $subid)
+            ->where('subject_id', '=', $subid)
             ->where('workdate', '=', Carbon::today()->toDateString())
             ->get());
 
@@ -194,6 +194,52 @@ class HomeworkController extends BaseController
 
     }
 
+    // For Students
+
+    public function dailyStData($sid, $cid, $stid)
+    {
+        $subjects = Subject::where('school_id', $sid)->get();
+        $fdata = [];
+        $sDate = Carbon::today()->toDateString();
+        // $sDate = $date === 'today' ? Carbon::today()->toDateString() : Carbon::yesterday()->toDateString();
+
+        foreach ($subjects as $subject) {
+            $homework = Homework::where('school_id', $sid)
+                ->where('course_id', $cid)
+                ->where('subject_id', $subject->id)
+                ->where('workdate', $sDate)
+                ->first();
+
+            if ($homework) {
+                $hwdata = DB::table('homework_data')
+                    ->where('homework_id', $homework->id)
+                    ->where('student_id', $stid)
+                    ->first();
+
+                $status = $hwdata ? $hwdata->status : 'not submitted';
+
+                $fdata[] = [
+                    'subjectid' => $subject->id,
+                    'workid' => $homework->id,
+                    'image' => $subject->name . '.png',
+                    'Subject' => $subject->name,
+                    'Status' => ucfirst($status),
+                ];
+            } else {
+                $fdata[] = [
+                    'subjectid' => $subject->id,
+                    'workid' => null,
+                    'image' => $subject->name . '.png',
+                    'Subject' => $subject->name,
+                    'Status' => 'No Homework',
+                ];
+            }
+        }
+
+        return $fdata;
+    }
+
+
     /**
      * Store a newly created resource in storage.
      */
@@ -226,7 +272,7 @@ class HomeworkController extends BaseController
             'title' => $request->title,
             'image' => $name,
             'workdate' => $request->workdate,
-            'content' => $request->content,
+            'content' => $request->input('content'),
         ];
 
         $work = Homework::create($data);
@@ -243,6 +289,17 @@ class HomeworkController extends BaseController
      * Display the specified resource.
      */
     public function show($id)
+    {
+        return HomeworkResource::collection(Homework::where('id', '=', $id)
+            // ->where('course_id', '=', $cid)
+            // ->where('workdate', '=', Carbon::today()->toDateString())
+            ->get());
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function workguidance($id)
     {
         return HomeworkResource::collection(Homework::where('id', '=', $id)
             // ->where('course_id', '=', $cid)
@@ -316,7 +373,7 @@ class HomeworkController extends BaseController
 
 
             $homework->title = $request->title;
-            $homework->content = $request->content;
+            $homework->content = $request->input('content');
             if ($request->snapImg) {
                 $homework->image = $name;
             } else {

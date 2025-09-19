@@ -12,8 +12,6 @@ return new class extends Migration {
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('school_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('course_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('homework_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('guidance_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('material_id');

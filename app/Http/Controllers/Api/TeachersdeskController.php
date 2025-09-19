@@ -128,6 +128,24 @@ class TeachersdeskController extends BaseController
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function notes($tid)
+    {
+        //
+        $response = Http::withToken(env('TEACHERSDESK_API_TOKEN'))
+            ->get(env('TEACHERSDESK_URL') . 'notes/' . $tid);
+
+        if ($response->successful()) {
+            $lessons = $response->json();
+            return $lessons;
+            // Use or sync the data...
+        } else
+            return $response;
+
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

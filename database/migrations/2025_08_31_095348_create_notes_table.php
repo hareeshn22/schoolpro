@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('homework_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+           
+            $table->unsignedBigInteger('note_id');
             $table->timestamps();
         });
     }

@@ -15,11 +15,13 @@ return new class extends Migration {
             $table->foreignId('school_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('course_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('homework_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('suggestions');
-            // $table->string('examples');
-            // $table->string('materials');
-            $table->string('notes')->nullable();
-            $table->string('videos')->nullable();
+            $table->enum('type', ['suggestion', 'material', 'example', 'note', 'video']);
+            $table->unsignedBigInteger('resource_id')->nullable(); // optional link to another table
+            $table->text('content')->nullable();
+            // $table->string('suggestions');
+            // // $table->string('materials');
+            // $table->string('notes')->nullable();
+            // $table->string('videos')->nullable();
             $table->timestamps();
         });
     }

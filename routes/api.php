@@ -380,8 +380,8 @@ Route::prefix('1')->group(function () {
         // Route::get('/wdata/{sid}/{cid}/{subid}', [GuidanceController::class, 'wdata']);
         Route::post('/storeguidance', [GuidanceController::class, 'store']);
         Route::post('/updateguidance', [GuidanceController::class, 'update']);
-        
-         // Materials
+
+        // Materials
         Route::get('/materials/{id}', [MaterialController::class, 'index']);
         Route::get('/materialsbyt/{id}', [MaterialController::class, 'materialbyt']);
         // Route::get('/material/{id}', [MaterialController::class, 'show']);
@@ -401,7 +401,7 @@ Route::prefix('1')->group(function () {
         // SubTopics
         Route::get('/tdsubtopics/{tid}', [TeachersdeskController::class, 'subtopics']);
 
-         // Materials
+        // Materials
         Route::get('/tdmaterials/{tid}', [TeachersdeskController::class, 'materials']);
 
         // Materials
@@ -409,6 +409,9 @@ Route::prefix('1')->group(function () {
 
         // Videos
         Route::get('/tdvideos/{tid}', [TeachersdeskController::class, 'videos']);
+
+        // Notes
+        Route::get('/tdnotes/{tid}', [TeachersdeskController::class, 'notes']);
 
 
 
@@ -613,9 +616,11 @@ Route::prefix('1')->group(function () {
         // Route::get('/delattend/{id}', [AttendanceController::class, 'delete']);
 
         // Homework
+        Route::get('/dailydata/{sid}/{cid}/{stid}', [HomeworkController::class, 'dailyStData']);
         Route::get('/work/{sid}/{cid}', [HomeworkController::class, 'index']);
         Route::get('/workbyc/{sid}/{cid}', [HomeworkController::class, 'workbyc']);
         Route::get('/worktoday/{sid}/{cid}', [HomeworkController::class, 'worktoday']);
+        Route::get('/worktodaybys/{sid}/{cid}/{suid}', [HomeworkController::class, 'worktodaybys']);
         Route::get('/workweek/{sid}/{cid}', [HomeworkController::class, 'workweek']);
         Route::get('/work/{id}', [HomeworkController::class, 'show']);
         Route::post('/workdone/{id}', [HomeworkController::class, 'workdone']);
@@ -675,23 +680,9 @@ Route::prefix('1')->group(function () {
         Route::get('/pages/{app}/{name}', [PageController::class, 'singlepage']);
         Route::get('/pagesbys/{id}', [PageController::class, 'villagebyd']);
 
-        // Slots
-        // Route::get('/slots/{id}', [SlotController::class, 'index']);
-        // Route::get('/slot/{id}', [SlotController::class, 'show']);
+        // Guidance
+        Route::get('/guidancebyt/{hid}/{type}', [GuidanceController::class, 'guidanceByType']);
 
-        // Period
-        // Route::get('/periods/{id}', [PeriodController::class, 'index']);
-        // Route::get('/attendsbyc/{id}', [PeriodController::class, 'villagebyd']);
-        // Route::get('/period/{id}', [PeriodController::class, 'show']);
-        // Route::post('/storeperiod', [PeriodController::class, 'store']);
-        // Route::post('/updateperiod', [PeriodController::class, 'update']);
-        // Route::get('/delperiod/{id}', [PeriodController::class, 'delete']);
-
-        // Settings
-        // Route::get('/settings/{id}', [SettingsController::class, 'index']);
-
-        // // Hospital
-        // Route::get('/hospital/{id}', [HospitalController::class, 'hospital']);
 
         // // Home
         Route::get('/home/{id}', [HomeController::class, 'index']);

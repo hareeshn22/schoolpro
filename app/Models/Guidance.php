@@ -13,9 +13,9 @@ class Guidance extends Model
         'school_id',
         'course_id',
         'homework_id',
-        'suggestions',
-        'notes',
-        'videos',
+        'type',
+        'resource_id',
+        'content',
         // 'examples',
         // 'materials',
     ];
