@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Models\Guardian;
 use App\Models\Student;
+use App\Models\Trainer;
 use App\Models\Teacher;
 use App\Models\Principal;
 use App\Models\School;
@@ -223,6 +224,59 @@ class LoginController extends BaseController
         // $tokenId = $request->token;
         $tokenName = $request->tName;
         $user = Student::findorFail($id);
+        // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
+        if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
+            return response()->json('success');
+
+        } else {
+            return response()->json('failed');
+
+        }
+
+    }
+
+
+        public function trainlogin(Request $request)
+    {
+
+        // $user = auth()->guard('principal')->user();
+        $trainer = Trainer::where('username', $request->username)->first();
+
+        if (!$trainer || !Hash::check($request->password, $trainer->password)) {
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        }
+
+        // if (Auth::guard('trainer')->attempt(['username' => $request->username, 'password' => $request->password])) {
+
+            $user = $trainer;
+
+            $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
+
+            $token = $user->createToken($tokenName)->plainTextToken;
+            $success['token'] = $token;
+            $success['name'] = $user->first_name;
+            $success['user'] = $user;
+            $success['tName'] = $tokenName;
+            // $success['subject'] = $user->subject->name;
+            // $success['subject_id'] = $user->subject_id;
+            // $success['courses'] = $user->courses()->get();
+            $success['school'] = School::find($user->school_id);
+            // $success['school'] = $user->school;
+
+            return $this->sendResponse($success, 'Trainer login successfully.');
+        // } else {
+        //     return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        // }
+
+    }
+
+    public function trainlogout(Request $request)
+    {
+
+        $id = $request->id;
+        // $tokenId = $request->token;
+        $tokenName = $request->tName;
+        $user = Teacher::findorFail($id);
         // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
         if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
             return response()->json('success');

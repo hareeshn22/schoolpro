@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'defaults'         => [
-        'guard'     => 'web',
+    'defaults' => [
+        'guard' => 'web',
         'passwords' => 'users',
     ],
 
@@ -35,26 +35,30 @@ return [
     |
     */
 
-    'guards'           => [
-        'web'     => [
-            'driver'   => 'session',
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
             'provider' => 'users',
         ],
         'principal' => [
-            'driver' => 'session',
-            'provider'  => 'principal',
+            'driver' => 'sanctum',
+            'provider' => 'principal',
         ],
         'guardian' => [
-            'driver' => 'session',
-            'provider'  => 'guardian',
+            'driver' => 'sanctum',
+            'provider' => 'guardian',
         ],
         'teacher' => [
-            'driver' => 'session',
-            'provider'  => 'teacher',
+            'driver' => 'sanctum',
+            'provider' => 'teacher',
         ],
         'student' => [
             'driver' => 'sanctum',
-            'provider'  => 'student',
+            'provider' => 'student',
+        ],
+        'trainer' => [
+            'driver' => 'sanctum',
+            'provider' => 'trainer',
         ],
     ],
 
@@ -75,27 +79,31 @@ return [
     |
     */
 
-    'providers'        => [
+    'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model'  => App\Models\User::class,
+            'model' => App\Models\User::class,
         ],
 
         'principal' => [
             'driver' => 'eloquent',
-            'model'  => App\Models\Principal::class,
+            'model' => App\Models\Principal::class,
         ],
         'guardian' => [
             'driver' => 'eloquent',
-            'model'  => App\Models\Guardian::class,
+            'model' => App\Models\Guardian::class,
         ],
         'teacher' => [
             'driver' => 'eloquent',
-            'model'  => App\Models\Teacher::class,
+            'model' => App\Models\Teacher::class,
         ],
         'student' => [
             'driver' => 'eloquent',
-            'model'  => App\Models\Student::class,
+            'model' => App\Models\Student::class,
+        ],
+        'trainer' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Trainer::class,
         ],
 
         // 'users' => [
@@ -123,11 +131,11 @@ return [
     |
     */
 
-    'passwords'        => [
+    'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table'    => 'password_reset_tokens',
-            'expire'   => 60,
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
             'throttle' => 60,
         ],
     ],

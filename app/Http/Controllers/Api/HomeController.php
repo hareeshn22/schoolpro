@@ -21,7 +21,7 @@ class HomeController extends BaseController
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index($id)
     {
@@ -38,9 +38,31 @@ class HomeController extends BaseController
         $svideo = News::orderByDesc('id')->where('school_id', '=', $id)->where('category', '=', 'schoolpro')->first();
         $tvideo = News::orderByDesc('id')->where('school_id', '=', $id)->where('category', '=', 'teachersdesk')->first();
 
-        $data['logo']    = $school->logo;
-        $data['svideo']  = $svideo;
-        $data['tvideo']  = $tvideo;
+        $data['logo'] = $school->logo;
+        $data['svideo'] = $svideo;
+        $data['tvideo'] = $tvideo;
+
+        return response()->json($data);
+
+    }
+
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function studentHome($id)
+    {
+
+        
+        $school = School::find($id);
+        $svideo = News::orderByDesc('id')->where('school_id', '=', $id)->where('category', '=', 'schoolpro')->first();
+        $tvideo = News::orderByDesc('id')->where('school_id', '=', $id)->where('category', '=', 'teachersdesk')->first();
+
+        $data['logo'] = $school->logo;
+        $data['svideo'] = $svideo;
+        $data['tvideo'] = $tvideo;
 
         return response()->json($data);
 

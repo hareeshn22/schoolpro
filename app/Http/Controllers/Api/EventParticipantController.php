@@ -1,0 +1,105 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Api\BaseController as BaseController;
+use App\Http\Resources\EventParticipantResource;
+use App\Http\Resources\StudentResource;
+use App\Models\EventParticipant;
+use Illuminate\Http\Request;
+
+class EventParticipantController extends BaseController
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index($sid)
+    {
+        // return EventParticipantResource::collection(EventParticipant::where('event_id', '=', $sid)->get());
+        $students = EventParticipant::where('event_id', $sid)
+            ->with('student') // eager load student relationship
+            ->get()
+            ->pluck('student') // extract only student models
+            ->filter(); // remove nulls if any
+
+        return StudentResource::collection($students);
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'eventid' => 'required|exists:events,id',
+            'studentsList' => 'required|array',
+            // 'participants.*.student_id' => 'required|exists:students,id',
+            // 'participants.*.practice_time' => 'nullable|date_format:H:i',
+            // 'participants.*.role' => 'nullable|in:player,substitute,trainer,referee',
+        ]);
+
+        foreach ($validated['studentsList'] as $student) {
+            $events = EventParticipant::updateOrCreate(
+                [
+                    'event_id' => $validated['eventid'],
+                ],
+                [
+                    'student_id' => $student,
+                    'practice_time' => $validated['practiceTime'] ?? null,
+                    // 'role' => $student['role'] ?? 'player',
+                ]
+            );
+        }
+
+        if ($events) {
+            return $this->sendResponse('Success', 'Participants saved successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
+
+        // return response()->json(['message' => 'Participants saved successfully.']);
+    }
+
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(EventParticipant $eventParticipant)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(EventParticipant $eventParticipant)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, EventParticipant $eventParticipant)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(EventParticipant $eventParticipant)
+    {
+        //
+    }
+}

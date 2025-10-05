@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\StudentResource;
 use App\Models\Student;
+use App\Models\Sport;
+use App\Models\SportStudent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
+use DB;
 
 class StudentController extends BaseController
 {
@@ -27,6 +30,16 @@ class StudentController extends BaseController
     {
         //
         return StudentResource::collection(Student::where('school_id', '=', $sid)->where('course_id', '=', $cid)->with('guardian')->get());
+
+    }
+
+    /**
+     * Display a listing of the students with school, class filter.
+     */
+    public function studentsbyc($cid)
+    {
+        //
+        return StudentResource::collection(Student::where('course_id', '=', $cid)->get());
 
     }
 
@@ -118,6 +131,76 @@ class StudentController extends BaseController
         return StudentResource::collection(Student::where('id', '=', $id)->with('guardian')->get());
 
     }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function studentsBySport($id)
+    {
+        $sport = Sport::findOrFail($id);
+        return StudentResource::collection($sport->students);
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function addstudents(Request $request)
+    {
+        //
+        $validated = $request->validate([
+            'sportid' => 'required|exists:sports,id',
+            'trainerid' => 'nullable|exists:trainers,id',
+            'studentids' => 'required|array',
+            'studentids.*' => 'exists:students,id',
+        ]);
+
+        foreach ($validated['studentids'] as $studentId) {
+            $addSt = DB::table('sport_student')->updateOrInsert(
+                [
+                    'sport_id' => $validated['sportid'],
+                    'student_id' => $studentId,
+                ],
+                [
+
+                    'trainer_id' => $validated['trainerid'] ?? null,
+                    'updated_at' => now(),
+                    'created_at' => now(),
+                ]
+            );
+        }
+        if ($addSt) {
+            return $this->sendResponse('Success', 'Students registered successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
+    }
+
+
+    public function removeStudent($sport_id, $student_id)
+    {
+        $deleted = SportStudent::where('sport_id', $sport_id)
+            ->where('student_id', $student_id)
+            ->delete();
+
+        if ($deleted) {
+            return $this->sendResponse('Success', 'Student removed from sport successfully.');
+            // response()->json([
+            //     'success' => true,
+            //     'message' => 'Student removed from sport successfully.'
+            // ], 200);
+        }
+
+        return $this->sendResponse('Error', 'Student not found in this sport.');
+        // response()->json([
+        //     'success' => false,
+        //     'message' => 'Student not found in this sport.'
+        // ], 404);
+    }
+
+
+
 
     /**
      * Show the form for editing the specified resource.

@@ -41,6 +41,9 @@ class DatabaseSeeder extends Seeder
             FeedbackSeeder::class,
             NewsSeeder::class,
             GroupSeeder::class,
+            SportSeeder::class,
+            TrainerSeeder::class,
+            SportsTrainer::class,
         ]);
 
     }

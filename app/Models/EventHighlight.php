@@ -5,27 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class School extends Model
+class EventHighlight extends Model
 {
     use HasFactory;
 
+    protected $table = 'event_highlights';
 
     /**
      * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'logo',
-        'descr',
-        'phone',
-        'address'
+        'event_id',
+        'content',
     ];
 
-    public function sportTimetables()
+    /**
+     * Get the event that this highlight belongs to.
+     */
+    public function event()
     {
-        return $this->hasMany(SportTimetable::class);
+        return $this->belongsTo(Event::class);
     }
 
 }

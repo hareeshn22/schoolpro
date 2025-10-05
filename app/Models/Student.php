@@ -16,7 +16,7 @@ class Student extends Authenticatable
      *
      * @var array<int, string>
      */
-    
+
     protected $fillable = [
         'school_id',
         'course_id',
@@ -41,7 +41,7 @@ class Student extends Authenticatable
         'password',
     ];
 
-    
+
     public function school()
     {
         return $this->belongsTo(School::class);
@@ -60,7 +60,7 @@ class Student extends Authenticatable
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'group_student', 'student_id', 'group_id')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 
     public function messages()
@@ -68,6 +68,12 @@ class Student extends Authenticatable
         return $this->hasMany(Message::class, 'student_id');
     }
 
+    // Sports
+    public function sports()
+    {
+        return $this->belongsToMany(Sport::class, 'sport_students');
+    }
 
-    
+
+
 }

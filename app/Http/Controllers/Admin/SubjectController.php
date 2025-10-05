@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Subject;
 use App\Models\School;
+use App\Models\Image;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
@@ -72,6 +73,9 @@ class SubjectController extends Controller
     public function create()
     {
         //
+        $images = Image::paginate(9);
+        $schools = School::all();
+        return view('admin.subject.add', compact('schools', 'images'));
     }
 
     /**

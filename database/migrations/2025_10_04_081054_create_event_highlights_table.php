@@ -10,13 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('examples', function (Blueprint $table) {
+        Schema::create('event_highlights', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('homework_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('guidance_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('example_id');
+            $table->foreignId('event_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->text('content'); // summary or highlight text
             $table->timestamps();
         });
+
     }
 
     /**
@@ -24,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('examples');
+        Schema::dropIfExists('event_highlights');
     }
 };

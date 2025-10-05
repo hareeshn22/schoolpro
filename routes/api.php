@@ -3,6 +3,10 @@
 use App\Http\Controllers\Api\AcademicController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\EventParticipantController;
+use App\Http\Controllers\Api\EventHighlightController;
+use App\Http\Controllers\Api\EventNoteController;
 use App\Http\Controllers\Api\ExamController;
 use App\Http\Controllers\Api\ExamFeedbackController;
 use App\Http\Controllers\Api\ExamResultController;
@@ -22,6 +26,9 @@ use App\Http\Controllers\Api\RemarkController;
 use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\SlotController;
 use App\Http\Controllers\Api\StudentController;
+use App\Http\Controllers\Api\SportController;
+use App\Http\Controllers\Api\SportAttendanceController;
+use App\Http\Controllers\Api\SportTimetableController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\TeacherController;
 use App\Http\Controllers\Api\TeachersdeskController;
@@ -655,6 +662,189 @@ Route::prefix('1')->group(function () {
         Route::get('/timetable/{sid}/{cid}/{day}', [ScheduleController::class, 'timebyday']);
         Route::get('/time/{id}', [ScheduleController::class, 'show']);
         // Route::post('/storetime', [ScheduleController::class, 'store']);
+        // Route::post('/updatetime', [ScheduleController::class, 'update']);
+        // Route::get('/deltime/{id}', [ScheduleController::class, 'delete']);
+
+        // News
+        // Route::get('/news/{id}', [NewsController::class, 'index']);
+        // Route::get('/newsbyt/{id}', [NewsController::class, 'newsbyt']);
+        // Route::get('/news/{id}', [NewsController::class, 'show']);
+        // Route::post('/storenews', [NewsController::class, 'store']);
+        // Route::post('/updatenews', [NewsController::class, 'update']);
+        // Route::get('/delnews/{id}', [NewsController::class, 'delete']);
+
+        // Notice
+        // Route::get('/snotices/{id}', [NoticeController::class, 'snotices']);
+        // Route::get('/snotice/{id}', [NoticeController::class, 'snotice']);
+        // Route::get('/notices/{id}', [NoticeController::class, 'index']);
+        // Route::get('/noticebys/{id}', [NoticeController::class, 'villagebyd']);
+        // Route::post('/storenotice', [NoticeController::class, 'store']);
+        // Route::post('/updatenotice', [NewsController::class, 'update']);
+        // Route::get('/delnotice/{id}', [NewsController::class, 'delete']);
+
+        // Pages
+        Route::get('/pages/{id}', [PageController::class, 'index']);
+        Route::get('/pages/{app}/{name}', [PageController::class, 'singlepage']);
+        Route::get('/pagesbys/{id}', [PageController::class, 'villagebyd']);
+
+        // Guidance
+        Route::get('/guidancebyt/{hid}/{type}', [GuidanceController::class, 'guidanceByType']);
+
+
+        // // Home
+        Route::get('/home/{id}', [HomeController::class, 'index']);
+        // Route::get('/finalreport', [HomeController::class, 'final']);
+
+    });
+
+});
+
+
+// Trainer Routes
+Route::prefix('1')->group(function () {
+
+    Route::post('trainer/login', [LoginController::class, 'trainlogin']);
+    Route::post('trainer/logout', [LoginController::class, 'trainlogout']);
+
+    Route::middleware(['auth:trainer'])->prefix('trainer')->group(function () {
+
+        // Students
+        Route::get('/students/{cid}', [StudentController::class, 'studentsbyc']);
+        // Route::get('/students/{sid}/{cid}', [StudentController::class, 'studentsbys']);
+        Route::get('/student/{id}', [StudentController::class, 'show']);
+        Route::post('/addstudent', [StudentController::class, 'addstudents']);
+        Route::get('/studentsbysport/{id}', [StudentController::class, 'studentsBySport']);
+        Route::get('/sports/{pid}/students/{sid}', [StudentController::class, 'removeStudent']);
+
+        // Route::post('/storestudent', [StudentController::class, 'storeMulti']);
+        // Route::post('/updatestudent', [StudentController::class, 'update']);
+        // Route::get('/studentdel/{id}', [StudentController::class, 'delete']);
+        // Route::post('/studentreport', [StudentController::class, 'report']);
+
+        // Teachers
+        Route::get('/teachers/{id}', [TeacherController::class, 'index']);
+        Route::get('/teachersbyd/{id}', [TeacherController::class, 'Teacherbyd']);
+        Route::get('/teacher/{id}', [TeacherController::class, 'show']);
+        // Route::post('/storeteacher', [TeacherController::class, 'store']);
+        // Route::post('/updateteacher', [TeacherController::class, 'update']);
+        // Route::get('/cndel/{id}', [TeacherController::class, 'delete']);
+
+
+        // Sports
+        Route::get('/sports/{id}', [SportController::class, 'index']);
+        Route::get('/sportsbyt/{id}', [SportController::class, 'sportsbyt']);
+        Route::get('/sport/{id}', [SportController::class, 'show']);
+        Route::get('/groupbystudents/{id}', [SportController::class, 'groupByStudents']);
+        Route::post('/savestudents', [SportController::class, 'registerStudents']);
+        Route::post('/', [SportController::class, 'registerStudents']);
+
+
+
+        // Sport Attendance
+
+        Route::group(['prefix' => 'sportsattend'], function () {
+            Route::get('{pid}/{sid}', [SportAttendanceController::class, 'index']);
+            ;
+            //     Route::post('create', [SportController::class, 'create']);
+            //     Route::get('today/{sid}', [SportController::class, 'eventbys']);
+        });
+        Route::get('presentstudents/{pid}/{sid}', [SportAttendanceController::class, 'presentStudents']);
+
+        Route::group(['prefix' => 'sport'], function () {
+            // Route::get('{sid}/{pid}', [SportAttendanceController::class, 'index']);
+            // Route::post('create', [EventController::class, 'create']);
+            // Route::get('today/{sid}', [EventController::class, 'eventbys']);
+            Route::post('/store', [SportAttendanceController::class, 'store']);
+        });
+
+
+        // Route::post('/updatesubject', [SubjectController::class, 'update']);
+
+        // Subjects
+        Route::get('/subjects/{id}', [SubjectController::class, 'index']);
+        Route::get('/subject/{id}', [SubjectController::class, 'show']);
+        // Route::post('/storesubject', [SubjectController::class, 'store']);
+        // Route::post('/updatesubject', [SubjectController::class, 'update']);
+        // Route::get('/subjectdel/{id}', [SubjectController::class, 'destroy']);
+
+        // Courses
+        Route::get('/courses/{id}', [CourseController::class, 'index']);
+        Route::get('/coursesbys/{id}', [CourseController::class, 'villagebyd']);
+        Route::get('/course/{id}', [CourseController::class, 'show']);
+        // Route::post('/storecourse', [CourseController::class, 'store']);
+        // Route::post('/updatecourse', [CourseController::class, 'update']);
+        // Route::get('/delcourse/{id}', [CourseController::class, 'destroy']);
+
+        // Attendance
+        Route::get('/attendsbyst/{sid}/{week}', [AttendanceController::class, 'attendsbyst']);
+        // Route::get('/attendsbyc/{sid}/{cid}/{slot}', [AttendanceController::class, 'attendsbyc']);
+        // Route::get('/attends/{id}', [AttendanceController::class, 'show']);
+        // Route::post('/storeattend', [AttendanceController::class, 'store']);
+        // Route::post('/updateattend', [AttendanceController::class, 'update']);
+        // Route::get('/delattend/{id}', [AttendanceController::class, 'delete']);
+
+        // Homework
+        Route::get('/dailydata/{sid}/{cid}/{stid}', [HomeworkController::class, 'dailyStData']);
+        Route::get('/work/{sid}/{cid}', [HomeworkController::class, 'index']);
+        Route::get('/workbyc/{sid}/{cid}', [HomeworkController::class, 'workbyc']);
+        Route::get('/worktoday/{sid}/{cid}', [HomeworkController::class, 'worktoday']);
+        Route::get('/worktodaybys/{sid}/{cid}/{suid}', [HomeworkController::class, 'worktodaybys']);
+        Route::get('/workweek/{sid}/{cid}', [HomeworkController::class, 'workweek']);
+        Route::get('/work/{id}', [HomeworkController::class, 'show']);
+        Route::post('/workdone/{id}', [HomeworkController::class, 'workdone']);
+        // Route::post('/storework', [HomeworkController::class, 'store']);
+        // Route::post('/updatework', [HomeworkController::class, 'update']);
+        // Route::get('/delwork/{id}', [HomeworkController::class, 'delete']);
+
+        Route::get('/notdonestudents/{id}', [HomeworkController::class, 'notdoneStudents']);
+
+        // Event
+        Route::group(['prefix' => 'event'], function () {
+
+            Route::get('{sid}', [EventController::class, 'show']);
+            Route::post('/store', [EventController::class, 'store']);
+
+            Route::post('/update', [EventController::class, 'update']);
+            Route::get('/delete/{id}', [EventController::class, 'delete']);
+
+            // Participant
+            Route::get('participants/{eid}', [EventParticipantController::class, 'index']);
+            Route::post('participant/store', [EventParticipantController::class, 'store']);
+
+            // Highlight
+            Route::get('highlights/{eid}', [EventHighlightController::class, 'index']);
+            Route::post('highlight/store', [EventHighlightController::class, 'store']);
+
+            // Highlight
+            Route::get('note/{eid}', [EventNoteController::class, 'index']);
+            Route::post('note/store', [EventNoteController::class, 'store']);
+        });
+        // Events
+        Route::group(['prefix' => 'events'], function () {
+            Route::get('{sid}', [EventController::class, 'index']);
+            Route::post('create', [EventController::class, 'create']);
+            Route::get('today/{sid}', [EventController::class, 'eventbys']);
+        });
+
+
+
+        //ExamResult
+        Route::get('/examresultsbyst/{eid}/{sid}', [ExamResultController::class, 'resultsbyst']);
+
+        // Leaves
+        // Route::get('/leaves/{id}', [LeaveController::class, 'index']);
+        // Route::get('/leavesbyc/{id}/{cate}', [LeaveController::class, 'leavesbyc']);
+        // Route::get('/sleaves/{id}', [LeaveController::class, 'sleaves']);
+        // Route::get('/leave/{id}', [LeaveController::class, 'show']);
+        // Route::post('/storeleave', [LeaveController::class, 'store']);
+        // Route::post('/updateleave', [LeaveController::class, 'update']);
+        // Route::get('/leavedel/{id}', [LeaveController::class, 'delete']);
+
+        // Schedule
+        Route::get('/timetables/{pid}/{sid}', [SportTimetableController::class, 'index']);
+        // Route::get('/timetable/{sid}/{cid}/{day}', [ScheduleController::class, 'timebyday']);
+        // Route::get('/time/{id}', [ScheduleController::class, 'show']);
+        Route::post('/storetimetable', [SportTimetableController::class, 'store']);
         // Route::post('/updatetime', [ScheduleController::class, 'update']);
         // Route::get('/deltime/{id}', [ScheduleController::class, 'delete']);
 
