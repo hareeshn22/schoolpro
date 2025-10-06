@@ -733,6 +733,7 @@ Route::prefix('1')->group(function () {
         // Sports
         Route::get('/sports/{id}', [SportController::class, 'index']);
         Route::get('/sportsbyt/{id}', [SportController::class, 'sportsbyt']);
+        Route::get('/sportstoday/{id}', [SportController::class, 'sportstoday']);
         Route::get('/sport/{id}', [SportController::class, 'show']);
         Route::get('/groupbystudents/{id}', [SportController::class, 'groupByStudents']);
         Route::post('/savestudents', [SportController::class, 'registerStudents']);

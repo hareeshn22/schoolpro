@@ -86,27 +86,33 @@ class LoginController extends BaseController
 
         // $user = auth()->guard('principal')->user();
 
-        if (Auth::guard('teacher')->attempt(['username' => $request->username, 'password' => $request->password])) {
+        $teacher = Teacher::where('username', $request->username)->first();
 
-            $user = Auth::guard('teacher')->user();
-
-            $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
-
-            $token = $user->createToken($tokenName)->plainTextToken;
-            $success['token'] = $token;
-            $success['name'] = $user->first_name;
-            $success['user'] = $user;
-            $success['tName'] = $tokenName;
-            $success['subject'] = $user->subject->name;
-            $success['subject_id'] = $user->subject_id;
-            $success['courses'] = $user->courses()->get();
-            $success['school'] = School::find($user->school_id);
-            // $success['school'] = $user->school;
-
-            return $this->sendResponse($success, 'Teacher login successfully.');
-        } else {
+        if (!$teacher || !Hash::check($request->password, $teacher->password)) {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }
+
+        // if (Auth::guard('teacher')->attempt(['username' => $request->username, 'password' => $request->password])) {
+
+        $user = $teacher;
+
+        $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
+
+        $token = $user->createToken($tokenName)->plainTextToken;
+        $success['token'] = $token;
+        $success['name'] = $user->first_name;
+        $success['user'] = $user;
+        $success['tName'] = $tokenName;
+        $success['subject'] = $user->subject->name;
+        $success['subject_id'] = $user->subject_id;
+        $success['courses'] = $user->courses()->get();
+        $success['school'] = School::find($user->school_id);
+        // $success['school'] = $user->school;
+
+        return $this->sendResponse($success, 'Teacher login successfully.');
+        // } else {
+        //     return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        // }
 
     }
 
@@ -137,10 +143,15 @@ class LoginController extends BaseController
     {
 
         // $user = auth()->guard('principal')->user();
+        $guardian = Guardian::where('username', $request->username)->first();
 
-        if (Auth::guard('guardian')->attempt(['username' => $request->username, 'password' => $request->password])) {
+        if (!$guardian || !Hash::check($request->password, $guardian->password)) {
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        }
 
-            $user = Auth::guard('guardian')->user();
+        // if (Auth::guard('guardian')->attempt(['username' => $request->username, 'password' => $request->password])) {
+
+            $user = $guardian;
 
             $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
 
@@ -154,9 +165,9 @@ class LoginController extends BaseController
             $success['courseid'] = $courseid;
 
             return $this->sendResponse($success, 'Parent login successfully.');
-        } else {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
-        }
+        // } else {
+        //     return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        // }
 
     }
 
@@ -170,7 +181,6 @@ class LoginController extends BaseController
         // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
         if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
             return response()->json('success');
-
         } else {
             return response()->json('failed');
 
@@ -236,7 +246,7 @@ class LoginController extends BaseController
     }
 
 
-        public function trainlogin(Request $request)
+    public function trainlogin(Request $request)
     {
 
         // $user = auth()->guard('principal')->user();
@@ -248,22 +258,22 @@ class LoginController extends BaseController
 
         // if (Auth::guard('trainer')->attempt(['username' => $request->username, 'password' => $request->password])) {
 
-            $user = $trainer;
+        $user = $trainer;
 
-            $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
+        $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
 
-            $token = $user->createToken($tokenName)->plainTextToken;
-            $success['token'] = $token;
-            $success['name'] = $user->first_name;
-            $success['user'] = $user;
-            $success['tName'] = $tokenName;
-            // $success['subject'] = $user->subject->name;
-            // $success['subject_id'] = $user->subject_id;
-            // $success['courses'] = $user->courses()->get();
-            $success['school'] = School::find($user->school_id);
-            // $success['school'] = $user->school;
+        $token = $user->createToken($tokenName)->plainTextToken;
+        $success['token'] = $token;
+        $success['name'] = $user->first_name;
+        $success['user'] = $user;
+        $success['tName'] = $tokenName;
+        // $success['subject'] = $user->subject->name;
+        // $success['subject_id'] = $user->subject_id;
+        // $success['courses'] = $user->courses()->get();
+        $success['school'] = School::find($user->school_id);
+        // $success['school'] = $user->school;
 
-            return $this->sendResponse($success, 'Trainer login successfully.');
+        return $this->sendResponse($success, 'Trainer login successfully.');
         // } else {
         //     return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         // }

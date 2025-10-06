@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\SportResource;
+use App\Http\Resources\SportTodayResource;
 use App\Models\Sport;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
@@ -37,6 +38,27 @@ class SportController extends BaseController
 
         // ✅ This is a collection (sports), safe to pass to Resource::collection
         return SportResource::collection($trainer->sports);
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function sportstoday($id)
+    {
+
+        // $today = strtolower(now()->format('l'));
+
+        // $trainer = Trainer::with([
+        //     'sports.timetables' => function ($query) use ($today) {
+        //         $query->where('day_of_week', $today);
+        //     },
+        //     'sports.students'
+        // ])->findOrFail($id);
+        $trainer = Trainer::with(['sports.timetables', 'sports.students'])->findOrFail($id);
+
+        // ✅ This is a collection (sports), safe to pass to Resource::collection
+        return SportTodayResource::collection($trainer->sports);
 
     }
 
