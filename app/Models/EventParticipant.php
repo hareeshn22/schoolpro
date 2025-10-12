@@ -12,7 +12,8 @@ class EventParticipant extends Model
     protected $fillable = [
         'event_id',
         'student_id',
-        'role', // player, substitute, trainer, referee
+        'practice_time',
+        // 'role', // player, substitute, trainer, referee
     ];
 
     public function event()
