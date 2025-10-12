@@ -22,6 +22,15 @@ class EventNoteController extends BaseController
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function notesbytype($type, $sid)
+    {
+        //
+        return EventNoteResource::collection(EventNote::where('event_id', '=', $sid)->where('note_type', '=', $type)->get());
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -51,7 +60,7 @@ class EventNoteController extends BaseController
                 $notes[] = EventNote::updateOrCreate(
                     [
                         'event_id' => $validated['event_id'],
-                        'student_id' => $perf['student_id'] ?? null,
+                        'student_id' => $perf['student_id'],
                         'note_type' => $validated['eventtype'], // "performance"
                     ],
                     [

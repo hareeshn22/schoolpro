@@ -18,7 +18,7 @@ return new class extends Migration {
                 // 'highlight',   // daily/event highlight
                 'performance', // performance text
                 'remark',      // trainer remark
-                'suggestion'   // improvement tip
+                'suggestion',   // improvement tip
             ]);
             $table->text('content'); // free-form text
             $table->timestamps();

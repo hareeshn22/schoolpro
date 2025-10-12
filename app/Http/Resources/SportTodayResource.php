@@ -22,6 +22,11 @@ class SportTodayResource extends JsonResource
         $todayTime = optional(
             $this->timetables->firstWhere('day_of_week', $today)
         )->start_time;
+        // Format to AM/PM if time exists
+        $formattedTime = $todayTime
+            ? Carbon::createFromFormat('H:i:s', $todayTime)->format('g:i A')
+            : null;
+
 
         return [
             'id' => $this->id,
@@ -30,7 +35,7 @@ class SportTodayResource extends JsonResource
             'icon_path' => $this->icon_path,
             'students' => $this->students->count(),
             // Single time string or null
-            'today_time' => $todayTime,
+            'today_time' => $formattedTime,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

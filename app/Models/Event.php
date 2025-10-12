@@ -10,7 +10,10 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'school_id', 'sport_id', 'title', 'event_date'
+        'school_id',
+        'sport_id',
+        'title',
+        'event_date'
     ];
 
     public function school()
@@ -30,7 +33,25 @@ class Event extends Model
 
     public function videos()
     {
-        return $this->hasMany(EventMedia::class);
+        return $this->hasMany(EventVideo::class);
+    }
+
+    // public function participants()
+    // {
+    //     return $this->belongsToMany(Student::class, 'event_participants', 'event_id', 'student_id')
+    //         ->withPivot('practice_time') // if you need extra fields
+    //         ->withTimestamps();
+    // }
+    public function participants()
+    {
+        return $this->hasMany(EventParticipant::class);
+    }
+
+
+
+    public function highlights()
+    {
+        return $this->hasMany(EventHighlight::class);
     }
 
 }

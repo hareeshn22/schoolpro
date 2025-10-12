@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\EventParticipantResource;
 use App\Http\Resources\StudentResource;
 use App\Models\EventParticipant;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class EventParticipantController extends BaseController
@@ -47,24 +48,44 @@ class EventParticipantController extends BaseController
             // 'participants.*.role' => 'nullable|in:player,substitute,trainer,referee',
         ]);
 
+        $event = Event::find($validated['eventid']);
+
+        // Prepare sync data
+        $syncData = [];
         foreach ($validated['studentsList'] as $student) {
-            $events = EventParticipant::updateOrCreate(
-                [
-                    'event_id' => $validated['eventid'],
-                ],
-                [
-                    'student_id' => $student,
-                    'practice_time' => $validated['practiceTime'] ?? null,
-                    // 'role' => $student['role'] ?? 'player',
-                ]
-            );
+            // If $student is just an ID, use: $syncData[$student] = [];
+            // If $student is an array with metadata:
+            $syncData[$student] = [
+                'practice_time' => $student['practice_time'] ?? null,
+                // 'role' => $student['role'] ?? 'player',
+            ];
         }
 
-        if ($events) {
-            return $this->sendResponse('Success', 'Participants saved successfully.');
-        } else {
-            return $this->sendError('Error.', ['error' => 'error occured']);
-        }
+        // Sync participants
+        $event->participants()->sync($syncData);
+
+        return $this->sendResponse('Success', 'Participants synced successfully.');
+
+
+        // foreach ($validated['studentsList'] as $student) {
+        //     $events = EventParticipant::updateOrCreate(
+        //         [
+        //             'event_id' => $validated['eventid'],
+        //             'student_id' => $student,
+        //         ],
+        //         [
+
+        //             'practice_time' => $validated['practiceTime'] ?? null,
+        //             // 'role' => $student['role'] ?? 'player',
+        //         ]
+        //     );
+        // }
+
+        // if ($events) {
+        //     return $this->sendResponse('Success', 'Participants saved successfully.');
+        // } else {
+        //     return $this->sendError('Error.', ['error' => 'error occured']);
+        // }
 
 
         // return response()->json(['message' => 'Participants saved successfully.']);

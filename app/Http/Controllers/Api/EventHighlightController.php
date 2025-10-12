@@ -24,9 +24,12 @@ class EventHighlightController extends BaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function highlightByEvent($eid)
     {
         //
+        $highlights = EventHighlight::where('event_id', $eid)->get();
+        return response()->json($highlights);
+
     }
 
     /**
@@ -34,24 +37,31 @@ class EventHighlightController extends BaseController
      */
     public function store(Request $request)
     {
+        $highlight = EventHighlight::create([
+            // 'school_id' => $request->schoolid ?? null,
+            'event_id' => $request->eventid,
+            'content' => $request->input('content'),
+        ]);
+
         //
-        $highlights = $request->input('highlights');
+        // $highlights = $request->input('highlights');
 
-        if (!is_array($highlights)) {
-            return $this->sendError('Invalid data.', ['error' => 'highlights must be an array']);
-        }
+        // if (!is_array($highlights)) {
+        //     return $this->sendError('Invalid data.', ['error' => 'highlights must be an array']);
+        // }
 
-        $created = [];
+        // $created = [];
 
-        foreach ($highlights as $highlight) {
-            $created[] = EventHighlight::create([
-                // 'school_id' => $request->schoolid ?? null,
-                'event_id' => $highlight['event_id'],
-                'content' => $highlight['content'],
-            ]);
-        }
+        // foreach ($highlights as $highlight) {
+        //     $created[] = EventHighlight::create([
+        //         // 'school_id' => $request->schoolid ?? null,
+        //         'event_id' => $highlight['event_id'],
+        //         'content' => $highlight['content'],
+        //     ]);
+        // }
 
-        if (count($created) > 0) {
+        // if (count($created) > 0) {
+        if ($highlight) {
             return $this->sendResponse('Success', 'EventHighlights created successfully.');
         } else {
             return $this->sendError('Error.', ['error' => 'No highlights created']);
@@ -62,9 +72,11 @@ class EventHighlightController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(EventHighlight $eventHighlight)
+    public function show($hid)
     {
         //
+        $highlight = EventHighlight::find($hid);
+        return response()->json($highlight);
     }
 
     /**
@@ -78,9 +90,19 @@ class EventHighlightController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, EventHighlight $eventHighlight)
+    public function update(Request $request)
     {
-        //
+        $event = EventHighlight::find($request->id);
+
+        $event->event_id = $request->eventid;
+        $event->content  = $request->input('content');
+
+        if ($event->save()) {
+            return $this->sendResponse('Success', 'Highlight Updated successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
     }
 
     /**

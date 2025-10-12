@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\SportResource;
 use App\Http\Resources\SportTodayResource;
+use App\Http\Resources\StudentFilterResource;
 use App\Models\Sport;
+use App\Models\Student;
+use App\Models\SportAttendance;
+use App\Models\Event;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use DB;
@@ -135,6 +139,39 @@ class SportController extends BaseController
         return response()->json(
             $grouped
         );
+    }
+
+
+    public function filterStudents($sid, $id)
+    {
+        $today = Carbon::today();
+
+        // Get today's event IDs
+        $eventIdsToday = Event::whereDate('event_date', $today)->pluck('id');
+
+        // First, get only present student IDs for this school/sport
+        $presentStudentIds = SportAttendance::where('school_id', $sid)
+            ->where('sport_id', $id)
+            ->where('status', true)
+            ->pluck('student_id');
+
+        // Now fetch actual Student models
+        $students = Student::whereIn('id', $presentStudentIds)
+            ->get()
+            ->map(function ($student) use ($eventIdsToday) {
+                $isSelected = DB::table('event_participants')
+                    ->where('student_id', $student->id)
+                    ->whereIn('event_id', $eventIdsToday)
+                    ->exists();
+
+                $student->selected_today = $isSelected;
+                return $student;
+            });
+
+
+        return StudentFilterResource::collection($students);
+
+
     }
 
 
