@@ -33,10 +33,10 @@ class Trainer extends Authenticatable
     }
 
     public function sports()
-    {
-        return $this->belongsToMany(Sport::class, 'sport_trainer')
-            ->withTimestamps();
-    }
+{
+    return $this->belongsToMany(Sport::class, 'sport_trainer');
+}
+
 
 
 

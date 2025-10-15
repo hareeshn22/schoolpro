@@ -43,28 +43,60 @@ class EventParticipantController extends BaseController
         $validated = $request->validate([
             'eventid' => 'required|exists:events,id',
             'studentsList' => 'required|array',
-            // 'participants.*.student_id' => 'required|exists:students,id',
-            // 'participants.*.practice_time' => 'nullable|date_format:H:i',
-            // 'participants.*.role' => 'nullable|in:player,substitute,trainer,referee',
         ]);
 
-        $event = Event::find($validated['eventid']);
+        $event = Event::findOrFail($validated['eventid']);
 
-        // Prepare sync data
         $syncData = [];
+
+        // foreach ($validated['studentsList'] as $student) {
+        //     EventParticipant::updateOrCreate(
+        //         ['event_id' => $event->id, 'student_id' => $student['student_id']],
+        //         ['practice_time' => $student['practice_time'] ?? null]
+        //     );
+        // }
+
+
         foreach ($validated['studentsList'] as $student) {
-            // If $student is just an ID, use: $syncData[$student] = [];
-            // If $student is an array with metadata:
-            $syncData[$student] = [
-                'practice_time' => $student['practice_time'] ?? null,
-                // 'role' => $student['role'] ?? 'player',
-            ];
+            if (is_array($student) && isset($student['student_id'])) {
+                $syncData[$student['student_id']] = [
+                    'practice_time' => $student['practice_time'] ?? null,
+                    // 'role' => $student['role'] ?? 'player',
+                ];
+            } elseif (is_numeric($student)) {
+                $syncData[$student] = []; // No metadata
+            }
         }
 
-        // Sync participants
         $event->participants()->sync($syncData);
 
         return $this->sendResponse('Success', 'Participants synced successfully.');
+
+        // $validated = $request->validate([
+        //     'eventid' => 'required|exists:events,id',
+        //     'studentsList' => 'required|array',
+        //     // 'participants.*.student_id' => 'required|exists:students,id',
+        //     // 'participants.*.practice_time' => 'nullable|date_format:H:i',
+        //     // 'participants.*.role' => 'nullable|in:player,substitute,trainer,referee',
+        // ]);
+
+        // $event = Event::find($validated['eventid']);
+
+        // // Prepare sync data
+        // $syncData = [];
+        // foreach ($validated['studentsList'] as $student) {
+        //     // If $student is just an ID, use: $syncData[$student] = [];
+        //     // If $student is an array with metadata:
+        //     $syncData[$student] = [
+        //         'practice_time' => $student['practice_time'] ?? null,
+        //         // 'role' => $student['role'] ?? 'player',
+        //     ];
+        // }
+
+        // // Sync participants
+        // $event->participants()->sync($syncData);
+
+        // return $this->sendResponse('Success', 'Participants synced successfully.');
 
 
         // foreach ($validated['studentsList'] as $student) {

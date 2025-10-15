@@ -36,16 +36,16 @@ class Event extends Model
         return $this->hasMany(EventVideo::class);
     }
 
-    // public function participants()
-    // {
-    //     return $this->belongsToMany(Student::class, 'event_participants', 'event_id', 'student_id')
-    //         ->withPivot('practice_time') // if you need extra fields
-    //         ->withTimestamps();
-    // }
     public function participants()
     {
-        return $this->hasMany(EventParticipant::class);
+        return $this->belongsToMany(Student::class, 'event_participants', 'event_id', 'student_id')
+            ->withPivot('practice_time') // if you need extra fields
+            ->withTimestamps();
     }
+    // public function participants()
+    // {
+    //     return $this->hasMany(EventParticipant::class);
+    // }
 
 
 

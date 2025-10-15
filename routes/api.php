@@ -563,7 +563,7 @@ Route::prefix('1')->group(function () {
         // Route::get('/settings/{id}', [SettingsController::class, 'index']);
 
         // Event
-        Route::post('/getStudentEvents', [EventController::class, 'getStudentEvents']);
+        Route::post('/getstudentevents', [EventController::class, 'getStudentEvents']);
 
         // // Home
         Route::get('/home/{id}', [HomeController::class, 'index']);
@@ -739,7 +739,7 @@ Route::prefix('1')->group(function () {
         Route::get('/groupbystudents/{id}', [SportController::class, 'groupByStudents']);
         Route::post('/savestudents', [SportController::class, 'registerStudents']);
         // Route::post('/', [SportController::class, 'registerStudents']);
-         Route::get('filterstudents/{sid}/{pid}', [SportController::class, 'filterStudents']);
+        Route::get('filterstudents/{sid}/{pid}', [SportController::class, 'filterStudents']);
 
 
         // Sport Attendance
@@ -751,7 +751,7 @@ Route::prefix('1')->group(function () {
             //     Route::get('today/{sid}', [SportController::class, 'eventbys']);
         });
         Route::get('presentstudents/{pid}/{sid}', [SportAttendanceController::class, 'presentStudents']);
-        
+
 
         Route::group(['prefix' => 'sport'], function () {
             // Route::get('{sid}/{pid}', [SportAttendanceController::class, 'index']);
@@ -815,7 +815,7 @@ Route::prefix('1')->group(function () {
             Route::post('participant/store', [EventParticipantController::class, 'store']);
 
             // Highlight
-             Route::get('highlight/{hid}', [EventHighlightController::class, 'show']);
+            Route::get('highlight/{hid}', [EventHighlightController::class, 'show']);
             Route::get('highlights/{eid}', [EventHighlightController::class, 'index']);
             Route::post('highlight/store', [EventHighlightController::class, 'store']);
             Route::post('highlight/update', [EventHighlightController::class, 'update']);
@@ -825,7 +825,7 @@ Route::prefix('1')->group(function () {
             Route::get('notes/{type}/{eid}', [EventNoteController::class, 'notesbytype']);
             Route::post('note/store', [EventNoteController::class, 'store']);
 
-             // Video
+            // Video
             Route::get('videos/{eid}', [EventVideoController::class, 'index']);
             Route::post('video/store', [EventVideoController::class, 'store']);
         });

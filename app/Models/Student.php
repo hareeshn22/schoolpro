@@ -74,6 +74,14 @@ class Student extends Authenticatable
         return $this->belongsToMany(Sport::class, 'sport_students');
     }
 
+    // Events
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'event_participants')
+            ->withPivot('practice_time') // add 'role' if needed
+            ->withTimestamps();
+    }
+
 
 
 }
