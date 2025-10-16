@@ -27,7 +27,7 @@ class SportSeeder extends Seeder
             ['name' => 'Table Tennis', 'category' => 'Sports', 'icon_path' => 'table tennis.png'],
             ['name' => 'Tennis', 'category' => 'Sports', 'icon_path' => 'tennis.png'],
             ['name' => 'Volleyball', 'category' => 'Sports', 'icon_path' => 'volleyball.png'],
-            // ['name' => 'Cricket', 'category' => 'Sports', 'icon_path' => 'cricket.png'],
+            ['name' => 'Yoga', 'category' => 'Sports', 'icon_path' => 'gymnastics.png'],
             // ['name' => 'Football', 'category' => 'Sports', 'icon_path' => 'football.png'],
 
             // Social Arts

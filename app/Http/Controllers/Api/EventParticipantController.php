@@ -135,9 +135,24 @@ class EventParticipantController extends BaseController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(EventParticipant $eventParticipant)
+    public function remove(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'eventid' => 'required|exists:events,id',
+            'studentid' => 'required',
+        ]);
+
+        $event = Event::findOrFail($validated['eventid']);
+
+        $detach = $event->participants()->detach($validated['studentid']);
+
+        if ($detach) {
+            return $this->sendResponse('Success', 'Participant removed successfully.');
+        } else {
+            return $this->sendError('Error.', ['error' => 'error occured']);
+        }
+
+
     }
 
     /**

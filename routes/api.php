@@ -813,6 +813,7 @@ Route::prefix('1')->group(function () {
             // Participant
             Route::get('participants/{eid}', [EventParticipantController::class, 'index']);
             Route::post('participant/store', [EventParticipantController::class, 'store']);
+            Route::post('participant/remove', [EventParticipantController::class, 'remove']);
 
             // Highlight
             Route::get('highlight/{hid}', [EventHighlightController::class, 'show']);

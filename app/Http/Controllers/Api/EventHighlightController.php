@@ -37,9 +37,10 @@ class EventHighlightController extends BaseController
      */
     public function store(Request $request)
     {
-        $highlight = EventHighlight::create([
+        $highlight = EventHighlight::updateOrCreate([
             // 'school_id' => $request->schoolid ?? null,
             'event_id' => $request->eventid,
+        ], [
             'content' => $request->input('content'),
         ]);
 
@@ -95,7 +96,7 @@ class EventHighlightController extends BaseController
         $event = EventHighlight::find($request->id);
 
         $event->event_id = $request->eventid;
-        $event->content  = $request->input('content');
+        $event->content = $request->input('content');
 
         if ($event->save()) {
             return $this->sendResponse('Success', 'Highlight Updated successfully.');
