@@ -16,7 +16,7 @@ return new class extends Migration {
             // $table->foreignId('course_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sport_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            // $table->date('attenddate');
+            $table->date('attenddate');
             $table->boolean('status')->default(false); // present/absent
             $table->string('remarks')->nullable();
             $table->timestamps();

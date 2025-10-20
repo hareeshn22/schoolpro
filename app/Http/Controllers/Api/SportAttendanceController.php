@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\SportAttendanceResource;
 use App\Models\SportAttendance;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use App\Http\Resources\StudentResource;
 
@@ -69,7 +70,7 @@ class SportAttendanceController extends BaseController
                 // 'course_id' => $request->courseid,
                 'sport_id' => $item["sport_id"],
                 'student_id' => $item['student_id'],
-                // 'attenddate' => $adate,
+                'attenddate' => Carbon::today()->toDateString(),
                 // 'timing' => $item['timing'],
             ];
             $data = [

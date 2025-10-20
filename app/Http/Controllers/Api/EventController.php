@@ -7,6 +7,7 @@ use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\Student;
 use App\Models\Sport;
+use App\Models\SportTimetable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class EventController extends BaseController
     public function index($sid)
     {
         //
-        return EventResource::collection(Event::where('sport_id', '=', $sid)->get());
+        return EventResource::collection(Event::where('sport_id', '=', $sid)->orderByDesc('id')->get());
     }
 
     /**
@@ -27,7 +28,7 @@ class EventController extends BaseController
     public function eventbys($sid)
     {
         //
-        return EventResource::collection(Event::where('sport_id', '=', $sid)->where('event_date', '=', Carbon::today())->get());
+        return EventResource::collection(Event::where('sport_id', '=', $sid)->where('event_date', '=', Carbon::today())->orderByDesc('id')->get());
     }
 
     /**
@@ -37,6 +38,7 @@ class EventController extends BaseController
     {
         //
     }
+
 
     public function getStudentEvents(Request $request)
     {
@@ -82,7 +84,7 @@ class EventController extends BaseController
                     'event_date' => $event->event_date,
                     'sport_id' => $event->sport->id,
                     'sport_name' => $event->sport->name,
-                    'trainers' => $event->sport->trainers->map(fn($trainer) => $trainer->first_name .' '. $trainer->last_name),
+                    'trainers' => $event->sport->trainers->map(fn($trainer) => $trainer->first_name . ' ' . $trainer->last_name),
                     'participants' => $event->participants->map(function ($student) {
                         return [
                             'id' => $student->id,
@@ -118,6 +120,240 @@ class EventController extends BaseController
             'sports' => $sports
         ]);
     }
+
+    // Get Registered Events 
+    public function getTodayRegisteredEvents(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|integer|exists:students,id',
+            'school_id' => 'required|integer|exists:schools,id',
+            'category' => 'required|string|in:sports,social arts,daily need',
+        ]);
+
+        $studentId = $request->student_id;
+        $schoolId = $request->school_id;
+        $category = $request->category;
+        $today = Carbon::today()->toDateString();
+
+        // Step 1: Get sports registered by the student and filter by category
+        $student = Student::with(['sports' => fn($q) => $q->where('category', $category)])
+            ->findOrFail($studentId);
+
+        $registeredSportIds = $student->sports->pluck('id');
+
+        // Step 2: Get today's events for those sports
+        $events = Event::with([
+            'participants',
+            'videos',
+            'sport.trainers'
+        ])
+            ->where('school_id', $schoolId)
+            ->whereDate('event_date', $today)
+            ->whereIn('sport_id', $registeredSportIds)
+            ->get()
+            ->map(function ($event) {
+                return [
+                    'id' => $event->id,
+                    'title' => $event->title,
+                    'event_date' => $event->event_date,
+                    'sport_id' => $event->sport->id,
+                    'sport_name' => $event->sport->name,
+                    'trainers' => $event->sport->trainers->map(fn($trainer) => $trainer->first_name . ' ' . $trainer->last_name),
+                    'participants' => $event->participants->map(function ($student) {
+                        return [
+                            'id' => $student->id,
+                            'student_id' => $student->id,
+                            'practice_time' => $student->pivot->practice_time ?? null,
+                            'student' => $student->first_name . ' ' . $student->last_name,
+                        ];
+                    }),
+                    'videos' => $event->videos->map(fn($video) => [
+                        'title' => $video->title,
+                        'url' => $video->url,
+                    ]),
+                ];
+            });
+
+        // Step 3: Get timetable from sport_timetables table
+        $timetable = SportTimetable::where('school_id', $schoolId)
+            ->whereIn('sport_id', $registeredSportIds)
+            ->orderByRaw("FIELD(day_of_week, 'monday','tuesday','wednesday','thursday','friday','saturday','sunday')")
+            ->get()
+            ->map(function ($row) {
+                return [
+                    'sport_id' => $row->sport_id,
+                    'day' => ucfirst($row->day_of_week),
+                    'start_time' => Carbon::parse($row->start_time)->format('g:i A'),
+                    'end_time' => Carbon::parse($row->end_time)->format('g:i A'),
+                ];
+            })
+            ->groupBy('sport_id');
+
+        // Step 4: Merge events and timetable by sport
+        $sports = $events
+            ->groupBy('sport_id')
+            ->map(function ($group, $sportId) use ($timetable) {
+                return [
+                    'sport_id' => $sportId,
+                    'sport_name' => $group->first()['sport_name'],
+                    'trainers' => $group->first()['trainers'],
+                    'events' => $group->values(),
+                    'timetable' => $timetable[$sportId]?->values() ?? [],
+                ];
+            })
+            ->values();
+
+        return response()->json([
+            'student_id' => intval($studentId),
+            'school_id' => intval($schoolId),
+            'category' => $category,
+            'date' => $today,
+            'sports' => $sports,
+        ]);
+    }
+    // public function getTodayRegisteredEvents(Request $request)
+    // {
+    //     $request->validate([
+    //         'student_id' => 'required|integer|exists:students,id',
+    //         'school_id' => 'required|integer|exists:schools,id',
+    //         'category' => 'required|string|in:sports,social arts,daily need',
+    //     ]);
+
+    //     $studentId = $request->student_id;
+    //     $schoolId = $request->school_id;
+    //     $category = $request->category;
+    //     $today = Carbon::today()->toDateString();
+
+    //     // Step 1: Get sports registered by the student and filter by category
+    //     $student = Student::with(['sports' => fn($q) => $q->where('category', $category)])
+    //         ->findOrFail($studentId);
+
+    //     $registeredSportIds = $student->sports->pluck('id');
+
+    //     // Step 2: Get today's events for those sports
+    //     $events = Event::with([
+    //         'participants',
+    //         'notes' => fn($q) => $q->where('student_id', $studentId),
+    //         'highlights',
+    //         'videos',
+    //         'sport.trainers'
+    //     ])
+    //         ->where('school_id', $schoolId)
+    //         ->whereDate('event_date', $today)
+    //         ->whereIn('sport_id', $registeredSportIds)
+    //         ->get()
+    //         ->map(function ($event) use ($studentId) {
+    //             $groupedNotes = [
+    //                 'performance' => $event->notes->where('note_type', 'performance')->pluck('content')->values(),
+    //                 'remark' => $event->notes->where('note_type', 'remark')->pluck('content')->values(),
+    //                 'suggestion' => $event->notes->where('note_type', 'suggestion')->pluck('content')->values(),
+    //             ];
+
+    //             return [
+    //                 'id' => $event->id,
+    //                 'title' => $event->title,
+    //                 'event_date' => $event->event_date,
+    //                 'sport_id' => $event->sport->id,
+    //                 'sport_name' => $event->sport->name,
+    //                 'trainers' => $event->sport->trainers->map(fn($trainer) => $trainer->first_name . ' ' . $trainer->last_name),
+    //                 'participants' => $event->participants->map(function ($student) {
+    //                     return [
+    //                         'id' => $student->id,
+    //                         'student_id' => $student->id,
+    //                         'practice_time' => $student->pivot->practice_time ?? null,
+    //                         'student' => $student->first_name . ' ' . $student->last_name,
+    //                     ];
+    //                 }),
+    //                 'notes' => $groupedNotes,
+    //                 'highlights' => $event->highlights->pluck('content'),
+    //                 'videos' => $event->videos->map(fn($video) => [
+    //                     'title' => $video->title,
+    //                     'url' => $video->url,
+    //                 ]),
+    //             ];
+    //         });
+
+    //     // Step 3: Get timetable for each sport
+    //     $timetable = Event::where('school_id', $schoolId)
+    //         ->whereIn('sport_id', $registeredSportIds)
+    //         ->orderBy('event_date')
+    //         ->get()
+    //         ->map(function ($event) {
+    //             return [
+    //                 'sport_id' => $event->sport_id,
+    //                 'day' => Carbon::parse($event->event_date)->format('l'),
+    //                 'time' => Carbon::parse($event->event_date)->format('g:i A'),
+    //                 'title' => $event->title,
+    //             ];
+    //         })
+    //         ->groupBy('sport_id');
+
+    //     // Step 4: Merge events and timetable by sport
+    //     $sports = $events
+    //         ->groupBy('sport_id')
+    //         ->map(function ($group, $sportId) use ($timetable) {
+    //             return [
+    //                 'sport_id' => $sportId,
+    //                 'sport_name' => $group->first()['sport_name'],
+    //                 'trainers' => $group->first()['trainers'],
+    //                 'events' => $group->values(),
+    //                 'timetable' => $timetable[$sportId]?->values() ?? [],
+    //             ];
+    //         })
+    //         ->values();
+
+    //     return response()->json([
+    //         'student_id' => intval($studentId),
+    //         'school_id' => intval($schoolId),
+    //         'category' => $category,
+    //         'date' => $today,
+    //         'sports' => $sports,
+    //     ]);
+    // }
+    // public function getRegisteredStudentEvents(Request $request)
+    // {
+    //     $request->validate([
+    //         'student_id' => 'required|integer|exists:students,id',
+    //     ]);
+
+    //     $studentId = $request->student_id;
+
+    //     $events = Event::with([
+    //         'sport.trainers',
+    //         'notes' => fn($q) => $q->where('student_id', $studentId),
+    //         'highlights',
+    //         'videos',
+    //     ])
+    //         ->whereHas('participants', fn($q) => $q->where('student_id', $studentId))
+    //         ->get()
+    //         ->map(function ($event) use ($studentId) {
+    //             $groupedNotes = [
+    //                 'performance' => $event->notes->where('note_type', 'performance')->pluck('content')->values(),
+    //                 'remark' => $event->notes->where('note_type', 'remark')->pluck('content')->values(),
+    //                 'suggestion' => $event->notes->where('note_type', 'suggestion')->pluck('content')->values(),
+    //             ];
+
+    //             return [
+    //                 'id' => $event->id,
+    //                 'title' => $event->title,
+    //                 'event_date' => $event->event_date,
+    //                 'sport_id' => $event->sport->id,
+    //                 'sport_name' => $event->sport->name,
+    //                 'trainers' => $event->sport->trainers->map(fn($trainer) => $trainer->first_name . ' ' . $trainer->last_name),
+    //                 'notes' => $groupedNotes,
+    //                 'highlights' => $event->highlights->pluck('content'),
+    //                 'videos' => $event->videos->map(fn($video) => [
+    //                     'title' => $video->title,
+    //                     'url' => $video->url,
+    //                 ]),
+    //             ];
+    //         });
+
+    //     return response()->json([
+    //         'student_id' => intval($studentId),
+    //         'registered_events' => $events,
+    //     ]);
+    // }
 
     // public function getStudentEvents(Request $request)
     // {

@@ -153,6 +153,7 @@ class SportController extends BaseController
         $presentStudentIds = SportAttendance::where('school_id', $sid)
             ->where('sport_id', $id)
             ->where('status', true)
+            ->whereDate('attenddate', $today)
             ->pluck('student_id');
 
         // Now fetch actual Student models
@@ -170,7 +171,6 @@ class SportController extends BaseController
 
 
         return StudentFilterResource::collection($students);
-
 
     }
 

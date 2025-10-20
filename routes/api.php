@@ -691,6 +691,8 @@ Route::prefix('1')->group(function () {
         // Guidance
         Route::get('/guidancebyt/{hid}/{type}', [GuidanceController::class, 'guidanceByType']);
 
+        // Event
+        Route::post('/getstudentevents', [EventController::class, 'getTodayRegisteredEvents']);
 
         // // Home
         Route::get('/home/{id}', [HomeController::class, 'index']);

@@ -60,7 +60,7 @@ class EventParticipantController extends BaseController
         foreach ($validated['studentsList'] as $student) {
             if (is_array($student) && isset($student['student_id'])) {
                 $syncData[$student['student_id']] = [
-                    'practice_time' => $student['practice_time'] ?? null,
+                    'practice_time' => $request->practicetime ?? null,
                     // 'role' => $student['role'] ?? 'player',
                 ];
             } elseif (is_numeric($student)) {

@@ -41,18 +41,18 @@ class SubjectSeeder extends Seeder
                 'name'      => 'Social Studies',
                 'school_id' => 1,
             ],
-            [
-                'name'      => 'Arts and Crafts',
-                'school_id' => 1,
-            ],
-            [
-                'name'      => 'Computer',
-                'school_id' => 1,
-            ],
-            [
-                'name'      => 'Physical Education',
-                'school_id' => 1,
-            ],
+            // [
+            //     'name'      => 'Arts and Crafts',
+            //     'school_id' => 1,
+            // ],
+            // [
+            //     'name'      => 'Computer',
+            //     'school_id' => 1,
+            // ],
+            // [
+            //     'name'      => 'Physical Education',
+            //     'school_id' => 1,
+            // ],
 
             [
                 'name'      => 'Telugu',
@@ -78,18 +78,18 @@ class SubjectSeeder extends Seeder
                 'name'      => 'Social Studies',
                 'school_id' => 2,
             ],
-            [
-                'name'      => 'Arts and Crafts',
-                'school_id' => 2,
-            ],
-            [
-                'name'      => 'Computer',
-                'school_id' => 2,
-            ],
-            [
-                'name'      => 'Physical Education',
-                'school_id' => 2,
-            ],
+            // [
+            //     'name'      => 'Arts and Crafts',
+            //     'school_id' => 2,
+            // ],
+            // [
+            //     'name'      => 'Computer',
+            //     'school_id' => 2,
+            // ],
+            // [
+            //     'name'      => 'Physical Education',
+            //     'school_id' => 2,
+            // ],
 
         ];
 
