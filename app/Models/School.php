@@ -28,4 +28,14 @@ class School extends Model
         return $this->hasMany(SportTimetable::class);
     }
 
+
+    public function competitions()
+    {
+        return $this->belongsToMany(Competition::class, 'competition_school');
+    }
+
+    public function entries()
+    {
+        return $this->hasMany(Entry::class);
+    }
 }

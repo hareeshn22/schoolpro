@@ -60,6 +60,10 @@ return [
             'driver' => 'sanctum',
             'provider' => 'trainer',
         ],
+        'organizer' => [
+            'driver' => 'sanctum',
+            'provider' => 'organizer',
+        ],
     ],
 
     /*
@@ -104,6 +108,10 @@ return [
         'trainer' => [
             'driver' => 'eloquent',
             'model' => App\Models\Trainer::class,
+        ],
+        'organizer' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Organizer::class,
         ],
 
         // 'users' => [

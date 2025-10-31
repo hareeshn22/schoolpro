@@ -6,13 +6,14 @@ use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Models\Guardian;
 use App\Models\Student;
 use App\Models\Trainer;
+use App\Models\Organizer;
 use App\Models\Teacher;
 use App\Models\Principal;
 use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \Carbon\Carbon;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends BaseController
 {
@@ -73,12 +74,9 @@ class LoginController extends BaseController
         // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
         if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
             return response()->json('success');
-
         } else {
             return response()->json('failed');
-
         }
-
     }
 
     public function teachlogin(Request $request)
@@ -126,12 +124,9 @@ class LoginController extends BaseController
         // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
         if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
             return response()->json('success');
-
         } else {
             return response()->json('failed');
-
         }
-
     }
 
     /**
@@ -151,20 +146,20 @@ class LoginController extends BaseController
 
         // if (Auth::guard('guardian')->attempt(['username' => $request->username, 'password' => $request->password])) {
 
-            $user = $guardian;
+        $user = $guardian;
 
-            $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
+        $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
 
-            $token = $user->createToken($tokenName)->plainTextToken;
+        $token = $user->createToken($tokenName)->plainTextToken;
 
-            $courseid = Student::find($user->student_id)->course_id;
-            $success['token'] = $token;
-            $success['name'] = $user->first_name;
-            $success['user'] = $user;
-            $success['tName'] = $tokenName;
-            $success['courseid'] = $courseid;
+        $courseid = Student::find($user->student_id)->course_id;
+        $success['token'] = $token;
+        $success['name'] = $user->first_name;
+        $success['user'] = $user;
+        $success['tName'] = $tokenName;
+        $success['courseid'] = $courseid;
 
-            return $this->sendResponse($success, 'Parent login successfully.');
+        return $this->sendResponse($success, 'Parent login successfully.');
         // } else {
         //     return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         // }
@@ -183,9 +178,7 @@ class LoginController extends BaseController
             return response()->json('success');
         } else {
             return response()->json('failed');
-
         }
-
     }
 
     /**
@@ -237,12 +230,9 @@ class LoginController extends BaseController
         // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
         if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
             return response()->json('success');
-
         } else {
             return response()->json('failed');
-
         }
-
     }
 
 
@@ -290,12 +280,58 @@ class LoginController extends BaseController
         // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
         if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
             return response()->json('success');
-
         } else {
             return response()->json('failed');
-
         }
+    }
+
+
+    public function organizerlogin(Request $request)
+    {
+
+        // $user = auth()->guard('principal')->user();
+        $organizer = Organizer::where('username', $request->username)->first();
+
+        if (!$organizer || !Hash::check($request->password, $organizer->password)) {
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        }
+
+        // if (Auth::guard('organizer')->attempt(['username' => $request->username, 'password' => $request->password])) {
+
+        $user = $organizer;
+
+        $tokenName = Carbon::now()->format('Y-m-d-H-i-s');
+
+        $token = $user->createToken($tokenName)->plainTextToken;
+        $success['token'] = $token;
+        $success['name'] = $user->first_name . $user->last_name;
+        $success['user'] = $user;
+        $success['tName'] = $tokenName;
+        // $success['subject'] = $user->subject->name;
+        // $success['subject_id'] = $user->subject_id;
+        // $success['courses'] = $user->courses()->get();
+        $success['school'] = School::find($user->school_id);
+        // $success['school'] = $user->school;
+
+        return $this->sendResponse($success, 'Organizer login successfully.');
+        // } else {
+        //     return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        // }
 
     }
 
+    public function organizerlogout(Request $request)
+    {
+
+        $id = $request->id;
+        // $tokenId = $request->token;
+        $tokenName = $request->tName;
+        $user = Teacher::findorFail($id);
+        // return response()->json($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete());
+        if ($user->tokens()->where('personal_access_tokens.name', $tokenName)->delete()) {
+            return response()->json('success');
+        } else {
+            return response()->json('failed');
+        }
+    }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SchoolAiOption;
+use App\Models\Organizer;
 use Illuminate\Http\Request;
 
-class SchoolAiOptionController extends Controller
+class OrganizerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class SchoolAiOptionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SchoolAiOption $schoolAiOption)
+    public function show(Organizer $organizer)
     {
         //
     }
@@ -42,7 +42,7 @@ class SchoolAiOptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SchoolAiOption $schoolAiOption)
+    public function edit(Organizer $organizer)
     {
         //
     }
@@ -50,7 +50,7 @@ class SchoolAiOptionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SchoolAiOption $schoolAiOption)
+    public function update(Request $request, Organizer $organizer)
     {
         //
     }
@@ -58,7 +58,7 @@ class SchoolAiOptionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SchoolAiOption $schoolAiOption)
+    public function destroy(Organizer $organizer)
     {
         //
     }

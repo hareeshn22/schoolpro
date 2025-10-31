@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
             SportSeeder::class,
             TrainerSeeder::class,
             SportsTrainer::class,
+            OrganizerSeeder::class,
         ]);
 
     }
