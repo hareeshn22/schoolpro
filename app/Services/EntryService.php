@@ -33,6 +33,19 @@ class EntryService
         });
     }
 
+    public function createTeamEntry(array $data): Entry
+    {
+        // return DB::transaction(function () use ($data) {
+            return Entry::create([
+                'competition_id' => $data['competition_id'],
+                'school_id'      => $data['school_id'],
+                'type'           => 'team',
+                'title'          => $data['title'] ?? null,// direct link to team
+            ]);
+        // });
+    }
+
+
     protected function validateStudents(string $type, array $studentIds): void
     {
         $count = count($studentIds);

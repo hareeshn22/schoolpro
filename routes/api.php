@@ -436,6 +436,12 @@ Route::prefix('1')->group(function () {
             Route::get('{sid}/{cid}', [EntryController::class, 'index']);
             Route::post('create', [EntryController::class, 'create']);
             Route::post('store', [EntryController::class, 'store']);
+            Route::post('teamstore', [EntryController::class, 'teamstore']);
+            Route::get('teams/{sid}/{cid}', [EntryController::class, 'getTeams']);
+
+            Route::get('players/team/{eid}', [EntryController::class, 'fetchTeamPlayers']);
+            Route::get('players/{cid}/{type}', [EntryController::class, 'fetchIDPlayers']);
+            
             // Route::get('today/{sid}', [CompetitionController::class, 'eventbys']);
         });
 
@@ -1115,6 +1121,7 @@ Route::prefix('1')->group(function () {
             Route::get('{sid}/{cid}', [EntryController::class, 'index']);
             Route::post('create', [EntryController::class, 'create']);
             Route::post('store', [EntryController::class, 'store']);
+
             // Route::get('today/{sid}', [CompetitionController::class, 'eventbys']);
         });
 

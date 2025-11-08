@@ -9,6 +9,7 @@ use App\Http\Resources\CompetitionResource;
 use App\Models\Student;
 use App\Models\School;
 use Carbon\Carbon;
+use Intervention\Image\ImageManager;
 
 class CompetitionController extends BaseController
 {
@@ -36,6 +37,24 @@ class CompetitionController extends BaseController
     public function store(Request $request)
     {
         //
+         if ($request->snapImg != null) {
+
+            $name = $request->snapImg->getClientOriginalName();
+
+            $file = $request->snapImg->move(public_path('uploads/'), $name);
+
+            $thumbpath = "uploads/thumb/";
+            ImageManager::gd()->read($file->getRealPath())->scale(height: 100)->save(public_path($thumbpath . $name));
+
+            $smpath = "uploads/small/";
+            ImageManager::gd()->read($file->getRealPath())->scale(height: 200)->save(public_path($smpath . $name));
+
+            $larpath = "uploads/large/";
+            ImageManager::gd()->read($file->getRealPath())->scale(height: 470)->save(public_path($larpath . $name));
+        } else {
+            $name = '';
+        }
+
         $competition = Competition::create([
             'school_id' => $request->schoolid,
             'event_name' => $request->name,
@@ -45,7 +64,7 @@ class CompetitionController extends BaseController
             'participation_category' => $request->category,
             'gender' => $request->gender,
             'official_sponsor' => $request->sponsor,
-            'photo_path' => $request->path,
+            'photo_path' => $name,
             'last_date_for_entries' => $request->lastdate,
         ]);
         if ($competition) {

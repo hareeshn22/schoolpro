@@ -82,6 +82,12 @@ class Student extends Authenticatable
             ->withTimestamps();
     }
 
+    // Accessor for full name
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
 
 
 }

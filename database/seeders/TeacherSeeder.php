@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -108,14 +109,13 @@ class TeacherSeeder extends Seeder
         $list = collect($courses);
 
         foreach ($teachers as $key => $teacher) {
-           $teach =  \App\Models\Teacher::create($teacher);
-           $randomids = [
-            1, 
-            $list->random(),
-            $list->random(),
-        ];
-           $teach->courses()->attach($randomids); // Attach courses to the teacher
+            $teach =  \App\Models\Teacher::create($teacher);
+            $randomids = [
+                1,
+                $list->random(),
+                $list->random(),
+            ];
+            $teach->courses()->attach($randomids); // Attach courses to the teacher
         }
-
     }
 }
