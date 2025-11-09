@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Carbon\Carbon;
+
 
 class Student extends Authenticatable
 {
@@ -88,6 +90,11 @@ class Student extends Authenticatable
         return "{$this->first_name} {$this->last_name}";
     }
 
-
-
+    // Accessor for age
+    public function getAgeAttribute()
+    {
+        return $this->birthdate
+            ? Carbon::parse($this->birthdate)->age
+            : null;
+    }
 }

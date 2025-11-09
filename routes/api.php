@@ -439,9 +439,11 @@ Route::prefix('1')->group(function () {
             Route::post('teamstore', [EntryController::class, 'teamstore']);
             Route::get('teams/{sid}/{cid}', [EntryController::class, 'getTeams']);
 
+            Route::post('player/remove/', [EntryController::class, 'removePlayer']);
             Route::get('players/team/{eid}', [EntryController::class, 'fetchTeamPlayers']);
+
             Route::get('players/{cid}/{type}', [EntryController::class, 'fetchIDPlayers']);
-            
+
             // Route::get('today/{sid}', [CompetitionController::class, 'eventbys']);
         });
 

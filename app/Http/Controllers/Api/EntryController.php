@@ -69,70 +69,85 @@ class EntryController extends BaseController
         //     return $this->sendError('Error.', ['error' => 'error occured']);
         // }
         try {
-            if ($request->type == 'team') {
+            if ($request->type === 'team') {
+                // ✅ TEAM ENTRY VALIDATION
                 $validated = $request->validate([
                     'competition_id' => 'required|exists:competitions,id',
                     'school_id'      => 'required|exists:schools,id',
                     'type'           => 'required|in:individual,doubles,mixed,team',
                     'title'          => 'required|string|max:255',
-                    // 'lead_player_id' => 'nullable|exists:students,id',
-                    // 'student_ids'    => 'required|array|min:1',
-                    // 'student_ids.*'  => 'required|integer|exists:students,id',
                 ]);
 
-
+                // Always create a new team entry
                 $entry = $this->service->createTeamEntry($validated);
-                return $this->sendResponse('Success', 'Entry and players submitted successfully.');
-            } else {
+
+                return $this->sendResponse('Success', 'Team entry submitted successfully.');
+            }
+
+            if ($request->type === 'doubles') {
+                // ✅ DOUBLES ENTRY VALIDATION
                 $validated = $request->validate([
                     'competition_id' => 'required|exists:competitions,id',
                     'school_id'      => 'required|exists:schools,id',
                     'type'           => 'required|in:individual,doubles,mixed,team',
-                    'title'          => 'nullable|string|max:255',
-                    'lead_player_id' => 'nullable|exists:students,id',
-                    'student_ids'    => 'required|array|min:1',
+                    'title'          => 'required|string|max:255',
+                    'student_ids'    => 'required|array|size:2', // exactly 2 players
                     'student_ids.*'  => 'required|integer|exists:students,id',
                 ]);
-            }
-            // Check if entry already exists
-            $entry = Entry::where('competition_id', $validated['competition_id'])
-                ->where('school_id', $validated['school_id'])
-                ->where('type', $validated['type'])
-                ->first();
 
-            if (!$entry) {
-                //  else {
+                // Always create a new entry for doubles
                 $entry = $this->service->createEntry($validated);
-                // }
-                if (!$entry) {
-                    return $this->sendError('Error.', ['error' => 'Error occurred while creating entry']);
-                }
-            }
 
-            // Only attach players if NOT team
-            if ($request->type !== 'team') {
                 foreach ($validated['student_ids'] as $studentId) {
-                    $exists = EntryPlayer::where('entry_id', $entry->id)
-                        ->where('student_id', $studentId)
-                        ->exists();
-
-                    if ($exists) {
-                        return $this->sendError(
-                            'Error',
-                            "Entry already exists for student ID {$studentId} in this competition."
-                        );
-                    }
-
                     EntryPlayer::create([
                         'entry_id'   => $entry->id,
                         'student_id' => $studentId,
                     ]);
                 }
+
+                return $this->sendResponse('Success', 'Doubles entry submitted successfully.');
             }
 
+            if ($request->type === 'individual') {
+                // ✅ INDIVIDUAL ENTRY VALIDATION
+                $validated = $request->validate([
+                    'competition_id' => 'required|exists:competitions,id',
+                    'school_id'      => 'required|exists:schools,id',
+                    'type'           => 'required|in:individual,doubles,mixed,team',
+                    'title'          => 'nullable|string|max:255',
+                    'lead_player_id' => 'required|exists:students,id',
+                ]);
 
+                // Check if entry already exists for this player
+                $entry = Entry::where('competition_id', $validated['competition_id'])
+                    ->where('school_id', $validated['school_id'])
+                    ->where('type', 'individual')
+                    ->first();
 
-            return $this->sendResponse('Success', 'Entry and players submitted successfully.');
+                if (!$entry) {
+                    $entry = $this->service->createEntry($validated);
+                }
+
+                $exists = EntryPlayer::where('entry_id', $entry->id)
+                    ->where('student_id', $validated['lead_player_id'])
+                    ->exists();
+
+                if ($exists) {
+                    return $this->sendError(
+                        'Error',
+                        "Entry already exists for student ID {$validated['lead_player_id']} in this competition."
+                    );
+                }
+
+                EntryPlayer::create([
+                    'entry_id'   => $entry->id,
+                    'student_id' => $validated['lead_player_id'],
+                ]);
+
+                return $this->sendResponse('Success', 'Individual entry submitted successfully.');
+            }
+
+            return $this->sendError('Error', ['error' => 'Invalid type provided']);
 
 
 

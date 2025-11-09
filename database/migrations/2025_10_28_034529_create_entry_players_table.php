@@ -16,10 +16,10 @@ return new class extends Migration
             $table->foreignId('entry_id')->constrained('entries')->onDelete('cascade');
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
             // optional role (captain, player, substitute, etc.)
-            // $table->string('role')->nullable();
+            $table->string('role')->nullable();
             $table->timestamps();
 
-            $table->unique(['entry_id', 'student_id']); // prevent duplicates
+            // $table->unique(['entry_id', 'student_id']); // prevent duplicates
         });
     }
 
