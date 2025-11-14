@@ -98,12 +98,12 @@ class EntryController extends BaseController
                 // Always create a new entry for doubles
                 $entry = $this->service->createEntry($validated);
 
-                foreach ($validated['student_ids'] as $studentId) {
-                    EntryPlayer::create([
-                        'entry_id'   => $entry->id,
-                        'student_id' => $studentId,
-                    ]);
-                }
+                // foreach ($validated['student_ids'] as $studentId) {
+                //     EntryPlayer::create([
+                //         'entry_id'   => $entry->id,
+                //         'student_id' => $studentId,
+                //     ]);
+                // }
 
                 return $this->sendResponse('Success', 'Doubles entry submitted successfully.');
             }
@@ -115,36 +115,44 @@ class EntryController extends BaseController
                     'school_id'      => 'required|exists:schools,id',
                     'type'           => 'required|in:individual,doubles,mixed,team',
                     'title'          => 'nullable|string|max:255',
-                    'lead_player_id' => 'required|exists:students,id',
+                    'student_ids'    => 'required|array|min:1',
+                    'student_ids.*'  => 'exists:students,id',
                 ]);
-
-                // Check if entry already exists for this player
+                // Check if entry already exists
                 $entry = Entry::where('competition_id', $validated['competition_id'])
                     ->where('school_id', $validated['school_id'])
-                    ->where('type', 'individual')
+                    ->where('type', $validated['type'])
                     ->first();
 
                 if (!$entry) {
                     $entry = $this->service->createEntry($validated);
+                    if (!$entry) {
+                        return $this->sendError('Error.', ['error' => 'Error occurred while creating entry']);
+                    }
                 }
 
-                $exists = EntryPlayer::where('entry_id', $entry->id)
-                    ->where('student_id', $validated['lead_player_id'])
-                    ->exists();
+                // Only attach players if NOT team
+                // if ($request->type !== 'team') {
+                foreach ($validated['student_ids'] as $studentId) {
+                    $exists = EntryPlayer::where('entry_id', $entry->id)
+                        ->where('student_id', $studentId)
+                        ->exists();
 
-                if ($exists) {
-                    return $this->sendError(
-                        'Error',
-                        "Entry already exists for student ID {$validated['lead_player_id']} in this competition."
-                    );
+                    if ($exists) {
+                        return $this->sendError(
+                            'Error',
+                            "Entry already exists for student ID {$studentId} in this competition."
+                        );
+                    }
+
+                    EntryPlayer::create([
+                        'entry_id'   => $entry->id,
+                        'student_id' => $studentId,
+                    ]);
                 }
+                // }
 
-                EntryPlayer::create([
-                    'entry_id'   => $entry->id,
-                    'student_id' => $validated['lead_player_id'],
-                ]);
-
-                return $this->sendResponse('Success', 'Individual entry submitted successfully.');
+                return $this->sendResponse('Success', 'Entry submitted successfully.');
             }
 
             return $this->sendError('Error', ['error' => 'Invalid type provided']);
@@ -266,37 +274,86 @@ class EntryController extends BaseController
         // return $this->sendResponse($teams, 'Registered teams retrieved successfully.');
     }
 
-    // Fetch players for individual and doubles entries
-    public function fetchIDPlayers($cid, $type)
-    {
-        // $validated = $request->validate([
-        //     'competition_id' => 'required|exists:competitions,id',
-        //     'type'           => 'required|string|in:individual,doubles',
-        // ]);
+    // // Fetch players for individual and doubles entries
+    // public function fetchIDPlayers($cid, $type)
+    // {
+    //     // $validated = $request->validate([
+    //     //     'competition_id' => 'required|exists:competitions,id',
+    //     //     'type'           => 'required|string|in:individual,doubles',
+    //     // ]);
 
+    //     $entries = Entry::with(['players.student', 'competition'])
+    //         ->where('competition_id', $cid)
+    //         ->where('type', $type)
+    //         ->get();
+
+    //     $players = $entries->flatMap(function ($entry) {
+    //         return $entry->players->map(function ($player) use ($entry) {
+    //             return [
+    //                 'entry_id'      => $entry->id,
+    //                 'entry_title'   => $entry->title,
+    //                 'competition'   => $entry->competition->event_name ?? null,
+
+    //                 'student_id'    => $player->student_id,
+    //                 'student_name'  => $player->student->full_name ?? null,
+    //             ];
+    //         });
+    //     });
+
+    //     return response()->json([
+    //         'data'    => $players,
+    //         'message' => 'Players fetched successfully for type: ' . $type,
+    //     ], 200);
+    // }
+
+    // Fetch players for individual entries
+    public function fetchIndividualPlayers($cid)
+    {
         $entries = Entry::with(['players.student', 'competition'])
             ->where('competition_id', $cid)
-            ->where('type', $type)
+            ->where('type', 'individual')
             ->get();
 
-        $players = $entries->flatMap(function ($entry) {
+        return $entries->flatMap(function ($entry) {
             return $entry->players->map(function ($player) use ($entry) {
                 return [
-                    'entry_id'      => $entry->id,
-                    'entry_title'   => $entry->title,
-                    'competition'   => $entry->competition->event_name ?? null,
+                    'entry_id'     => $entry->id,
+                    'entry_title'  => $entry->title,
+                    'competition'  => $entry->competition->event_name ?? null,
 
-                    'student_id'    => $player->student_id,
-                    'student_name'  => $player->student->full_name ?? null,
+                    'student_id'   => $player->student_id,
+                    'student_name' => $player->student->full_name ?? null,
                 ];
             });
         });
-
-        return response()->json([
-            'data'    => $players,
-            'message' => 'Players fetched successfully for type: ' . $type,
-        ], 200);
     }
+
+
+    // Fetch players for doubles entries
+    public function fetchDoublesPlayers($cid)
+    {
+        $entries = Entry::with(['players.student', 'competition'])
+            ->where('competition_id', $cid)
+            ->where('type', 'doubles')
+            ->get();
+
+        return $entries->map(function ($entry) {
+            return [
+                'team_id'     => $entry->id,
+                'team_name'   => $entry->title, // or $entry->team_name if you have that field
+                'competition' => $entry->competition->event_name ?? null,
+
+                'players' => $entry->players->map(function ($player) {
+                    return [
+                        'student_id'   => $player->student_id,
+                        'student_name' => $player->student->full_name ?? null,
+                    ];
+                }),
+            ];
+        });
+    }
+
+
 
     // Fetch Team Players
     public function fetchTeamPlayers($eid)
@@ -318,10 +375,11 @@ class EntryController extends BaseController
             ];
         });
 
-        return response()->json([
-            'data'    => $players,
-            'message' => 'Team players fetched successfully for entry: ' . $entry->title,
-        ], 200);
+        // return response()->json([
+        //     'data'    => $players,
+        //     'message' => 'Team players fetched successfully for entry: ' . $entry->title,
+        // ], 200);
+        return response()->json($players);
     }
 
 

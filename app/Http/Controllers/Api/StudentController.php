@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
@@ -9,7 +10,7 @@ use App\Models\SportStudent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends BaseController
 {
@@ -20,7 +21,6 @@ class StudentController extends BaseController
     {
         //
         return StudentResource::collection(Student::where('school_id', '=', $id)->with('guardian')->get());
-
     }
 
     /**
@@ -30,7 +30,6 @@ class StudentController extends BaseController
     {
         //
         return StudentResource::collection(Student::where('school_id', '=', $sid)->where('course_id', '=', $cid)->with('guardian')->get());
-
     }
 
     /**
@@ -40,7 +39,6 @@ class StudentController extends BaseController
     {
         //
         return StudentResource::collection(Student::where('course_id', '=', $cid)->get());
-
     }
 
     /**
@@ -57,6 +55,24 @@ class StudentController extends BaseController
         $data['girls'] = $fstudents;
 
         return response()->json($data);
+    }
+
+    /**
+     * Display a listing of the students limited info with school, class filter.
+     */
+    public function chstudents($sid, $cid)
+    {
+        $students = Student::where('school_id', '=', $sid)->where('course_id', '=', $cid)->with('guardian')->get();
+
+        return $students->map(function ($entry) {
+            return [
+                'id'     => $entry->id,
+                'name'  => $entry->full_name ?? null,
+                'age'  => $entry->age ?? null,
+                'gender'  => $entry->gender,
+
+            ];
+        });
     }
 
     /**
@@ -120,7 +136,6 @@ class StudentController extends BaseController
         } else {
             return $this->sendError('Error.', ['error' => 'error occured']);
         }
-
     }
 
     /**
@@ -129,7 +144,6 @@ class StudentController extends BaseController
     public function show($id)
     {
         return StudentResource::collection(Student::where('id', '=', $id)->with('guardian')->get());
-
     }
 
     /**
@@ -139,7 +153,6 @@ class StudentController extends BaseController
     {
         $sport = Sport::findOrFail($id);
         return StudentResource::collection($sport->students);
-
     }
 
     /**
@@ -174,7 +187,6 @@ class StudentController extends BaseController
         } else {
             return $this->sendError('Error.', ['error' => 'error occured']);
         }
-
     }
 
 
@@ -238,7 +250,6 @@ class StudentController extends BaseController
 
             $larpath = "uploads/large/";
             ImageManager::gd()->read($file->getRealPath())->scale(height: 470)->save(public_path($larpath . $name));
-
         }
 
         $student->first_name = $request->firstName;
@@ -272,7 +283,6 @@ class StudentController extends BaseController
         } else {
             return $this->sendError('Error.', ['error' => 'error occured']);
         }
-
     }
 
     /**

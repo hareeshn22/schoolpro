@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Api\BaseController;
 use App\Models\Entry;
 use App\Models\EntryPlayer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
-class EntryService
+class EntryService extends BaseController
 {
     public function createEntry(array $data): Entry
     {
@@ -23,11 +24,22 @@ class EntryService
             ]);
 
             foreach ($data['student_ids'] as $studentId) {
-                EntryPlayer::create([
-                    'entry_id'   => $entry->id,
-                    'student_id' => $studentId,
-                ]);
-            }
+                    $exists = EntryPlayer::where('entry_id', $entry->id)
+                        ->where('student_id', $studentId)
+                        ->exists();
+
+                    if ($exists) {
+                        return $this->sendError(
+                            'Error',
+                            "Entry already exists for student ID {$studentId} in this competition."
+                        );
+                    }
+
+                    EntryPlayer::create([
+                        'entry_id'   => $entry->id,
+                        'student_id' => $studentId,
+                    ]);
+                }
 
             return $entry;
         });

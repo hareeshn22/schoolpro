@@ -17,6 +17,8 @@ use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\SyllabusController;
 use App\Http\Controllers\Admin\TeacherController;
 
+use Illuminate\Support\Facades\Route;
+
 Route::middleware(['auth'])
     ->prefix('admram')
     ->group(function () {
@@ -31,7 +33,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [SchoolController::class, 'edit'])->name('.edit');
             Route::post('/update', [SchoolController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [SchoolController::class, 'delete'])->name('.delete');
-
         });
 
         Route::name("admin.slides")->middleware(['auth'])->prefix('slides')->group(function () {
@@ -43,14 +44,12 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [SlideController::class, 'edit'])->name('.edit');
             Route::post('/update', [SlideController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [SlideController::class, 'delete'])->name('.delete');
-
         });
 
         Route::name("admin.principals")->middleware(['auth'])->prefix('principals')->group(function () {
 
             Route::get('/', [PrincipalController::class, 'index']);
-            Route::get('/sub/{id}', [PrincipalController::class, 'subprobs'])->name('.sub');
-            ;
+            Route::get('/sub/{id}', [PrincipalController::class, 'subprobs'])->name('.sub');;
             Route::post('/prfilter', [PrincipalController::class, 'prfilter'])->name('.prfilter');
             Route::get('/create', [PrincipalController::class, 'create'])->name('.add');
             Route::get('/createsub', [PrincipalController::class, 'createsub'])->name('.addsub');
@@ -58,7 +57,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [PrincipalController::class, 'edit'])->name('.edit');
             Route::post('/update', [PrincipalController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [PrincipalController::class, 'delete'])->name('.delete');
-
         });
 
         Route::name("admin.syllabus")->middleware(['auth'])->prefix('syllabus')->group(function () {
@@ -70,7 +68,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [SyllabusController::class, 'edit'])->name('.edit');
             Route::post('/update', [SyllabusController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [SyllabusController::class, 'delete'])->name('.delete');
-
         });
 
         Route::name("admin.images")->middleware(['auth'])->prefix('images')->group(function () {
@@ -82,7 +79,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [ImageController::class, 'edit'])->name('.edit');
             Route::post('/update', [ImageController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [ImageController::class, 'delete'])->name('.delete');
-
         });
 
         Route::name("admin.guardian")->middleware(['auth'])->prefix('guardian')->group(function () {
@@ -94,7 +90,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [GuardianController::class, 'edit'])->name('.edit');
             Route::post('/update', [GuardianController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [GuardianController::class, 'delete'])->name('.delete');
-
         });
 
         Route::name("admin.teachers")->middleware(['auth'])->prefix('teachers')->group(function () {
@@ -106,7 +101,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [TeacherController::class, 'edit'])->name('.edit');
             Route::post('/update', [TeacherController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [TeacherController::class, 'delete'])->name('.delete');
-
         });
 
         Route::name("admin.students")->middleware(['auth'])->prefix('students')->group(function () {
@@ -118,7 +112,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [StudentController::class, 'edit'])->name('.edit');
             Route::post('/update', [StudentController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [StudentController::class, 'delete'])->name('.delete');
-
         });
 
         Route::name("admin.news")->middleware(['auth'])->prefix('news')->group(function () {
@@ -129,7 +122,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [NewsController::class, 'edit'])->name('.edit');
             Route::post('/update', [NewsController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [NewsController::class, 'delete'])->name('.delete');
-
         });
         Route::name("admin.pages")->middleware(['auth'])->prefix('pages')->group(function () {
 
@@ -139,7 +131,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [PageController::class, 'edit'])->name('.edit');
             Route::post('/update', [PageController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [PageController::class, 'delete'])->name('.delete');
-
         });
 
         Route::name("admin.courses")->middleware(['auth'])->prefix('courses')->group(function () {
@@ -151,7 +142,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [CourseController::class, 'edit'])->name('.edit');
             Route::post('/update', [CourseController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [CourseController::class, 'delete'])->name('.delete');
-
         });
 
         Route::name("admin.subjects")->middleware(['auth'])->prefix('subjects')->group(function () {
@@ -163,7 +153,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [SubjectController::class, 'edit'])->name('.edit');
             Route::post('/update', [SubjectController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [SubjectController::class, 'delete'])->name('.delete');
-
         });
 
         // Exams
@@ -171,25 +160,23 @@ Route::middleware(['auth'])
 
             Route::get('/', [ExamController::class, 'index']);
             Route::post('/filter', [ExamController::class, 'exambys'])->name('.filterbys');
-
-
         });
 
         // Route::name("admin.categories")->middleware(['auth'])->prefix('cates')->group(function () {
-    
+
         //     Route::get('/', [App\Http\Controllers\Admin\CategoryController::class, 'index']);
         //     Route::get('/sub/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'subcates'])->name('.sub');
-    
+
         //     Route::get('/create', [App\Http\Controllers\Admin\CategoryController::class, 'create'])->name('.add');
         //     Route::get('/createsub', [App\Http\Controllers\Admin\CategoryController::class, 'createsub'])->name('.addsub');
-    
+
         //     Route::post('/store', [App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('.store');
         //     Route::get('/edit/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('.edit');
         //     Route::post('/update', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('.update');
         //     Route::get('/delete/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'delete'])->name('.delete');
-    
+
         // });
-    
+
         // Academic
         Route::name("admin.academic")->middleware(['auth'])->prefix('academic')->group(function () {
 
@@ -200,7 +187,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [AcademicController::class, 'edit'])->name('.edit');
             Route::post('/update', [AcademicController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [AcademicController::class, 'delete'])->name('.delete');
-
         });
 
         // Attendance AI
@@ -212,7 +198,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [AIController::class, 'edit'])->name('.edit');
             Route::post('/update', [AIController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [AIController::class, 'delete'])->name('.delete');
-
         });
         // Attendance AI
         Route::name("admin.homeworkai")->middleware(['auth'])->prefix('homeworkai')->group(function () {
@@ -224,7 +209,6 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [AIController::class, 'edit'])->name('.edit');
             Route::post('/update', [AIController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [AIController::class, 'delete'])->name('.delete');
-
         });
 
         Route::name("admin.setting")->middleware(['auth'])->prefix('setting')->group(function () {
@@ -236,7 +220,5 @@ Route::middleware(['auth'])
             Route::get('/edit/{id}', [SettingController::class, 'edit'])->name('.edit');
             Route::post('/update', [SettingController::class, 'update'])->name('.update');
             Route::get('/delete/{id}', [SettingController::class, 'delete'])->name('.delete');
-
         });
-
     });

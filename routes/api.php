@@ -219,6 +219,7 @@ Route::prefix('1')->group(function () {
         Route::get('/students/{id}', [StudentController::class, 'index']);
         Route::get('/students/{sid}/{cid}', [StudentController::class, 'studentsbys']);
         Route::get('/student/{id}', [StudentController::class, 'show']);
+        Route::get('chstudents/{sid}/{cid}', [StudentController::class, 'chstudents']);
         // Route::post('/storestudent', [StudentController::class, 'store']);
         // // Route::post('/storestudent', [StudentController::class, 'storeMulti']);
         // Route::post('/updatestudent', [StudentController::class, 'update']);
@@ -415,7 +416,7 @@ Route::prefix('1')->group(function () {
         // Materials
         Route::get('/tdmaterials/{tid}', [TeachersdeskController::class, 'materials']);
 
-        // Materials
+        // Examples
         Route::get('/tdexamples/{tid}', [TeachersdeskController::class, 'examples']);
 
         // Videos
@@ -442,7 +443,8 @@ Route::prefix('1')->group(function () {
             Route::post('player/remove/', [EntryController::class, 'removePlayer']);
             Route::get('players/team/{eid}', [EntryController::class, 'fetchTeamPlayers']);
 
-            Route::get('players/{cid}/{type}', [EntryController::class, 'fetchIDPlayers']);
+            Route::get('players/individual/{cid}', [EntryController::class, 'fetchIndividualPlayers']);
+            Route::get('players/doubles/{cid}', [EntryController::class, 'fetchDoublesPlayers']);
 
             // Route::get('today/{sid}', [CompetitionController::class, 'eventbys']);
         });
@@ -471,6 +473,7 @@ Route::prefix('1')->group(function () {
         Route::get('/students/{id}', [StudentController::class, 'index']);
         Route::get('/students/{sid}/{cid}', [StudentController::class, 'studentsbys']);
         Route::get('/student/{id}', [StudentController::class, 'show']);
+
         // Route::post('/storestudent', [StudentController::class, 'store']);
         // // Route::post('/storestudent', [StudentController::class, 'storeMulti']);
         // Route::post('/updatestudent', [StudentController::class, 'update']);
